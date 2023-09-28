@@ -1,0 +1,124 @@
+
+
+##### ADS ####
+GET http://localhost:3000/ads
+###
+
+
+GET http://localhost:3000/ads/1
+###
+
+
+POST http://localhost:3000/populateAds
+Content-Type: application/json
+
+  {
+  }
+
+###
+
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+  {
+    "title": "Phone",
+    "description": "The innovative new design features back glass that has color infused throughout the material. A custom dual ion-exchange process for the glass, and an aerospace-grade aluminum enclosure, help make iPhone 15 incredibly durable.",
+    "owner": "smartphone.seller@dummyemail.fr",
+    "price": 300,
+    "picture": "https://static.india.com/wp-content/uploads/2022/12/QT-iphone-15.jpg?impolicy=Medium_Resize&w=1200&h=800",
+    "location": "Paris",
+    "category":1,
+    "tags":[{ "id": 1 }]
+  }
+  
+###
+
+PATCH http://localhost:3000/ads/1
+Content-Type: application/json
+
+  {
+    "title":"Buenos",
+    "owner": "mathieu@toto.fr",
+    "location": "Buenos Aires",
+    "category":2,
+    "tags":[{ "id": 2 }]
+  }
+
+###
+
+PUT http://localhost:3000/ads/2
+Content-Type: application/json
+
+  {
+    "title": "Voiture de Mathieu",
+    "description": "Ma belle voiture",
+    "owner": "bob@bobo.fr",
+    "picture": "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
+    "location": "Cannes",
+    "category":1,
+   "tags":[{ "id": 3 }]
+    
+  }
+###
+
+
+DELETE http://localhost:3000/ads/23
+###
+
+
+
+
+##### CATEGORIES ####
+
+GET http://localhost:3000/category
+###
+
+
+GET http://localhost:3000/category?search=m
+###
+
+
+GET http://localhost:3000/category/1/
+###
+
+
+
+POST http://localhost:3000/category
+Content-Type: application/json
+
+  {
+    "title": "Autres"
+  }
+  
+###
+
+PUT http://localhost:3000/category/1
+Content-Type: application/json
+
+  {
+    "title": "vêtement"
+  }
+  
+  
+### TAG ###
+
+GET http://localhost:3000/tag
+###
+
+
+GET http://localhost:3000/tag?search=m
+###
+
+
+POST http://localhost:3000/tag
+Content-Type: application/json
+
+  {
+    "title": "bon état"
+  }
+  
+###
+
+DELETE http://localhost:3000/tag/3
+###
+  

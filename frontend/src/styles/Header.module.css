@@ -1,0 +1,38 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+    background-color: white;
+  }
+   
+  .mainMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: #ffa41b;
+  }
+   
+  .categoriesNavigation {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    padding: 16px 10px 6px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+   
+  .categoryNavigationLink {
+    text-decoration: unset;
+    color: inherit;
+  }
+
+  .logo {
+    border: none;
+  }
