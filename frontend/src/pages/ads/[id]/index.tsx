@@ -1,12 +1,12 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useRouter } from "next/router";
-import Layout, { LayoutProps } from "@/components/layout";
+import Layout from "@/components/layout";
 import { AdCardProps } from "@/components/adCard";
 import styles from "@/styles/AdDetails.module.css";
 import { useState, useEffect } from "react";
 import * as customHooks from "@/hooks/customHooks";
 
-
-export default function AdDetails(props: LayoutProps): React.ReactNode {
+export default function AdDetails(): React.ReactNode {
   const [product, setProduct] = useState<AdCardProps | null>(null);
   const router = useRouter();
   const query = router.query.id as string;
@@ -64,6 +64,12 @@ export default function AdDetails(props: LayoutProps): React.ReactNode {
               <button className="button link-button">
                 <span>Ajouter au panier</span>
               </button>
+              <a
+                className="button link-button"
+                href={`/ads/${product.id}/edit`}
+              >
+                Modifier l'offre
+              </a>
             </div>
             <img
               src={product.imageUrl}

@@ -13,7 +13,6 @@ export const fetchAds = async (
   let error: boolean = false;
 
   try {
-    console.log(url);
     const result = await axios.get<AdCardProps[]>(url);
     ads = result.data;
   } catch (error) {

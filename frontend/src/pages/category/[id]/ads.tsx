@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import Layout, { LayoutProps } from "@/components/layout";
+import Layout from "@/components/layout";
 import RecentAds from "@/components/recentAds";
 
-export default function CategoryAds(props: LayoutProps): React.ReactNode {
+export default function CategoryAds(): React.ReactNode {
   const router = useRouter();
   const query = Number(router.query.id);
 
