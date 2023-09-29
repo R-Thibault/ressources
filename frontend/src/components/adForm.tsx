@@ -15,6 +15,16 @@ export type DataEntries = {
   location: string;
   owner: string;
   category: { id: number };
+  tags?: Tag[];
+};
+
+export type Tag = {
+  id: number;
+};
+
+export type TagsProps = {
+  id: number;
+  title: string;
 };
 
 export type Errors = {
@@ -34,6 +44,7 @@ export type AdFormProps = {
 export default function AdForm(props: AdFormProps): React.ReactNode {
   const router = useRouter();
   const [categories, setCategories] = useState<CategoryProps[]>([]);
+  const [tags, setTags] = useState<TagsProps[]>([]);
   const [product, setProduct] = useState<DataEntries>({
     title: "",
     description: "",
@@ -42,6 +53,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     location: "",
     owner: "",
     category: { id: 0 },
+    tags: [],
   });
   const [errors, setErrors] = useState<Errors>({
     title: false,
@@ -55,6 +67,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
 
   useEffect(() => {
     getCategories();
+    getTags();
     if (props.query) {
       fetchAdsData(props.query);
     }
@@ -64,6 +77,15 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     try {
       const response = await customHooks.fetchCategories();
       setCategories(response.categories);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTags() {
+    try {
+      const response = await customHooks.fetchTags();
+      setTags(response.tags);
     } catch (error) {
       console.log(error);
     }
@@ -226,15 +248,17 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
           ))}
         </select>
         <label>Tags</label>
-  {/*       <div>
-        <input
-          type="checkbox"
-          id="toto"
-          name="toto"
-          onChange={(e) => console.log(e.target.checked)}
-        />
-        <label htmlFor="toto">Toto</label>
-        </div> */}
+        {tags.map((item) => (
+          <div key={item.id}>
+            <input
+              type="checkbox"
+              id={item.title}
+              name={item.title}
+              onChange={(e) => console.log(e.target.checked)}
+            />
+            <label htmlFor={item.title}>{item.title}</label>
+          </div>
+        ))}
         <button className={styles.button} type="submit">
           {props.query ? "Modifier l'annonce" : "Poster l'annonce"}
         </button>

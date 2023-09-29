@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AdCardProps } from "@/components/adCard";
 import { CategoryProps } from "@/components/adCard";
+import { TagsProps } from "@/components/adForm";
 import { API_URL } from "@/config/config";
 
 export const fetchAds = async (
@@ -37,6 +38,23 @@ export const fetchCategories = async (): Promise<{
     console.log(error);
   }
   return { categories, error };
+};
+
+export const fetchTags = async (): Promise<{
+  tags: TagsProps[];
+  error: boolean;
+}> => {
+  let tags: TagsProps[] = [];
+  let error: boolean = false;
+
+  try {
+    const result = await axios.get<TagsProps[]>(`${API_URL}/tag`);
+    tags = result.data;
+  } catch (error) {
+    error = true;
+    console.log(error);
+  }
+  return { tags, error };
 };
 
 export const fetchAd = async (
