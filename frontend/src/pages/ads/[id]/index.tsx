@@ -38,16 +38,16 @@ export default function AdDetails(): React.ReactNode {
             <div className={styles.flexColumnSpaceBetween}>
               <div className={styles.flexRow}>
                 <a
-                  href={`/category/${product.category.id}`}
+                  href={`/category/${product.category.id}/ads`}
                   className={styles.category}
                 >
                   {product.category.title}
                 </a>
-                <span>{product.createdAt.toString()}</span>
+                <span>{new Date(product.createdAt).toLocaleDateString()}</span>
               </div>
 
               {product.tags.length > 0 && (
-                <div className={styles.flexRow}>
+                <div className={styles.tagsContainer}>
                   {product.tags.map((item) => (
                     <a
                       key={item.id}
@@ -61,15 +61,17 @@ export default function AdDetails(): React.ReactNode {
               )}
               <p>{product.description}</p>
               <p>Vendu par : {product.owner}</p>
-              <button className="button link-button">
-                <span>Ajouter au panier</span>
-              </button>
-              <a
-                className="button link-button"
-                href={`/ads/${product.id}/edit`}
-              >
-                Modifier l'offre
-              </a>
+              <div className={styles.buttonsContainer}>
+                <button className="button link-button">
+                  <span>Ajouter au panier</span>
+                </button>
+                <a
+                  className="button link-button"
+                  href={`/ads/${product.id}/edit`}
+                >
+                  Modifier l'offre
+                </a>
+              </div>
             </div>
             <img
               src={product.imageUrl}

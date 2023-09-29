@@ -225,6 +225,16 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
             </option>
           ))}
         </select>
+        <label>Tags</label>
+  {/*       <div>
+        <input
+          type="checkbox"
+          id="toto"
+          name="toto"
+          onChange={(e) => console.log(e.target.checked)}
+        />
+        <label htmlFor="toto">Toto</label>
+        </div> */}
         <button className={styles.button} type="submit">
           {props.query ? "Modifier l'annonce" : "Poster l'annonce"}
         </button>
