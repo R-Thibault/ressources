@@ -22,13 +22,13 @@ app.post("/populateAds", adController.populateDatabase);
 app.put("/ads/:id", adController.putOne);
 app.patch("/ads/:id", adController.patchOne);
 app.delete("/ads/:id", adController.deleteOne);
-app.get("/category/:id/ads", adController.getAdsByCategory);
 
 const categoryController = new CategoryController();
 
 app.get("/category", categoryController.getAll);
 app.get("/category/:id", categoryController.getOne);
 app.post("/category", categoryController.postOne);
+app.post("/populateCategories", categoryController.populateDatabase);
 app.put("/category/:id", categoryController.putOne);
 app.patch("/category/:id", categoryController.patchOne);
 app.delete("/category/:id", categoryController.deleteOne);
@@ -38,6 +38,7 @@ const tagController = new TagController();
 app.get("/tag", tagController.getAll);
 app.get("/tag/:id", tagController.getOne);
 app.post("/tag", tagController.postOne);
+app.post("/populateTags", tagController.populateDatabase);
 app.put("/tag/:id", tagController.putOne);
 app.patch("/tag/:id", tagController.patchOne);
 app.delete("/tag/:id", tagController.deleteOne);

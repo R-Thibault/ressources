@@ -4,13 +4,16 @@ import { CategoryProps } from "@/components/adCard";
 import { API_URL } from "@/config/config";
 
 export const fetchAds = async (
-  catId?: string
-): Promise<{ ads: AdCardProps[]; error: boolean }> => {
+  url: string
+): Promise<{
+  ads: AdCardProps[];
+  error: boolean;
+}> => {
   let ads: AdCardProps[] = [];
   let error: boolean = false;
 
-  let url = catId ? `${API_URL}/category/${catId}/ads` : `${API_URL}/ads`;
   try {
+    console.log(url);
     const result = await axios.get<AdCardProps[]>(url);
     ads = result.data;
   } catch (error) {

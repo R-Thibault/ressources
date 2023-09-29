@@ -3,6 +3,7 @@ import { Tag } from "../entities/Tag";
 import { Controller } from ".";
 import { validateDatas } from "../utils/validate";
 import { Like } from "typeorm";
+import { DummyTag } from "../dummyDatas";
 
 export class TagController extends Controller {
   async getAll(req: Request, res: Response) {
@@ -34,6 +35,25 @@ export class TagController extends Controller {
     } catch (error) {
       console.log(error);
       res.status(500).send({ error: "error occured" });
+    }
+  }
+
+  async populateDatabase(req: Request, res: Response) {
+    for (let i = 0; i < DummyTag.length; i++) {
+      try {
+        const newTag = new Tag();
+        newTag.title = DummyTag[i].title;
+
+        const error = await validateDatas(newTag);
+        if (error.length > 0) {
+          res.status(400).send({ error: error });
+        } else {
+          const datas = await newTag.save();
+          /*   res.status(200).send({ datas: datas }); */
+        }
+      } catch (error) {
+        res.status(500).send({ error: "error occured" });
+      }
     }
   }
 

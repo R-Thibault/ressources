@@ -12,6 +12,9 @@ export class Controller {
   postOne(req: Request, res: Response): void {
     this.NotImplemented(req, res);
   }
+  populateDatabase(req: Request, res: Response): void {
+    this.NotImplemented(req, res);
+  }
   putOne(req: Request, res: Response): void {
     this.NotImplemented(req, res);
   }

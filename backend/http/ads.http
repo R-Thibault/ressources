@@ -9,7 +9,7 @@ GET http://localhost:3000/ads/1
 ###
 
 
-POST http://localhost:3000/populateAds
+POST http://localhost:4000/populateAds
 Content-Type: application/json
 
   {
@@ -82,12 +82,20 @@ GET http://localhost:3000/category/1/
 ###
 
 
+POST http://localhost:4000/populateCategories
+Content-Type: application/json
+
+  {
+  }
+
+###
+
 
 POST http://localhost:3000/category
 Content-Type: application/json
 
   {
-    "title": "Autres"
+    "title": ""
   }
   
 ###
@@ -109,6 +117,13 @@ GET http://localhost:3000/tag
 GET http://localhost:3000/tag?search=m
 ###
 
+POST http://localhost:4000/populateTags
+Content-Type: application/json
+
+  {
+  }
+
+###
 
 POST http://localhost:3000/tag
 Content-Type: application/json

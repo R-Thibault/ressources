@@ -8,22 +8,24 @@ import { API_URL } from "@/config/config";
 
 export default function RecentAds({
   title,
-  query,
+  categoryId,
 }: {
   title: string;
-  query?: string;
+  categoryId?: number;
 }): React.ReactNode {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [itemBasket, setItemBasket] = useState<AdCardProps[]>([]);
   const [ads, setAds] = useState<AdCardProps[]>([]);
 
   useEffect(() => {
-    getData(query);
-  }, [query]);
+    getData(categoryId);
+  }, [categoryId]);
 
-  async function getData(id?: string) {
-    const response = await customHooks.fetchAds(id);
-    console.log(response.ads);
+  async function getData(categoryId?: number) {
+    const url = categoryId
+      ? `${API_URL}/ads?category=${categoryId}`
+      : `${API_URL}/ads`;
+    const response = await customHooks.fetchAds(url);
     setAds(response.ads);
   }
 
@@ -31,7 +33,7 @@ export default function RecentAds({
     try {
       const result = await axios.delete(`${API_URL}/ads/${item.id}`);
       if (result.status === 200) {
-        getData(query);
+        getData(categoryId);
       }
     } catch (error) {
       console.log(error);
@@ -42,11 +44,7 @@ export default function RecentAds({
     setTotalPrice(totalPrice + item.price);
     setItemBasket([...itemBasket, item]);
   }
-
-  /*   function deleteProduct(item: AdCardProps): void {
-    deleteDatas(item);
-  } */
-
+  
   return (
     <>
       <h2>{title}</h2>

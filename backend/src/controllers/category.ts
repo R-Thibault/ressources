@@ -3,6 +3,7 @@ import { Category } from "../entities/Category";
 import { Controller } from ".";
 import { validateDatas } from "../utils/validate";
 import { Like } from "typeorm";
+import { DummyCategories } from "../dummyDatas";
 
 export class CategoryController extends Controller {
   async getAll(req: Request, res: Response) {
@@ -37,11 +38,30 @@ export class CategoryController extends Controller {
     }
   }
 
+  async populateDatabase(req: Request, res: Response) {
+    for (let i = 0; i < DummyCategories.length; i++) {
+      try {
+        const newCategory = new Category();
+        newCategory.title = DummyCategories[i].title;
+
+        const error = await validateDatas(newCategory);
+        if (error.length > 0) {
+          res.status(400).send({ error: error });
+        } else {
+          const datas = await newCategory.save();
+          /*   res.status(200).send({ datas: datas }); */
+        }
+      } catch (error) {
+        res.status(500).send({ error: "error occured" });
+      }
+    }
+  }
+
   async postOne(req: Request, res: Response) {
     try {
       const newCategory = new Category();
       newCategory.title = req.body.title;
-      
+
       const error = await validateDatas(newCategory);
       if (error.length > 0) {
         res.status(400).send({ error: error });

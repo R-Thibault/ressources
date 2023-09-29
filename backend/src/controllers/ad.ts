@@ -6,33 +6,19 @@ import { DummyProduct } from "../dummyDatas";
 
 export class AdController extends Controller {
   async getAll(req: Request, res: Response) {
+    let where: any = {};
     try {
+      if (req.query.category) {
+        where.category = { id: +req.query.category };
+      }
       const datas = await Ad.find({
+        where,
         relations: {
           category: true,
           tags: true,
         },
         order: {
           price: "DESC",
-        },
-      });
-      res.status(200).send(datas);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({ error: "error occured" });
-    }
-  }
-
-  async getAdsByCategory(req: Request, res: Response) {
-    const catId = +req.params.id;
-    try {
-      const datas = await Ad.find({
-        where: {
-          category: { id: catId },
-        },
-        relations: {
-          category: true,
-          tags: true,
         },
       });
       res.status(200).send(datas);
