@@ -16,7 +16,7 @@ export const DummyProduct: {
     price: 149.99,
     picture: "https://m.media-amazon.com/images/I/91EXnBnMXyL.jpg",
     location: "Paris",
-    category: 9,
+    category: {id : 9},
     tags: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 6 }],
   },
   {
@@ -28,7 +28,7 @@ export const DummyProduct: {
     picture:
       "https://mes-decouvertes.com/wp-content/uploads/2020/03/grande-table-bois-pieds-m%C3%A9tal_02.jpeg",
     location: "Lyon",
-    category: 1,
+    category: {id : 1},
     tags: [{ id: 3 }, { id: 7 }],
   },
   {
@@ -40,7 +40,7 @@ export const DummyProduct: {
     picture:
       "https://m.media-amazon.com/images/I/71yf785aBmL._AC_UF1000,1000_QL80_.jpg",
     location: "Marseille",
-    category: 3,
+    category: {id : 3},
     tags: [{ id: 4 }, {id: 6}],
   },
   {
@@ -52,7 +52,7 @@ export const DummyProduct: {
     picture:
       "https://mj-concept.fr/content/uploads/2020/11/hk-living-vase-en-ceramique-peint-a-la-main.jpg",
     location: "Toulouse",
-    category: 1,
+    category:{id : 1},
     tags: [{ id: 5 }, { id: 7 }],
   },
   {
@@ -64,7 +64,7 @@ export const DummyProduct: {
     picture:
       "https://m.media-amazon.com/images/I/71aCEN1hKmL._AC_UF1000,1000_QL80_.jpg",
     location: "Nice",
-    category: 4,
+    category: {id : 4},
     tags: [{ id: 4 }, {id: 6}],
   },
   {
@@ -76,7 +76,7 @@ export const DummyProduct: {
     picture:
       "https://alternatifshop.com/26177-large_default/lunettes-de-soleil-oakley-sutro-eyeshade-heritage-colors-collection-.jpg",
     location: "Cannes",
-    category: 9,
+    category:{id : 9},
     tags: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 6 }],
   },
   {
@@ -88,7 +88,7 @@ export const DummyProduct: {
     picture:
       "https://m.media-amazon.com/images/I/814rRyqR1kL._AC_UF1000,1000_QL80_.jpg",
     location: "Nantes",
-    category: 13,
+    category: {id : 13},
     tags: [{ id: 7 }],
   },
   {
@@ -100,7 +100,7 @@ export const DummyProduct: {
     picture:
       "https://m.media-amazon.com/images/I/71qqo0KgMOL._AC_UF894,1000_QL80_.jpg",
     location: "Strasbourg",
-    category: 13,
+    category: {id : 13},
     tags: [{ id: 7 }],
   },
   {
@@ -111,7 +111,7 @@ export const DummyProduct: {
     price: 249.99,
     picture: "https://www.1001-montres.fr/18635-large_default/montre-homme-sport-noire-de-plongee-casio-mdv-107-1a3vef.jpg",
     location: "Marseille",
-    category: 8,
+    category: {id : 8},
     tags: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 6 }],
   },
   {
@@ -122,7 +122,7 @@ export const DummyProduct: {
     price: 399.99,
     picture: "https://www.milome.fr/10511-thickbox_default/fauteuil-relax-electrique-2-moteurs-detroit.jpg",
     location: "Lyon",
-    category: 1,
+    category: {id : 1},
     tags: [{ id: 3 }, { id: 7 }],
   },
   {
@@ -133,7 +133,7 @@ export const DummyProduct: {
     price: 179.99,
     picture: "https://m.media-amazon.com/images/I/71TQ7FEGKSL.jpg",
     location: "Paris",
-    category: 2,
+    category: {id : 2},
     tags: [{ id: 5 }, { id: 6 }],
   },
   {
@@ -144,7 +144,7 @@ export const DummyProduct: {
     price: 699.99,
     picture: "https://m.media-amazon.com/images/I/81ylbPA6kPL._AC_UF1000,1000_QL80_.jpg",
     location: "Grenoble",
-    category: 6,
+    category: {id : 6},
     tags: [{ id: 4 }, { id: 7 }],
   },
   {
@@ -155,7 +155,7 @@ export const DummyProduct: {
     price: 1799.99,
     picture: "https://www.boulanger.com/content/static/bcom/contenu/bcbu/cuisine_cuisson/robot-cuisine/2.jpg",
     location: "Lille",
-    category: 2,
+    category: {id : 2},
     tags: [{ id: 5 }, { id: 6 }],
   },
   {
@@ -166,7 +166,7 @@ export const DummyProduct: {
     price: 34.99,
     picture: "https://m.media-amazon.com/images/I/91LsdHpOKWL._AC_UF894,1000_QL80_.jpg",
     location: "Nice",
-    category: 13,
+    category: {id : 13},
     tags: [{ id: 5 }, { id: 6 }],
   },
 ];

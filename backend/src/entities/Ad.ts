@@ -12,7 +12,7 @@ import {
 import { IsEmail, MaxLength, MinLength } from "class-validator";
 import { Category } from "./Category";
 import { Tag } from "./Tag";
-import { ObjectType, Field, ID, InputType } from "type-graphql";
+import { ObjectType, Field, ID, InputType, Int } from "type-graphql";
 import { ObjectID } from "./ObjectId";
 
 @Entity()
@@ -125,7 +125,7 @@ export class UpdatedAd {
 @InputType()
 export class WhereAd {
   @Field(() => [ID], { nullable: true })
-  categoryID!: [number];
+  category!: [number];
 
   @Field({ nullable: true })
   searchTitle!: string;

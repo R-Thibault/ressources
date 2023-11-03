@@ -1,12 +1,17 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Category, InputCategory } from "../entities/Category";
 import { validateDatas } from "../utils/validate";
+import { DummyCategories } from "../dummyDatas";
 
 @Resolver(Category)
 export class CategoryResolver {
   @Query(() => [Category])
   async getCategories(): Promise<Category[]> {
-    return await Category.find();
+    return await Category.find({
+      relations: {
+        ads: true,
+      },
+    });
   }
 
   @Query(() => Category)
@@ -16,6 +21,9 @@ export class CategoryResolver {
         where: {
           id: id,
         },
+        relations: {
+          ads: true,
+        },
       });
       return datas;
     } catch (error) {
@@ -23,10 +31,10 @@ export class CategoryResolver {
     }
   }
 
-  @Mutation(() => [Category])
+  @Mutation(() => Category)
   async addNewCategory(
     @Arg("data") { title }: InputCategory
-  ): Promise<Category[]> {
+  ): Promise<Category> {
     try {
       const newCategory = new Category();
       newCategory.title = title;
@@ -36,27 +44,47 @@ export class CategoryResolver {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
         const datas = await newCategory.save();
-        return await this.getCategories();
+        return datas;
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-
   @Mutation(() => [Category])
+  async populateCategoryTable(): Promise<Category[] | null> {
+    for (let i = 0; i < DummyCategories.length; i++) {
+      try {
+        const newCategory = new Category();
+        newCategory.title = DummyCategories[i].title;
+
+        const error = await validateDatas(newCategory);
+
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          const datas = await newCategory.save();
+        }
+      } catch (error) {
+        throw new Error(`error occured ${JSON.stringify(error)}`);
+      }
+    }
+    return await this.getCategories();
+  }
+
+  @Mutation(() => Category)
   async deleteCategory(
     @Arg("id")
-    id: number,
-  ): Promise<Category[] | null> {
+    id: number
+  ): Promise<Category | undefined> {
     try {
       const category = await Category.findOne({
         where: {
           id: id,
         },
       });
-      await category?.remove();
-      return await this.getCategories()
+      const datas = await category?.remove();
+      return datas;
     } catch (error) {
       console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
@@ -82,8 +110,8 @@ export class CategoryResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          await Category.save(category);
-          return this.getCategoryById(id);
+          const datas = await Category.save(category);
+          return datas;
         }
       } else {
         throw new Error(`no ad found`);

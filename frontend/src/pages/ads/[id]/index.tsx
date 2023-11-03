@@ -3,52 +3,43 @@ import { useRouter } from "next/router";
 import Layout from "@/components/layout";
 import { AdCardProps } from "@/components/adCard";
 import styles from "@/styles/AdDetails.module.css";
-import { useState, useEffect } from "react";
-import * as customHooks from "@/hooks/customHooks";
+import { useQuery } from "@apollo/client";
+import { GET_AD_BY_ID } from "@/Request/ads";
 
 export default function AdDetails(): React.ReactNode {
-  const [product, setProduct] = useState<AdCardProps | null>(null);
   const router = useRouter();
-  const query = router.query.id as string;
+  const query = router.query.id;
 
-  async function getAdData(id: string) {
-    try {
-      const result = await customHooks.fetchAd(id);
-      setProduct(result.ad);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const { data } = useQuery<{ item: AdCardProps | null }>(GET_AD_BY_ID, {
+    variables: { id: query },
+    skip: query === undefined,
+  });
 
-  useEffect(() => {
-    if (query) {
-      getAdData(query);
-    }
-  }, [query]);
-
-  if (product) {
+  if (data?.item) {
     return (
-      <Layout title={product.title}>
+      <Layout title={data.item.title}>
         <section className={styles.flexColumn}>
           <div className={styles.flexRow}>
-            <h2>{product.title}</h2>
-            <span>{product.price} €</span>
+            <h2>{data.item.title}</h2>
+            <span>{data.item.price} €</span>
           </div>
           <div className={styles.flexRowStart}>
             <div className={styles.flexColumnSpaceBetween}>
               <div className={styles.flexRow}>
                 <a
-                  href={`/category/${product.category.id}/ads`}
+                  href={`/category/${data.item.category.id}/ads`}
                   className={styles.category}
                 >
-                  {product.category.title}
+                  {data.item.category.title}
                 </a>
-                <span>{new Date(product.createdAt).toLocaleDateString()}</span>
+                <span>
+                  {new Date(data.item.createdAt).toLocaleDateString()}
+                </span>
               </div>
 
-              {product.tags.length > 0 && (
+              {data.item.tags.length > 0 && (
                 <div className={styles.tagsContainer}>
-                  {product.tags.map((item) => (
+                  {data.item.tags.map((item) => (
                     <a
                       key={item.id}
                       href={`/tag/${item.id}`}
@@ -59,24 +50,24 @@ export default function AdDetails(): React.ReactNode {
                   ))}
                 </div>
               )}
-              <p>{product.description}</p>
-              <p>Vendu par : {product.owner}</p>
+              <p>{data.item.description}</p>
+              <p>Vendu par : {data.item.owner}</p>
               <div className={styles.buttonsContainer}>
                 <button className="button link-button">
                   <span>Ajouter au panier</span>
                 </button>
                 <a
                   className="button link-button"
-                  href={`/ads/${product.id}/edit`}
+                  href={`/ads/${data.item.id}/edit`}
                 >
                   Modifier l'offre
                 </a>
               </div>
             </div>
             <img
-              src={product.imageUrl}
+              src={data.item.imageUrl}
               className={styles.image}
-              alt={product.title}
+              alt={data.item.title}
             ></img>
           </div>
         </section>

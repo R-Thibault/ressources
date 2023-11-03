@@ -1,11 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import styles from "@/styles/NewAd.module.css";
-import axios from "axios";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { CategoryProps } from "@/components/adCard";
-import * as customHooks from "@/hooks/customHooks";
-import { API_URL } from "@/config/config";
+import { AdCardProps, CategoryProps } from "@/components/adCard";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ALL_CATEGORIES } from "@/Request/category";
+import { GET_ALL_TAGS } from "@/Request/tags";
+import { CREATE_NEW_AD, GET_AD_BY_ID, UPDATE_AD } from "@/Request/ads";
 
 export type DataEntries = {
   title: string;
@@ -43,8 +43,6 @@ export type AdFormProps = {
 
 export default function AdForm(props: AdFormProps): React.ReactNode {
   const router = useRouter();
-  const [categories, setCategories] = useState<CategoryProps[]>([]);
-  const [tags, setTags] = useState<TagsProps[]>([]);
   const [product, setProduct] = useState<DataEntries>({
     title: "",
     description: "",
@@ -65,36 +63,53 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     submit: false,
   });
 
+  const { data: categories } = useQuery<{ items: CategoryProps[] }>(
+    GET_ALL_CATEGORIES
+  );
+
+  const { data: productTags } = useQuery<{ items: TagsProps[] }>(GET_ALL_TAGS);
+
+  const { data: ad } = useQuery<{ item: AdCardProps | null }>(GET_AD_BY_ID, {
+    variables: { id: props.query },
+    skip: props.query === undefined,
+  });
+
+  const [createAd, { error: createAdError }] =
+    useMutation<AdCardProps>(CREATE_NEW_AD);
+
+  const [updateAd, { error: updateAdError }] =
+    useMutation<AdCardProps>(UPDATE_AD);
+
   useEffect(() => {
-    getCategories();
-    getTags();
     if (props.query) {
-      fetchAdsData(props.query);
-    }
-  }, [props.query]);
+      if (ad?.item) {
+        let tagsArray = [];
 
-  async function getCategories() {
-    try {
-      const response = await customHooks.fetchCategories();
-      setCategories(response.categories);
-    } catch (error) {
-      console.log(error);
+        for (const tag of ad.item.tags) {
+          tagsArray.push({ id: +tag.id });
+        }
+        setProduct({
+          title: ad?.item.title,
+          description: ad?.item.description,
+          price: ad?.item.price,
+          imageUrl: ad?.item.imageUrl,
+          location: ad?.item.location,
+          owner: ad?.item.owner,
+          category: { id: ad?.item.category.id },
+          tags: tagsArray,
+        });
+      }
     }
-  }
-
-  async function getTags() {
-    try {
-      const response = await customHooks.fetchTags();
-      setTags(response.tags);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  }, [ad?.item, props.query]);
 
   async function postData(item: DataEntries) {
     try {
-      const result = await axios.post(`${API_URL}/ads`, item);
-      if (result.status === 200) {
+      await createAd({
+        variables: {
+          data: item,
+        },
+      });
+      if (!createAdError) {
         router.replace("/");
       }
     } catch (error) {
@@ -105,9 +120,14 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
 
   async function updateData(item: DataEntries) {
     try {
-      const result = await axios.put(`${API_URL}/ads/${props.query}`, item);
-      if (result.status === 200) {
-        router.replace(`/ads/${props.query}`);
+      await updateAd({
+        variables: {
+          id: props.query,
+          data: item,
+        },
+      });
+      if (!updateAdError) {
+        router.replace("/");
       }
     } catch (error) {
       console.log(error);
@@ -115,12 +135,19 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     }
   }
 
-  async function fetchAdsData(id: string) {
-    try {
-      const result = await customHooks.fetchAd(id);
-      setProduct(result.ad);
-    } catch (error) {
-      console.log(error);
+  function handleSelectBox(value: Tag) {
+    if (product.tags?.find((item) => item.id === +value.id)) {
+      const newSelectBoxArray = product.tags.filter(
+        (item) => item.id !== +value.id
+      );
+      setProduct({ ...product, tags: newSelectBoxArray });
+    } else {
+      setProduct({
+        ...product,
+        tags: product.tags
+          ? [...product.tags, { id: +value.id }]
+          : product.tags,
+      });
     }
   }
 
@@ -139,7 +166,10 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     const missingData = {
       owner: "email@email.fr",
     };
-    const newObject = Object.assign(product, missingData);
+
+    const newObject = props.query
+      ? product
+      : Object.assign(product, missingData);
 
     if (newObject.title.length < 1) {
       newErrors.title = true;
@@ -241,20 +271,23 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
           }
           value={product.category.id}
         >
-          {categories.map((item) => (
+          {categories?.items.map((item) => (
             <option key={item.id} value={item.id}>
               {item.title}
             </option>
           ))}
         </select>
         <label>Tags</label>
-        {tags.map((item) => (
+        {productTags?.items.map((item) => (
           <div key={item.id}>
             <input
               type="checkbox"
               id={item.title}
+              checked={
+                product.tags?.find((tag) => tag.id === +item.id) ? true : false
+              }
               name={item.title}
-              onChange={(e) => console.log(e.target.checked)}
+              onChange={(e) => handleSelectBox(item)}
             />
             <label htmlFor={item.title}>{item.title}</label>
           </div>

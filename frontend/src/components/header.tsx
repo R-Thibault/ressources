@@ -1,39 +1,11 @@
-import { useEffect, useState } from "react";
 import styles from "../styles/Header.module.css";
 import Category from "./category";
-import * as customHooks from "@/hooks/customHooks";
 import { CategoryProps } from "./adCard";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_CATEGORIES } from "@/Request/category";
 
 export default function Header(): React.ReactNode {
-  const [categories, setCategories] = useState<CategoryProps[]>([]);
-  /*  const categories: CategoryProps[] = [
-    { title: "Ameublement", link: "#" },
-    { title: "Électroménager", link: "#" },
-    { title: "Photographie", link: "#" },
-    { title: "Informatique", link: "#" },
-    { title: "Téléphonie", link: "#" },
-    { title: "Vélos", link: "#" },
-    { title: "Véhicules", link: "#" },
-    { title: "Sport", link: "#" },
-    { title: "Habillement", link: "#" },
-    { title: "Bébé", link: "#" },
-    { title: "Outillage", link: "#" },
-    { title: "Services", link: "#" },
-    { title: "Vacances", link: "#" },
-  ]; */
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  async function getData() {
-    try {
-      const response = await customHooks.fetchCategories();
-      setCategories(response.categories);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const { data } = useQuery<{ items: CategoryProps[] }>(GET_ALL_CATEGORIES);
 
   return (
     <header className={styles.header}>
@@ -66,10 +38,10 @@ export default function Header(): React.ReactNode {
         </a>
       </div>
       <nav className={styles.categoriesNavigation}>
-        {categories.map((item, index) => (
+        {data?.items.map((item, index) => (
           <div key={item.title}>
             <Category title={item.title} id={item.id} key={item.id} />
-            {index < categories.length - 1 ? "•" : ""}
+            {index < data.items.length - 1 ? "•" : ""}
           </div>
         ))}
       </nav>
