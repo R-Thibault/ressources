@@ -1,0 +1,26 @@
+services:
+    server:
+        build: ./backend
+        ports: 
+            - 4000:4000
+        command: npm start
+            - ./backend/src/:/app/src/
+        env_file:
+            - ./backend/.env
+    front:
+        build: ./frontend
+        ports:
+            - 3000:3000
+        volumes: 
+            - ./frontend/src/:/app/src/
+    db:
+        image: postgres
+        volumes:
+            - /var/lib/postgresql/data
+        env_file:
+            - ./.env
+        
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
