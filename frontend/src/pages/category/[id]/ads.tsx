@@ -6,7 +6,7 @@ export default function CategoryAds(): React.ReactNode {
   const router = useRouter();
   const query = Number(router.query.id);
 
-  if (query) {
+  if (router.query) {
     return (
       <Layout title={"Catégorie"}>
         <RecentAds title={"Offres par catégorie"} categoryId={query} />

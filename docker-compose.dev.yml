@@ -4,6 +4,7 @@ services:
         ports: 
             - 4000:4000
         command: npm start
+        volumes:
             - ./backend/src/:/app/src/
         env_file:
             - ./backend/.env

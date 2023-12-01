@@ -208,7 +208,8 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
   }
 
   return (
-    <>
+    <div className={styles.container}>
+    <div className={styles.formContainer}>
       <h2>{props.query ? "Modifier l'annonce" : "Poster l'annonce"}</h2>
       {errors.submit && (
         <p>Une erreur est survenue lors de la soumission de votre annonce</p>
@@ -296,6 +297,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
           {props.query ? "Modifier l'annonce" : "Poster l'annonce"}
         </button>
       </form>
-    </>
+    </div>
+    </div>
   );
 }

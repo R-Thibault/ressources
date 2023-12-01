@@ -85,9 +85,8 @@ h1 {
 }
 
 .main-content {
-  max-width: 832px;
-  padding: 0 16px;
-  margin: 120px auto 48px;
+  margin:80px 0;
+  width:100%;
 }
 
 @media screen and (min-width: 720px) {

@@ -1,5 +1,11 @@
 import { Resolver, Query, Arg, Mutation, ID } from "type-graphql";
-import { Ad, InputAd, UpdatedAd, WhereAd } from "../entities/Ad";
+import {
+  Ad,
+  InputAd,
+  UpdatedAd,
+  WhereAd,
+  AdsWithMaxPrice,
+} from "../entities/Ad";
 import { validateDatas } from "../utils/validate";
 import { Like, In, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
 import { DummyProduct } from "../dummyDatas";
@@ -7,11 +13,11 @@ import { merge } from "../utils/update";
 
 @Resolver(Ad)
 export class AdResolver {
-  @Query(() => [Ad])
+  @Query(() => AdsWithMaxPrice)
   async getAds(
     @Arg("query", () => WhereAd, { nullable: true }) query?: WhereAd,
     @Arg("orderBy", () => String, { nullable: true }) orderBy?: String
-  ): Promise<Ad[]> {
+  ): Promise<{ ads: Ad[]; maxPrice: number }> {
     let whereQuery: any = {};
     let whereOrder: any = {};
 
@@ -21,6 +27,10 @@ export class AdResolver {
 
     if (query?.category) {
       whereQuery.category = { id: In(query.category) };
+    }
+
+    if (query?.tags) {
+      whereQuery.tags = { id: In(query.tags) };
     }
 
     if (query?.priceGTE) {
@@ -41,7 +51,7 @@ export class AdResolver {
       }
     }
 
-    return await Ad.find({
+    const ads = await Ad.find({
       where: whereQuery,
       relations: {
         category: true,
@@ -49,6 +59,13 @@ export class AdResolver {
       },
       order: whereOrder,
     });
+
+    const highestPriceAd = ads.reduce((prev, current) => {
+      return prev && prev.price > current.price ? prev : current;
+    });
+
+    return { ads: ads, maxPrice: highestPriceAd.price };
+    
   }
 
   @Query(() => Ad)
@@ -130,7 +147,6 @@ export class AdResolver {
 
   @Mutation(() => Ad)
   async addNewAd(@Arg("data") inputData: InputAd): Promise<Ad | null> {
-    console.log(inputData);
     try {
       const newAd = new Ad();
       newAd.title = inputData.title;
@@ -155,8 +171,8 @@ export class AdResolver {
     }
   }
 
-  @Mutation(() => [Ad])
-  async populateAdsTable(): Promise<Ad[] | null> {
+  @Mutation(() => AdsWithMaxPrice)
+  async populateAdsTable(): Promise<{ ads: Ad[]; maxPrice: number }> {
     for (let i = 0; i < DummyProduct.length; i++) {
       try {
         const newAd = new Ad();

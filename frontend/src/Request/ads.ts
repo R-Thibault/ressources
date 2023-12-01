@@ -2,7 +2,8 @@ import { gql } from "@apollo/client";
 
 export const GET_ALL_ADS = gql`
   query GetAllAds($query: WhereAd) {
-    items: getAds(query: $query) {
+    items:getAds(query: $query) {
+      ads {
       id
       description
       imageUrl
@@ -11,6 +12,16 @@ export const GET_ALL_ADS = gql`
       price
       createdAt
       title
+      category {
+        id
+        title
+      }
+      tags {
+        id
+        title
+      }
+    }
+    maxPrice
     }
   }
 `;

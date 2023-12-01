@@ -95,6 +95,15 @@ export class InputAd {
   tags!: Tag[];
 }
 
+@ObjectType()
+export class AdsWithMaxPrice {
+  @Field(() => [Ad])
+  ads!: Ad[];
+
+  @Field(() => Int)
+  maxPrice!: number;
+}
+
 @InputType()
 export class UpdatedAd {
   @Field({ nullable: true })
@@ -126,6 +135,9 @@ export class UpdatedAd {
 export class WhereAd {
   @Field(() => [ID], { nullable: true })
   category!: [number];
+
+  @Field(() => [ID], { nullable: true })
+  tags!: number[];
 
   @Field({ nullable: true })
   searchTitle!: string;

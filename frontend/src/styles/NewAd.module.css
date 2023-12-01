@@ -1,3 +1,15 @@
+.container {
+  width: 100%;
+  padding: 1% 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formContainer {
+  width: 50%;
+}
+
 .form {
   display: flex;
   justify-content: center;

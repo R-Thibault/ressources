@@ -1,15 +1,49 @@
+.recentAdsContainer {
+  display: flex;
+  flex-direction: row;
+  justifycontent: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .recentAds {
+  display: flex;
+  flex-direction: column;
+  justifycontent: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 10%;
+}
+
+.recentAdsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
+  width: 100%;
 }
 
 .adCardContainer {
   border-radius: 8px;
   border: 1px solid lightgray;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  padding-inline: 10px;
   color: inherit;
   background-color: white;
+}
+
+.tagsContainer {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+}
+
+.tags {
+  font-size: 10px;
+  background-color: #ffa41b;
+  border: 1px solid #ffa41b;
+  padding: 5px;
+  margin-right: 2px;
 }
 
 .adCardLink {
