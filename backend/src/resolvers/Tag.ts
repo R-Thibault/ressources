@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Authorized } from "type-graphql";
 import { Tag, InputTag } from "../entities/Tag";
 import { validateDatas } from "../utils/validate";
 import { DummyTag } from "../dummyDatas";

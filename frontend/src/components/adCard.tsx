@@ -4,13 +4,18 @@ export type AdCardProps = {
   id: number;
   title: string;
   description: string;
-  owner: string;
   price: number;
   location: string;
   createdAt: Date;
   imageUrl: string;
   category: CategoryProps;
   tags: Tags[];
+  user: UserProps;
+};
+
+export type UserProps = {
+  id: number;
+  email: string;
 };
 
 export type CategoryProps = {

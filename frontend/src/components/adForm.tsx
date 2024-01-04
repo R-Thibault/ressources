@@ -13,7 +13,6 @@ export type DataEntries = {
   price: number;
   imageUrl: string;
   location: string;
-  owner: string;
   category: { id: number };
   tags?: Tag[];
 };
@@ -49,7 +48,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
     price: 0,
     imageUrl: "",
     location: "",
-    owner: "",
     category: { id: 0 },
     tags: [],
   });
@@ -94,7 +92,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
           price: ad?.item.price,
           imageUrl: ad?.item.imageUrl,
           location: ad?.item.location,
-          owner: ad?.item.owner,
           category: { id: ad?.item.category.id },
           tags: tagsArray,
         });
@@ -163,13 +160,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
       submit: false,
     };
 
-    const missingData = {
-      owner: "email@email.fr",
-    };
-
-    const newObject = props.query
-      ? product
-      : Object.assign(product, missingData);
+    const newObject = props.query ? product : Object.assign(product);
 
     if (newObject.title.length < 1) {
       newErrors.title = true;
@@ -209,95 +200,101 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
 
   return (
     <div className={styles.container}>
-    <div className={styles.formContainer}>
-      <h2>{props.query ? "Modifier l'annonce" : "Poster l'annonce"}</h2>
-      {errors.submit && (
-        <p>Une erreur est survenue lors de la soumission de votre annonce</p>
-      )}
-      <form onSubmit={(e) => submit(e)} className={styles.form}>
-        <label htmlFor="title">Titre de l&apos;annonce</label>
-        <input
-          className={errors.title ? styles.inputError : styles.input}
-          type="text"
-          name="title"
-          placeholder="titre de l'annonce"
-          onChange={(e) => setProduct({ ...product, title: e.target.value })}
-          value={product.title}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          className={errors.description ? styles.inputError : styles.input}
-          type="text"
-          name="description"
-          placeholder="une petite description pour cette annonce"
-          onChange={(e) =>
-            setProduct({ ...product, description: e.target.value })
-          }
-          value={product.description}
-        />
-        <label htmlFor="price">Prix</label>
-        <input
-          className={errors.price ? styles.inputError : styles.input}
-          type="number"
-          name="price"
-          placeholder="10 €"
-          onChange={(e) => setProduct({ ...product, price: +e.target.value })}
-          value={product.price}
-        />
-        <label htmlFor="location">Localisation</label>
-        <input
-          className={errors.location ? styles.inputError : styles.input}
-          type="string"
-          name="location"
-          placeholder="Paris"
-          onChange={(e) => setProduct({ ...product, location: e.target.value })}
-          value={product.location}
-        />
-        <label htmlFor="imageUrl">Image</label>
-        <input
-          className={errors.imageUrl ? styles.inputError : styles.input}
-          type="text"
-          name="imageUrl"
-          placeholder="https://www.google.com"
-          onChange={(e) => setProduct({ ...product, imageUrl: e.target.value })}
-          value={product.imageUrl}
-        />
-        <label htmlFor="category">Catégorie</label>
-        <select
-          className={errors.category ? styles.inputError : styles.input}
-          name="category"
-          id="category"
-          onChange={(e) =>
-            setProduct({ ...product, category: { id: +e.target.value } })
-          }
-          value={product.category.id}
-        >
-          {categories?.items.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.title}
-            </option>
+      <div className={styles.formContainer}>
+        <h2>{props.query ? "Modifier l'annonce" : "Poster l'annonce"}</h2>
+        {errors.submit && (
+          <p>Une erreur est survenue lors de la soumission de votre annonce</p>
+        )}
+        <form onSubmit={(e) => submit(e)} className={styles.form}>
+          <label htmlFor="title">Titre de l&apos;annonce</label>
+          <input
+            className={errors.title ? styles.inputError : styles.input}
+            type="text"
+            name="title"
+            placeholder="titre de l'annonce"
+            onChange={(e) => setProduct({ ...product, title: e.target.value })}
+            value={product.title}
+          />
+          <label htmlFor="description">Description</label>
+          <input
+            className={errors.description ? styles.inputError : styles.input}
+            type="text"
+            name="description"
+            placeholder="une petite description pour cette annonce"
+            onChange={(e) =>
+              setProduct({ ...product, description: e.target.value })
+            }
+            value={product.description}
+          />
+          <label htmlFor="price">Prix</label>
+          <input
+            className={errors.price ? styles.inputError : styles.input}
+            type="number"
+            name="price"
+            placeholder="10 €"
+            onChange={(e) => setProduct({ ...product, price: +e.target.value })}
+            value={product.price}
+          />
+          <label htmlFor="location">Localisation</label>
+          <input
+            className={errors.location ? styles.inputError : styles.input}
+            type="string"
+            name="location"
+            placeholder="Paris"
+            onChange={(e) =>
+              setProduct({ ...product, location: e.target.value })
+            }
+            value={product.location}
+          />
+          <label htmlFor="imageUrl">Image</label>
+          <input
+            className={errors.imageUrl ? styles.inputError : styles.input}
+            type="text"
+            name="imageUrl"
+            placeholder="https://www.google.com"
+            onChange={(e) =>
+              setProduct({ ...product, imageUrl: e.target.value })
+            }
+            value={product.imageUrl}
+          />
+          <label htmlFor="category">Catégorie</label>
+          <select
+            className={errors.category ? styles.inputError : styles.input}
+            name="category"
+            id="category"
+            onChange={(e) =>
+              setProduct({ ...product, category: { id: +e.target.value } })
+            }
+            value={product.category.id}
+          >
+            {categories?.items.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+          <label>Tags</label>
+          {productTags?.items.map((item) => (
+            <div key={item.id}>
+              <input
+                type="checkbox"
+                id={item.title}
+                checked={
+                  product.tags?.find((tag) => tag.id === +item.id)
+                    ? true
+                    : false
+                }
+                name={item.title}
+                onChange={(e) => handleSelectBox(item)}
+              />
+              <label htmlFor={item.title}>{item.title}</label>
+            </div>
           ))}
-        </select>
-        <label>Tags</label>
-        {productTags?.items.map((item) => (
-          <div key={item.id}>
-            <input
-              type="checkbox"
-              id={item.title}
-              checked={
-                product.tags?.find((tag) => tag.id === +item.id) ? true : false
-              }
-              name={item.title}
-              onChange={(e) => handleSelectBox(item)}
-            />
-            <label htmlFor={item.title}>{item.title}</label>
-          </div>
-        ))}
-        <button className={styles.button} type="submit">
-          {props.query ? "Modifier l'annonce" : "Poster l'annonce"}
-        </button>
-      </form>
-    </div>
+          <button className={styles.button} type="submit">
+            {props.query ? "Modifier l'annonce" : "Poster l'annonce"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

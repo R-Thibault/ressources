@@ -8,7 +8,6 @@ export const GET_ALL_ADS = gql`
       description
       imageUrl
       location
-      owner
       price
       createdAt
       title
@@ -19,6 +18,10 @@ export const GET_ALL_ADS = gql`
       tags {
         id
         title
+      }
+      user {
+        id
+        email
       }
     }
     maxPrice
@@ -34,7 +37,6 @@ export const GET_AD_BY_ID = gql`
       description
       imageUrl
       location
-      owner
       price
       createdAt
       tags {
@@ -44,6 +46,10 @@ export const GET_AD_BY_ID = gql`
       category {
         id
         title
+      }
+      user {
+        id
+        email
       }
     }
   }
@@ -67,6 +73,10 @@ export const UPDATE_AD = gql`
     tags {
       id
     }
+    user {
+        id
+        email
+      }
   }
 }
 `;
@@ -78,7 +88,6 @@ export const DELETE_AD = gql`
       description
       imageUrl
       location
-      owner
       price
       createdAt
       title

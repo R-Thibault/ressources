@@ -9,11 +9,12 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm";
-import { IsEmail, MaxLength, MinLength } from "class-validator";
+import { MaxLength, MinLength } from "class-validator";
 import { Category } from "./Category";
 import { Tag } from "./Tag";
 import { ObjectType, Field, ID, InputType, Int } from "type-graphql";
 import { ObjectID } from "./ObjectId";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
@@ -32,10 +33,6 @@ export class Ad extends BaseEntity {
   @Field()
   description!: string;
 
-  @Column()
-  @Field()
-  @IsEmail()
-  owner!: string;
 
   @Column()
   @Field()
@@ -66,6 +63,10 @@ export class Ad extends BaseEntity {
   @JoinTable()
   @Field(() => [Tag])
   tags!: Tag[];
+
+  @ManyToOne(() => User, (user) => user.ads)
+  @Field(() => User)
+  user!: User;
 }
 
 @InputType()
@@ -75,9 +76,6 @@ export class InputAd {
 
   @Field()
   description!: string;
-
-  @Field()
-  owner!: string;
 
   @Field()
   price!: number;
@@ -93,6 +91,7 @@ export class InputAd {
 
   @Field(() => [ObjectID])
   tags!: Tag[];
+
 }
 
 @ObjectType()
@@ -111,9 +110,6 @@ export class UpdatedAd {
 
   @Field({ nullable: true })
   description!: string;
-
-  @Field({ nullable: true })
-  owner!: string;
 
   @Field({ nullable: true })
   price!: number;

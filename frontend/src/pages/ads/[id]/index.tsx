@@ -18,59 +18,61 @@ export default function AdDetails(): React.ReactNode {
   if (data?.item) {
     return (
       <Layout title={data.item.title}>
-        <section className={styles.flexColumn}>
-          <div className={styles.flexRow}>
-            <h2>{data.item.title}</h2>
-            <span>{data.item.price} €</span>
-          </div>
-          <div className={styles.flexRowStart}>
-            <div className={styles.flexColumnSpaceBetween}>
-              <div className={styles.flexRow}>
-                <a
-                  href={`/category/${data.item.category.id}/ads`}
-                  className={styles.category}
-                >
-                  {data.item.category.title}
-                </a>
-                <span>
-                  {new Date(data.item.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-
-              {data.item.tags.length > 0 && (
-                <div className={styles.tagsContainer}>
-                  {data.item.tags.map((item) => (
-                    <a
-                      key={item.id}
-                      href={`/tag/${item.id}`}
-                      className={styles.tag}
-                    >
-                      {item.title}
-                    </a>
-                  ))}
-                </div>
-              )}
-              <p>{data.item.description}</p>
-              <p>Vendu par : {data.item.owner}</p>
-              <div className={styles.buttonsContainer}>
-                <button className="button link-button">
-                  <span>Ajouter au panier</span>
-                </button>
-                <a
-                  className="button link-button"
-                  href={`/ads/${data.item.id}/edit`}
-                >
-                  Modifier l'offre
-                </a>
-              </div>
+        <div className={styles.adDetailsContainer}>
+          <section className={styles.flexColumn}>
+            <div className={styles.flexRow}>
+              <h2>{data.item.title}</h2>
+              <span>{data.item.price} €</span>
             </div>
-            <img
-              src={data.item.imageUrl}
-              className={styles.image}
-              alt={data.item.title}
-            ></img>
-          </div>
-        </section>
+            <div className={styles.flexRowStart}>
+              <div className={styles.flexColumnSpaceBetween}>
+                <div className={styles.flexRow}>
+                  <a
+                    href={`/category/${data.item.category.id}/ads`}
+                    className={styles.category}
+                  >
+                    {data.item.category.title}
+                  </a>
+                  <span>
+                    {new Date(data.item.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {data.item.tags.length > 0 && (
+                  <div className={styles.tagsContainer}>
+                    {data.item.tags.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`/tag/${item.id}`}
+                        className={styles.tag}
+                      >
+                        {item.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                <p>{data.item.description}</p>
+                <p>Vendu par : {data.item.user.email}</p>
+                <div className={styles.buttonsContainer}>
+                  <button className="button link-button">
+                    <span>Ajouter au panier</span>
+                  </button>
+                  <a
+                    className="button link-button"
+                    href={`/ads/${data.item.id}/edit`}
+                  >
+                    Modifier l'offre
+                  </a>
+                </div>
+              </div>
+              <img
+                src={data.item.imageUrl}
+                className={styles.image}
+                alt={data.item.title}
+              ></img>
+            </div>
+          </section>
+        </div>
       </Layout>
     );
   } else {

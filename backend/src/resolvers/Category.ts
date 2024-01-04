@@ -1,10 +1,11 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Authorized } from "type-graphql";
 import { Category, InputCategory } from "../entities/Category";
 import { validateDatas } from "../utils/validate";
 import { DummyCategories } from "../dummyDatas";
 
 @Resolver(Category)
 export class CategoryResolver {
+
   @Query(() => [Category])
   async getCategories(): Promise<Category[]> {
     return await Category.find({

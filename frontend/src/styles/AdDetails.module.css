@@ -1,9 +1,16 @@
+.adDetailsContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 130px;
+}
+
 .flexColumn {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  width: 100%;
+  width: 50%;
 }
 
 .flexColumnSpaceBetween {

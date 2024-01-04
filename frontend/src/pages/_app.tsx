@@ -5,19 +5,49 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  gql,
+  createHttpLink,
+  useQuery,
 } from "@apollo/client";
 import { API_URL } from "@/config/config";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { MY_PROFILE } from "@/Request/user";
+
+const link = createHttpLink({
+  uri: API_URL,
+  credentials: "include",
+});
 
 const client = new ApolloClient({
-  uri: API_URL,
   cache: new InMemoryCache(),
+  link,
 });
+
+const publicPages = ["/sign-in", "/sign-up", "/", "/ads/[id]"];
+
+function Auth({ children }: any) {
+  const router = useRouter();
+
+  const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
+
+  useEffect(() => {
+    if (!publicPages.includes(router.pathname)) {
+      console.log(data);
+      if (error) {
+        router.replace("/sign-in");
+      }
+    }
+  }, [router, error, data]);
+
+  return children;
+}
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <Auth>
+        <Component {...pageProps} />
+      </Auth>
     </ApolloProvider>
   );
 }

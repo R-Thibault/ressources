@@ -9,7 +9,7 @@
 A la racine du projet, lancer la commande suivante
 
 ```bash
- -f docker-compose.dev.yml up --build
+ docker compose -f docker-compose.dev.yml up --build
 ```
 
 - Pour accéder au front, depuis le navigateur :

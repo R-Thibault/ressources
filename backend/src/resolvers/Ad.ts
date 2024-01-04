@@ -1,4 +1,12 @@
-import { Resolver, Query, Arg, Mutation, ID } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  ID,
+  Authorized,
+  Ctx,
+} from "type-graphql";
 import {
   Ad,
   InputAd,
@@ -10,6 +18,7 @@ import { validateDatas } from "../utils/validate";
 import { Like, In, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
 import { DummyProduct } from "../dummyDatas";
 import { merge } from "../utils/update";
+import { ContextType } from "../middlewares/auth";
 
 @Resolver(Ad)
 export class AdResolver {
@@ -56,6 +65,7 @@ export class AdResolver {
       relations: {
         category: true,
         tags: true,
+        user: true,
       },
       order: whereOrder,
     });
@@ -65,7 +75,6 @@ export class AdResolver {
     });
 
     return { ads: ads, maxPrice: highestPriceAd.price };
-    
   }
 
   @Query(() => Ad)
@@ -78,6 +87,7 @@ export class AdResolver {
         relations: {
           category: true,
           tags: true,
+          user: true,
         },
       });
       return datas;
@@ -86,6 +96,7 @@ export class AdResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Ad)
   async updateAd(
     @Arg("id", () => ID)
@@ -99,6 +110,8 @@ export class AdResolver {
         },
         relations: {
           tags: true,
+          category: true,
+          user: true,
         },
       });
 
@@ -119,6 +132,7 @@ export class AdResolver {
     }
   }
 
+
   @Mutation(() => Ad)
   async deleteAd(
     @Arg("id", () => ID)
@@ -132,6 +146,7 @@ export class AdResolver {
         relations: {
           category: true,
           tags: true,
+          user: true,
         },
       });
       if (ad) {
@@ -145,18 +160,25 @@ export class AdResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Ad)
-  async addNewAd(@Arg("data") inputData: InputAd): Promise<Ad | null> {
+  async addNewAd(
+    @Ctx() context: ContextType,
+    @Arg("data") inputData: InputAd
+  ): Promise<Ad | null> {
     try {
       const newAd = new Ad();
       newAd.title = inputData.title;
       newAd.description = inputData.description;
-      newAd.owner = inputData.owner;
       newAd.price = inputData.price;
       newAd.imageUrl = inputData.imageUrl;
       newAd.location = inputData.location;
       newAd.category = inputData.category;
       newAd.tags = inputData.tags;
+
+      if (context.user) {
+        newAd.user = context.user;
+      }
 
       const error = await validateDatas(newAd);
 
@@ -178,12 +200,12 @@ export class AdResolver {
         const newAd = new Ad();
         newAd.title = DummyProduct[i].title;
         newAd.description = DummyProduct[i].description;
-        newAd.owner = DummyProduct[i].owner;
         newAd.price = DummyProduct[i].price;
         newAd.imageUrl = DummyProduct[i].picture;
         newAd.location = DummyProduct[i].location;
         newAd.category = DummyProduct[i].category;
         newAd.tags = DummyProduct[i].tags;
+        newAd.user = DummyProduct[i].user;
 
         const error = await validateDatas(newAd);
 

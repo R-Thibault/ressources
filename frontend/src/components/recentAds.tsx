@@ -113,13 +113,13 @@ export default function RecentAds({
                 id={item.id}
                 title={item.title}
                 description={item.description}
-                owner={item.owner}
                 location={item.location}
                 price={item.price}
                 createdAt={item.createdAt}
                 imageUrl={item.imageUrl}
                 category={item.category}
                 tags={item.tags}
+                user={item.user}
                 onAddToBasket={() => AddToBasket(item)}
                 onDelete={() => deleteProduct(item)}
               />
