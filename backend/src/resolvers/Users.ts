@@ -1,11 +1,11 @@
-require('dotenv').config()
+require("dotenv").config();
 import { Resolver, Query, Arg, Mutation, Ctx, Authorized } from "type-graphql";
 import { User, InputUser } from "../entities/User";
 import { validateDatas } from "../utils/validate";
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
-import { ContextType } from "../middlewares/auth";
+import { ContextType, getUser } from "../middlewares/auth";
 
 @Resolver(User)
 export class UserResolver {
@@ -51,7 +51,7 @@ export class UserResolver {
 
         const cookies = new Cookies(context.req, context.res);
         cookies.set("token", token, {
-          httpOnly: false,
+          httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
         });
 
@@ -64,12 +64,20 @@ export class UserResolver {
     }
   }
 
-  @Authorized()
-  @Query(() => User)
-  async myProfile(@Ctx() context: ContextType): Promise<User | null> {
-    if (context.user) {
-      return context.user;
-    }
+  @Mutation(() => User, { nullable: true })
+  async signOut(@Ctx() context: ContextType): Promise<User | null> {
+    const cookies = new Cookies(context.req, context.res);
+    cookies.set("token", "", {
+      httpOnly: true,
+      maxAge: 0,
+    });
+
     return null;
+  }
+
+  @Query(() => User, { nullable: true })
+  async myProfile(@Ctx() context: ContextType): Promise<User | null> {
+    const user = await getUser(context.req, context.res);
+    return user;
   }
 }

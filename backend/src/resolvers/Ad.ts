@@ -133,6 +133,7 @@ export class AdResolver {
   }
 
 
+  @Authorized()
   @Mutation(() => Ad)
   async deleteAd(
     @Arg("id", () => ID)

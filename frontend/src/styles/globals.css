@@ -28,6 +28,7 @@ h1 {
   color: #ffa41b;
   background-color: white;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .button-red {
@@ -85,8 +86,8 @@ h1 {
 }
 
 .main-content {
-  margin:80px 0;
-  width:100%;
+  margin: 80px 0;
+  width: 100%;
 }
 
 @media screen and (min-width: 720px) {

@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 import { AuthChecker } from "type-graphql";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
@@ -10,33 +10,41 @@ export type ContextType = {
   user?: User;
 };
 
-export const customAuthChecker: AuthChecker<ContextType> = async (
-  { root, args, context, info },
-  roles
-) => {
-  const cookies = new Cookies(context.req, context.res);
+export async function getUser(req: any, res: any): Promise<User | null> {
+  const cookies = new Cookies(req, res);
   const token = cookies.get("token");
 
   if (!token) {
-    return false;
+    return null;
   } else {
     try {
-      const decodedToken = jwt.verify(
-        token,
-        `${process.env.JWT_SECRET_KEY}`
-      );
+      const decodedToken = jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
 
       if (typeof decodedToken === "object" && "id" in decodedToken) {
         const user = await User.findOneBy({ id: decodedToken.id });
         if (user) {
-          context.user = user;
+          return user;
         } else {
-          throw Error("no user found");
+          return null;
         }
       }
-      return true;
+      return null;
     } catch (err) {
-      return false;
+      return null;
     }
+  }
+}
+
+export const customAuthChecker: AuthChecker<ContextType> = async (
+  { root, args, context, info },
+  roles
+) => {
+  
+  const connectedUser = await getUser(context.req, context.res);
+
+  if (connectedUser) {
+    return true;
+  } else {
+    return false;
   }
 };

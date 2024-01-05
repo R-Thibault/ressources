@@ -25,21 +25,20 @@ const client = new ApolloClient({
 
 const publicPages = ["/sign-in", "/sign-up", "/", "/ads/[id]"];
 
-function Auth({ children }: any) {
+function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
 
   const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
 
   useEffect(() => {
     if (!publicPages.includes(router.pathname)) {
-      console.log(data);
       if (error) {
         router.replace("/sign-in");
       }
     }
   }, [router, error, data]);
 
-  return children;
+  return props.children;
 }
 
 function App({ Component, pageProps }: AppProps) {

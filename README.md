@@ -22,7 +22,7 @@ A la racine du projet, lancer la commande suivante
 
 - Pour accéder à Admirer et la base de données 
 
-[http://localhost:5000]
+[http://localhost:8080]
 
 Les informations de connexion sont celles renseignées dans les fichiers .env à la racine et dans le dossier /backend
 

@@ -1,11 +1,30 @@
 import styles from "../styles/Header.module.css";
 import Category from "./category";
 import { CategoryProps } from "./adCard";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, useApolloClient } from "@apollo/client";
 import { GET_ALL_CATEGORIES } from "@/Request/category";
+import { MY_PROFILE, SIGN_OUT } from "@/Request/user";
 
 export default function Header(): React.ReactNode {
   const { data } = useQuery<{ items: CategoryProps[] }>(GET_ALL_CATEGORIES);
+  const { data: dataMe, error } = useQuery<{
+    item: { id: number; email: string } | null;
+  }>(MY_PROFILE);
+
+  const [signOut, { error: signOutError }] = useMutation<null>(SIGN_OUT, {
+    refetchQueries: [MY_PROFILE],
+  });
+
+  const apolloClient = useApolloClient();
+
+  async function logOut() {
+    try {
+      apolloClient.clearStore();
+      await signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <header className={styles.header}>
@@ -32,10 +51,21 @@ export default function Header(): React.ReactNode {
             </svg>
           </button>
         </form>
-        <a href="/ads/new" className="button link-button">
-          <span className="mobile-short-label">Publier</span>
-          <span className="desktop-long-label">Publier une annonce</span>
-        </a>
+        {dataMe?.item ? (
+          <div className={styles.connectedUserLinks}>
+            <a href="/ads/new" className="button link-button">
+              <span className="mobile-short-label">Publier</span>
+              <span className="desktop-long-label">Publier une annonce</span>
+            </a>
+            <button className={styles.signOutButton} onClick={() => logOut()}>
+              Deconnexion
+            </button>
+          </div>
+        ) : (
+          <a href="/sign-in" className={styles.signInButton}>
+            <span>Connexion</span>
+          </a>
+        )}
       </div>
       <nav className={styles.categoriesNavigation}>
         {data?.items.map((item, index) => (
