@@ -205,3 +205,11 @@ export const DummyTag: {
   { title: "Envoi par la poste" },
   { title: "A venir récupérer" },
 ];
+
+export const DummyUser: {
+  email: string;
+  password: string;
+} = {
+  email: "user@gmail.com",
+  password: "superPassword",
+};

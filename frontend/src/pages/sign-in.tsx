@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
 export default function SignIn(props: LayoutProps): React.ReactNode {
-  const [email, setEmail] = useState("mathieu1.hery@gmail.com");
-  const [password, setPassword] = useState("Mathieu78610");
+  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("superPassword");
 
   const router = useRouter();
 

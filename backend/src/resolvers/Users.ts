@@ -6,6 +6,7 @@ import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { ContextType, getUser } from "../middlewares/auth";
+import { DummyUser } from "../dummyDatas";
 
 @Resolver(User)
 export class UserResolver {
@@ -79,5 +80,22 @@ export class UserResolver {
   async myProfile(@Ctx() context: ContextType): Promise<User | null> {
     const user = await getUser(context.req, context.res);
     return user;
+  }
+
+  @Mutation(() => User)
+  async populateUserTable(): Promise<User | null> {
+    const error = await validateDatas(DummyUser);
+    if (error.length > 0) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+    const existingUser = await User.findOneBy({ email: DummyUser.email });
+    if (existingUser) {
+      throw new Error(`User already exists`);
+    }
+    const newUser = new User();
+    newUser.email = DummyUser.email;
+    newUser.hashPassword = await argon2.hash(DummyUser.password);
+    await newUser.save();
+    return newUser;
   }
 }
