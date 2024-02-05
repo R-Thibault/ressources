@@ -23,11 +23,11 @@ A la racine du projet, lancer la commande suivante
 
 [http://localhost:8080]
 
-Les informations de connexion sont celles renseignées dans les fichiers .env à la racine et dans le dossier /backend
+Les informations de connexion sont celles renseignées dans les fichiers .env à la racine
 
 #### Pour populer la BDD avec un jeu de données :
 
-Le jeu de données qui sera intégré est visible dans le dossier /backend/src/dummyDatas. 
+Le jeu de données qui sera intégré est visible dans le dossier /backend/src/dummyDatas.
 Une fois les 3 projets lancés, se rendre sur [http://localhost:4000]
 Depuis un nouvel onglet d'Apollo client, executer les requêtes suivantes :
 
@@ -53,4 +53,5 @@ mutation Mutation {
   }
 }
 ```
+
 Pour se connecter, utiliser les informations de connexion qui se trouvent dans /backend/src/dummyDatas (DummyUser)
