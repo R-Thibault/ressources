@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType, InputType } from "type-graphql";
 import {
   BaseEntity,
   BeforeInsert,
@@ -53,4 +53,13 @@ export class File extends BaseEntity {
   @JoinColumn()
   @Field(() => User)
   updated_by!: User;
+}
+@InputType()
+export class FileCreateInput {
+
+}
+
+@InputType()
+export class FileUpdateInput {
+
 }

@@ -1,5 +1,5 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { ImageInput, Image } from "../entities/Image";
+import { ImageCreateInput, ImageUpdateInput, Image } from "../entities/Image";
 import { validateDatas } from "../utils/validate";
 import { validate } from "class-validator";
 
@@ -22,15 +22,13 @@ export class ImageResolver {
 
   @Mutation(() => Image)
   async createImage(
-    @Arg("data", () => ImageInput) data: ImageInput
+    @Arg("data", () => ImageCreateInput) data: ImageCreateInput
   ): Promise<Image> {
     try {
       const newImage = new Image();
       newImage.name = data.name;
       newImage.path = data.path;
-      if (data.user_id) {
-        newImage.user_id = data.user_id;
-      }
+
       const error = await validate(newImage);
 
       if (error.length > 0) {
@@ -47,7 +45,7 @@ export class ImageResolver {
   @Mutation(() => Image, { nullable: true })
   async updateImage(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => ImageInput) data: ImageInput
+    @Arg("data", () => ImageUpdateInput) data: ImageUpdateInput
   ): Promise<Image | null> {
     try {
       const image = await Image.findOne({ where: { id: id } });

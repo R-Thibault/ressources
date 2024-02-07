@@ -1,5 +1,5 @@
 import { Resolver, Query, Arg, Mutation, Authorized } from "type-graphql";
-import { Tag, TagInput } from "../entities/Tag";
+import { Tag, TagCreateInput, TagUpdateInput } from "../entities/Tag";
 import { validateDatas } from "../utils/validate";
 import { DummyTag } from "../dummyDatas";
 import { validate } from "class-validator";
@@ -7,12 +7,12 @@ import { validate } from "class-validator";
 @Resolver(Tag)
 export class TagResolver {
   @Query(() => [Tag])
-  async getTags(): Promise<Tag[]> {
+  async getAllTags(): Promise<Tag[]> {
     return await Tag.find({});
   }
 
   @Query(() => Tag)
-  async getTagById(@Arg("id") id: number): Promise<Tag | null> {
+  async getOneTag(@Arg("id") id: number): Promise<Tag | null> {
     try {
       const datas = await Tag.findOne({
         where: {
@@ -26,11 +26,9 @@ export class TagResolver {
   }
 
   @Mutation(() => Tag)
-  async addNewTag(@Arg("data", () => TagInput) data: TagInput): Promise<Tag> {
+  async createTag(@Arg("data", () => TagCreateInput) data: TagCreateInput): Promise<Tag> {
     try {
       const newTag = new Tag();
-      newTag.name = data.name;
-
       const error = await validate(newTag);
 
       if (error.length > 0) {
@@ -62,7 +60,7 @@ export class TagResolver {
   //       throw new Error(`error occured ${JSON.stringify(error)}`);
   //     }
   //   }
-  //   return await this.getTags();
+  //   return await this.getAllTags();
   // }
 
   @Mutation(() => Tag)
@@ -88,7 +86,7 @@ export class TagResolver {
   async updateTag(
     @Arg("id")
     id: number,
-    @Arg("data", () => TagInput) data: TagInput
+    @Arg("data", () => TagUpdateInput) data: TagUpdateInput
   ): Promise<Tag | null> {
     try {
       const tag = await Tag.findOne({

@@ -84,4 +84,11 @@ export class Ressource extends BaseEntity {
 }
 
 @InputType()
-export class RessourceInput {}
+export class RessourceCreateInput {
+
+}
+
+@InputType()
+export class RessourceUpdateInput {
+
+}

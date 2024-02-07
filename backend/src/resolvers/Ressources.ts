@@ -1,7 +1,7 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
 import { validateDatas } from "../utils/validate";
 import { validate } from "class-validator";
-import { Ressource, RessourceInput } from "../entities/Ressource";
+import { Ressource, RessourceCreateInput, RessourceUpdateInput } from "../entities/Ressource";
 
 @Resolver(Ressource)
 export class RessourceResolver {
@@ -23,7 +23,7 @@ export class RessourceResolver {
   }
 
   @Mutation(() => Ressource)
-  async createRessource(@Arg("data") {}: RessourceInput): Promise<Ressource> {
+  async createRessource(@Arg("data") {}: RessourceCreateInput): Promise<Ressource> {
     try {
       const newRessource = new Ressource();
       // newRessource.name = name;
@@ -43,7 +43,7 @@ export class RessourceResolver {
   @Mutation(() => Ressource, { nullable: true })
   async updateRessource(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => RessourceInput) data: RessourceInput
+    @Arg("data", () => RessourceUpdateInput) data: RessourceUpdateInput
   ): Promise<Ressource | null> {
     try {
       const ressource = await Ressource.findOne({ where: { id: id } });

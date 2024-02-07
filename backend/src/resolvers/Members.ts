@@ -1,6 +1,5 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { MemberInput, Member } from "../entities/Member";
-import { validateDatas } from "../utils/validate";
+import { MemberCreateInput, Member, MemberUpdateInput } from "../entities/Member";
 import { validate } from "class-validator";
 
 @Resolver(Member)
@@ -22,13 +21,10 @@ export class MemberResolver {
 
   @Mutation(() => Member)
   async createMember(
-    @Arg("data", () => MemberInput) data: MemberInput
+    @Arg("data", () => MemberCreateInput) data: MemberCreateInput
   ): Promise<Member> {
     try {
       const newMember = new Member();
-      newMember.user = data.user;
-      newMember.group = data.group;
-      newMember.rights = data.rights;
       const error = await validate(newMember);
 
       if (error.length > 0) {
@@ -45,7 +41,7 @@ export class MemberResolver {
   @Mutation(() => Member, { nullable: true })
   async updateMember(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => MemberInput) data: MemberInput
+    @Arg("data", () => MemberUpdateInput) data: MemberUpdateInput
   ): Promise<Member | null> {
     try {
       const member = await Member.findOne({ where: { id: id } });

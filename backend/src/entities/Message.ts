@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   BeforeInsert,
@@ -49,4 +49,13 @@ export class Message extends BaseEntity {
   @JoinColumn()
   @Field(() => User)
   updated_by!: User;
+}
+@InputType()
+export class MessageCreateInput {
+
+}
+
+@InputType()
+export class MessageUpdateInput {
+
 }

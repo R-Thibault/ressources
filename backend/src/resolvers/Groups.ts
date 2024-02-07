@@ -1,5 +1,5 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { GroupInput, Group } from "../entities/Group";
+import { Group, GroupCreateInput, GroupUpdateInput } from "../entities/Group";
 import { validate } from "class-validator";
 
 @Resolver(Group)
@@ -20,10 +20,9 @@ export class GroupResolver {
   }
 
   @Mutation(() => Group)
-  async createGroup(@Arg("data") { name }: GroupInput): Promise<Group> {
+  async createGroup(@Arg("data", () => GroupCreateInput) data: GroupCreateInput): Promise<Group> {
     try {
       const newGroup = new Group();
-      newGroup.name = name;
       const error = await validate(newGroup);
 
       if (error.length > 0) {
@@ -40,7 +39,7 @@ export class GroupResolver {
   @Mutation(() => Group, { nullable: true })
   async updateGroup(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => GroupInput) data: GroupInput
+    @Arg("data", () => GroupUpdateInput) data: GroupUpdateInput
   ): Promise<Group | null> {
     try {
       const group = await Group.findOne({ where: { id: id } });

@@ -67,13 +67,11 @@ export class Group extends BaseEntity {
 }
 
 @InputType()
-export class GroupInput {
-  @Field()
-  name!: string;
-  @Field()
-  description!: string;
-  @Field()
-  token!: string;
-  // @Field(() => User)
-  // created_by!: User;
+export class GroupCreateInput {
+
+}
+
+@InputType()
+export class GroupUpdateInput {
+
 }

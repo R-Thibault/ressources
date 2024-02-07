@@ -1,6 +1,5 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { RightInput, Right } from "../entities/Right";
-import { validateDatas } from "../utils/validate";
+import { Right, RightUpdateInput, RightCreateInput } from "../entities/Right";
 import { validate } from "class-validator";
 
 @Resolver(Right)
@@ -21,10 +20,9 @@ export class RightResolver {
   }
 
   @Mutation(() => Right)
-  async createRight(@Arg("data") { name }: RightInput): Promise<Right> {
+  async createRight(@Arg("data", () => RightCreateInput) data: RightCreateInput): Promise<Right> {
     try {
       const newRight = new Right();
-      newRight.name = name;
       const error = await validate(newRight);
 
       if (error.length > 0) {
@@ -41,7 +39,7 @@ export class RightResolver {
   @Mutation(() => Right, { nullable: true })
   async updateRight(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => RightInput) data: RightInput
+    @Arg("data", () => RightUpdateInput) data: RightUpdateInput
   ): Promise<Right | null> {
     try {
       const right = await Right.findOne({ where: { id: id } });

@@ -53,11 +53,17 @@ export class Image extends BaseEntity {
 }
 
 @InputType()
-export class ImageInput {
+export class ImageCreateInput {
   @Field()
   name!: string;
   @Field()
   path!: string;
-  @Field(() => User, { nullable: true })
-  user_id!: User;
+}
+
+@InputType()
+export class ImageUpdateInput {
+  @Field()
+  name!: string;
+  @Field()
+  path!: string;
 }

@@ -91,7 +91,7 @@ export class User extends BaseEntity {
 }
 
 @InputType()
-export class InputUser {
+export class UserCreateInput {
   @Field()
   @IsEmail()
   email!: string;

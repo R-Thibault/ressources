@@ -26,7 +26,11 @@ export class Right extends BaseEntity {
 }
 
 @InputType()
-export class RightInput {
-  @Field()
-  name!: string;
+export class RightCreateInput {
+
+}
+
+@InputType()
+export class RightUpdateInput {
+
 }

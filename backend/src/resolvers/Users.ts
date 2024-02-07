@@ -5,10 +5,9 @@ import {
   Arg,
   Mutation,
   Ctx,
-  Authorized,
   ID,
 } from "type-graphql";
-import { User, InputUser, UserUpdateInput } from "../entities/User";
+import { User, UserCreateInput, UserUpdateInput } from "../entities/User";
 import { validateDatas } from "../utils/validate";
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
@@ -71,7 +70,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   async signUp(
-    @Arg("data", () => InputUser) data: InputUser
+    @Arg("data", () => UserCreateInput) data: UserCreateInput
   ): Promise<User | null> {
     const error = await validateDatas(data);
     if (error.length > 0) {
@@ -93,7 +92,7 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async signIn(
     @Ctx() context: ContextType,
-    @Arg("data", () => InputUser) data: InputUser
+    @Arg("data", () => UserCreateInput) data: UserCreateInput
   ): Promise<User | null> {
     const existingUser = await User.findOneBy({ email: data.email });
     if (existingUser) {
