@@ -195,15 +195,15 @@ export const DummyCategories: {
 ];
 
 export const DummyTag: {
-  title: any;
+  name: any;
 }[] = [
-  { title: "Mode homme" },
-  { title: "Mode femme" },
-  { title: "Bon état" },
-  { title: "Neuf" },
-  { title: "Abimé" },
-  { title: "Envoi par la poste" },
-  { title: "A venir récupérer" },
+  { name: "Mode homme" },
+  { name: "Mode femme" },
+  { name: "Bon état" },
+  { name: "Neuf" },
+  { name: "Abimé" },
+  { name: "Envoi par la poste" },
+  { name: "A venir récupérer" },
 ];
 
 export const DummyUser: {

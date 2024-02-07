@@ -7,7 +7,7 @@ services:
     volumes:
       - ./backend/src/:/app/src/
     env_file:
-      - .env
+      - ./.env
   front:
     build: ./frontend
     ports:

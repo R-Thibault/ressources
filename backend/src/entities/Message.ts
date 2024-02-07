@@ -1,31 +1,31 @@
+import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  OneToMany,
-  ManyToOne,
-  BeforeInsert,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { MaxLength, MinLength } from "class-validator";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { User } from "./User";
+import { Group } from "./Group";
 
 @Entity()
 @ObjectType()
-export class Tag extends BaseEntity {
+export class Message extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
   id!: number;
 
-  @Column()
-  @Field()
-  @MinLength(1, { message: "titre trop court" })
-  @MaxLength(100, { message: "titre trop long" })
-  name!: string;
+  // @ManyToOne(() => User, (users) => users.messages)
+  // @Field(() => [User])
+  // user!: User;
+
+  @ManyToOne(() => Group, (group) => group.messages)
+  @Field(() => Group)
+  group!: Group;
 
   @Column({ type: "timestamp", nullable: false })
   @Field()
@@ -36,7 +36,7 @@ export class Tag extends BaseEntity {
     this.created_at = Date.now();
   }
 
-  @ManyToOne(() => User, (users) => users.tags)
+  @ManyToOne(() => User, (users) => users.messages)
   @JoinColumn()
   @Field(() => User)
   created_by!: User;
@@ -47,14 +47,6 @@ export class Tag extends BaseEntity {
 
   @ManyToOne(() => User)
   @JoinColumn()
-  @Field()
+  @Field(() => User)
   updated_by!: User;
-}
-
-@InputType()
-export class TagInput {
-  @Field()
-  name!: string;
-  // @Field(() => User, { nullable: true })
-  // user!: User;
 }
