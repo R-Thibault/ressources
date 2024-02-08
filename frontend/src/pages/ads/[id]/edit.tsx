@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import Layout from "@/components/organisms/layout";
 import { useRouter } from "next/router";
 import AdForm from "@/components/adForm";
 

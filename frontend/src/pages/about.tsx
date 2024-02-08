@@ -1,4 +1,4 @@
-import Layout, { LayoutProps } from "@/components/layout";
+import Layout, { LayoutProps } from "@/components/organisms/layout";
 
 export default function About(props: LayoutProps): React.ReactNode {
   return (

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Layout from "@/components/layout";
+import Layout from "@/components/organisms/layout";
 import RecentAds from "@/components/recentAds";
 
 export default function CategoryAds(): React.ReactNode {

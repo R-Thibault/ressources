@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import Layout from "@/components/organisms/layout";
 import AdForm from "@/components/adForm";
 
 export default function NewAd(): React.ReactNode {

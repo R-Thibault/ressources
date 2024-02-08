@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "@/assets/scss/main.scss";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import {
@@ -37,7 +37,6 @@ function Auth(props: { children: React.ReactNode }) {
       }
     }
   }, [router, error, data]);
-
   return props.children;
 }
 

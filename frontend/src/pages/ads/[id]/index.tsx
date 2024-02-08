@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useRouter } from "next/router";
-import Layout from "@/components/layout";
+import Layout from "@/components/organisms/layout";
 import { AdCardProps } from "@/components/adCard";
 import styles from "@/styles/AdDetails.module.css";
 import { useQuery } from "@apollo/client";

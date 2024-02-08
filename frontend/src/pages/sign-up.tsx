@@ -1,5 +1,5 @@
 import { SIGN_UP } from "@/Request/user";
-import Layout, { LayoutProps } from "@/components/layout";
+import Layout, { LayoutProps } from "@/components/organisms/layout";
 import SignStyles from "@/styles/Sign.module.css";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
