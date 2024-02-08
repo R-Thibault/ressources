@@ -34,11 +34,11 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: false })
   hashed_password!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true })
   @Field()
   lastname!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true })
   @Field()
   firstname!: string;
 
@@ -53,9 +53,9 @@ export class User extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
-  email_validation_token_expires!: number;
+  email_validation_token_expires!: Date;
 
-  @Column({ type: "boolean", default: 0 })
+  @Column({ type: "boolean", default: false })
   @Field()
   is_account_validated!: boolean;
 
@@ -98,9 +98,9 @@ export class UserCreateInput {
   @Field()
   @Matches(/^.{8,50}$/)
   password!: string;
-  @Field()
+  @Field({nullable: true})
   lastname!: string;
-  @Field()
+  @Field({nullable: true})
   firstname!: string;
 }
 

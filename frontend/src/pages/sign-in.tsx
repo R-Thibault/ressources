@@ -10,7 +10,7 @@ import { UserContext, UserProvider } from "./_app";
 export default function SignIn(props: LayoutProps): React.ReactNode {
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("superPassword");
-  const userInfo = useContext(UserContext);
+  const users = useContext(UserContext);
 
   const router = useRouter();
 
@@ -41,12 +41,12 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
 
   return (
     <Layout title={"S'inscrire"}>
-       <UserProvider>
+    <UserContext.Provider value={users}>
       <div className={SignStyles.container}>
         <span className={SignStyles.logo}>THE GOOD CORNER</span>
         <h3>Connexion</h3>
         <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
-          <input
+          <input 
             className={SignStyles.input}
             type="email"
             value={email}
@@ -65,7 +65,7 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
           </button>
         </form>
       </div>
-      </UserProvider>
+      </UserContext.Provider>
     </Layout>
   );
 }
