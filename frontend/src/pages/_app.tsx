@@ -10,8 +10,9 @@ import {
 } from "@apollo/client";
 import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { MY_PROFILE } from "@/Request/user";
+
 
 const link = createHttpLink({
   uri: API_URL,
@@ -24,6 +25,21 @@ const client = new ApolloClient({
 });
 
 const publicPages = ["/sign-in", "/sign-up", "/", "/ads/[id]"];
+
+export const UserContext = createContext(MY_PROFILE)
+
+export function UserProvider({ MY_PROFILE, children }) {
+  const router = useRouter();
+
+  const { data } = useQuery<({ id: number; email: string })>(MY_PROFILE);
+
+  return (
+    <UserContext.Provider value={data}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
