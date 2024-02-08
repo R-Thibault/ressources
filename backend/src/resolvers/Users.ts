@@ -13,6 +13,8 @@ import Cookies from "cookies";
 import { ContextType, getUser } from "../middlewares/auth";
 import { DummyUsers } from "../dummyDatas";
 import { validate } from "class-validator";
+import { randomBytes } from "crypto";
+import { sendValidationEmail } from "../utils/sendemail";
 
 @Resolver(User)
 export class UserResolver {
@@ -80,9 +82,36 @@ export class UserResolver {
     newUser.hashed_password = await argon2.hash(data.password);
     newUser.lastname = data.lastname;
     newUser.firstname = data.firstname;
+    const token = randomBytes(48).toString('hex'); 
+    newUser.email_validation_token = token;  // génération de token
+    newUser.email_validation_token_expires = Date.now() + 3600000; // Expiration dans 1 heure
     await newUser.save();
+    await sendValidationEmail(newUser.email, newUser.email_validation_token); //envoi du mail avec token validation
     return newUser;
   }
+
+  @Mutation(() => User)
+  async validateAccount(
+  @Arg("token") token: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ email_validation_token: token });
+  if (!user) {
+    return false; // ou gérer l'utilisateur non trouvé
+  }
+  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires : true; // on considere le token comme expiré si la date d'expiration est nulle
+  
+  if (tokenExpired) {
+    // Gérer le cas d'un token expiré
+  } else {
+    user.is_account_validated = true;
+    user.email_validation_token = null; 
+    user.email_validation_token_expires = null; 
+    await user.save();
+    return true;
+  }
+
+  return false; 
+}
 
   @Mutation(() => User, { nullable: true })
   async signIn(

@@ -5,10 +5,9 @@ import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
-export default function SignIn(props: LayoutProps): React.ReactNode {
+export default function SignIn(): React.ReactNode {
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("superPassword");
-
   const router = useRouter();
 
   const [signIn, { error }] = useMutation<{ id: number; email: string }>(
@@ -37,30 +36,31 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
   }
 
   return (
-    <Layout title={"S'inscrire"}>
-      <div className={SignStyles.container}>
-        <span className={SignStyles.logo}>THE GOOD CORNER</span>
-        <h3>Connexion</h3>
-        <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
-          <input 
-            className={SignStyles.input}
-            type="email"
-            value={email}
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className={SignStyles.input}
-            type="password"
-            value={password}
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button className={SignStyles.button} type="submit">
-            Se connecter
-          </button>
-        </form>
-      </div>
-    </Layout>
+    <div className={SignStyles.container}>
+      <span className={SignStyles.logo}>RESSOURCES</span>
+      <p className={SignStyles.paragraphe}>Team up and share</p>
+      <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
+        <input
+          className={SignStyles.input}
+          type="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className={SignStyles.input}
+          type="password"
+          value={password}
+          placeholder="Mot de passe"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className={SignStyles.button} type="submit">
+          Se connecter
+        </button>
+        <a href="#" className={SignStyles.forgotPassword}>
+          Mot de passe oublié
+        </a>
+      </form>
+    </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   JoinColumn,
 } from "typeorm";
 import { IsEmail, Matches } from "class-validator";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
 import { Tag } from "./Tag";
 import { Member } from "./Member";
 import { Message } from "./Message";
@@ -48,12 +48,12 @@ export class User extends BaseEntity {
   image_id!: Image;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  @Field()
-  email_validation_token!: string;
+  @Field(() => String)
+  email_validation_token!: string | null;
 
   @Column({ type: "timestamp", nullable: true })
-  @Field()
-  email_validation_token_expires!: number;
+  @Field( () => Int)
+  email_validation_token_expires!: number | null;
 
   @Column({ type: "boolean", default: false })
   @Field()
