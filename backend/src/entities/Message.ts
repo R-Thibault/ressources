@@ -29,11 +29,11 @@ export class Message extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: false })
   @Field()
-  created_at!: number;
+  created_at!: Date;
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = Date.now();
+    this.created_at = new Date();
   }
 
   @ManyToOne(() => User, (users) => users.messages)
@@ -43,7 +43,7 @@ export class Message extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
-  updated_at!: number;
+  updated_at!: Date;
 
   @ManyToOne(() => User)
   @JoinColumn()
@@ -51,11 +51,7 @@ export class Message extends BaseEntity {
   updated_by!: User;
 }
 @InputType()
-export class MessageCreateInput {
-
-}
+export class MessageCreateInput {}
 
 @InputType()
-export class MessageUpdateInput {
-
-}
+export class MessageUpdateInput {}

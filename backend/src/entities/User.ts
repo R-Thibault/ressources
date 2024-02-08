@@ -47,30 +47,30 @@ export class User extends BaseEntity {
   @Field()
   image_id!: Image;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true })
   @Field()
   email_validation_token!: string;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true })
   @Field()
   email_validation_token_expires!: number;
 
-  @Column({ type: "boolean", nullable: false })
+  @Column({ type: "boolean", default: 0 })
   @Field()
   is_account_validated!: boolean;
 
   @Column({ type: "timestamp", nullable: false })
   @Field()
-  created_at!: number;
+  created_at!: Date;
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = Date.now();
+    this.created_at = new Date();
   }
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
-  updated_at!: number;
+  updated_at!: Date;
 
   @OneToMany(() => Tag, (tags) => tags.created_by)
   @Field(() => [Tag])
@@ -110,4 +110,12 @@ export class UserUpdateInput {
   lastname!: string;
   @Field({ nullable: true })
   firstname!: string;
+}
+
+@InputType()
+export class UserSignInInput {
+  @Field()
+  email!: string;
+  @Field()
+  password!: string;
 }

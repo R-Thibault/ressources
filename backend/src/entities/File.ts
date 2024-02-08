@@ -33,11 +33,11 @@ export class File extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: false })
   @Field()
-  created_at!: number;
+  created_at!: Date;
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = Date.now();
+    this.created_at = new Date();
   }
 
   @ManyToOne(() => User)
@@ -47,7 +47,7 @@ export class File extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
-  updated_at!: number;
+  updated_at!: Date;
 
   @ManyToOne(() => User)
   @JoinColumn()
@@ -55,11 +55,7 @@ export class File extends BaseEntity {
   updated_by!: User;
 }
 @InputType()
-export class FileCreateInput {
-
-}
+export class FileCreateInput {}
 
 @InputType()
-export class FileUpdateInput {
-
-}
+export class FileUpdateInput {}

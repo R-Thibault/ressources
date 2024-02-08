@@ -29,11 +29,11 @@ export class Tag extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: false })
   @Field()
-  created_at!: number;
+  created_at!: Date;
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = Date.now();
+    this.created_at = new Date();
   }
 
   @ManyToOne(() => User, (users) => users.tags)
@@ -43,7 +43,7 @@ export class Tag extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
-  updated_at!: number;
+  updated_at!: Date;
 
   @ManyToOne(() => User)
   @JoinColumn()
@@ -52,11 +52,7 @@ export class Tag extends BaseEntity {
 }
 
 @InputType()
-export class TagCreateInput {
-
-}
+export class TagCreateInput {}
 
 @InputType()
-export class TagUpdateInput {
-
-}
+export class TagUpdateInput {}

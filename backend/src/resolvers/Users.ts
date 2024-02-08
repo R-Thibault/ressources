@@ -1,13 +1,11 @@
 require("dotenv").config();
+import { Resolver, Query, Arg, Mutation, Ctx, ID } from "type-graphql";
 import {
-  Resolver,
-  Query,
-  Arg,
-  Mutation,
-  Ctx,
-  ID,
-} from "type-graphql";
-import { User, UserCreateInput, UserUpdateInput } from "../entities/User";
+  User,
+  UserCreateInput,
+  UserUpdateInput,
+  UserSignInInput,
+} from "../entities/User";
 import { validateDatas } from "../utils/validate";
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
@@ -92,7 +90,7 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async signIn(
     @Ctx() context: ContextType,
-    @Arg("data", () => UserCreateInput) data: UserCreateInput
+    @Arg("data", () => UserSignInInput) data: UserSignInInput
   ): Promise<User | null> {
     const existingUser = await User.findOneBy({ email: data.email });
     if (existingUser) {

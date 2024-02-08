@@ -10,14 +10,10 @@ import { Link } from "./entities/Link";
 import { Group } from "./entities/Group";
 import { Image } from "./entities/Image";
 import { File } from "./entities/File";
+import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
-export const dataSource = new DataSource({
+export const dataSourceOptions: PostgresConnectionOptions = {
   type: "postgres",
-  host: "db",
-  port: 5432,
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
   entities: [
     Tag,
     User,
@@ -32,4 +28,13 @@ export const dataSource = new DataSource({
   ],
   synchronize: true,
   logging: true,
+};
+
+export const dataSource = new DataSource({
+ ...dataSourceOptions,
+  host: "db",
+  port: 5432,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
 });
