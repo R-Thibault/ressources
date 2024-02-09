@@ -8,6 +8,9 @@ import { FormEvent, useState } from "react";
 export default function SignUp(props: LayoutProps): React.ReactNode {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+
   const [failed, setFailed] = useState(false);
 
   const router = useRouter();
@@ -19,6 +22,8 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
         data: {
           email: email,
           password: password,
+          firstname: firstname,
+          lastname: lastname,
         },
       },
     }
@@ -44,6 +49,20 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
         <span className={SignStyles.logo}>THE GOOD CORNER</span>
         <h3>Inscription</h3>
         <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
+          <input
+            className={SignStyles.input}
+            type="text"
+            value={lastname}
+            placeholder="Nom"
+            onChange={(e) => setLastname(e.target.value)}
+          />
+          <input
+            className={SignStyles.input}
+            type="text"
+            value={firstname}
+            placeholder="Prénom"
+            onChange={(e) => setFirstname(e.target.value)}
+          />
           <input
             className={SignStyles.input}
             type="email"
