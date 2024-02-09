@@ -4,13 +4,10 @@ import SignStyles from "@/styles/Sign.module.css";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
-import { useContext } from 'react';
-import { UserContext, UserProvider } from "./_app";
 
 export default function SignIn(props: LayoutProps): React.ReactNode {
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("superPassword");
-  const users = useContext(UserContext);
 
   const router = useRouter();
 
@@ -41,7 +38,6 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
 
   return (
     <Layout title={"S'inscrire"}>
-    <UserContext.Provider value={users}>
       <div className={SignStyles.container}>
         <span className={SignStyles.logo}>THE GOOD CORNER</span>
         <h3>Connexion</h3>
@@ -65,7 +61,6 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
           </button>
         </form>
       </div>
-      </UserContext.Provider>
     </Layout>
   );
 }
