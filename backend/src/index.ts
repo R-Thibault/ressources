@@ -9,10 +9,10 @@ import http from "http";
 import cors from "cors";
 import { populateBdd } from "./utils/populateBdd";
 import { getSchema, prodSchema, testSchema } from "./schema";
+import { User } from "./entities/User";
 
 const start = async () => {
   const schema = await getSchema(testSchema);
-
 
   const app = express();
   const httpServer = http.createServer(app);
