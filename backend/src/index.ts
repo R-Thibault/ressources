@@ -1,21 +1,16 @@
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { dataSource } from "./datasource";
-import { ContextType, customAuthChecker } from "./middlewares/auth";
+import { ContextType } from "./middlewares/auth";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import express from "express";
 import http from "http";
 import cors from "cors";
 import { getSchema, prodSchema, testSchema } from "./schema";
-import { buildSchema } from "graphql";
-import { UserResolver } from "./resolvers/Users";
 
 const start = async () => {
-  const schema = buildSchema({
-    resolvers: [UserResolver],
-    authChecker: customAuthChecker,
-  });
+  const schema = await getSchema(testSchema);
 
   const app = express();
   const httpServer = http.createServer(app);
