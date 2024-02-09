@@ -84,34 +84,63 @@ export class UserResolver {
     newUser.firstname = data.firstname;
     const token = randomBytes(48).toString('hex'); 
     newUser.email_validation_token = token;  // génération de token
-    newUser.email_validation_token_expires = Date.now() + 3600000; // Expiration dans 1 heure
+    newUser.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
     await newUser.save();
     await sendValidationEmail(newUser.email, newUser.email_validation_token); //envoi du mail avec token validation
     return newUser;
   }
 
-  @Mutation(() => User)
+  @Mutation(() => Boolean)
   async validateAccount(
   @Arg("token") token: string
 ): Promise<boolean> {
+  console.log("validateAccount called with token:", token);
+  console.log("Searching for user with token...");
   const user = await User.findOneBy({ email_validation_token: token });
   if (!user) {
-    return false; // ou gérer l'utilisateur non trouvé
+    console.log("User not found with token:", token);
+    throw new Error("user not trouvé"); // ou gérer l'utilisateur non trouvé
   }
-  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires : true; // on considere le token comme expiré si la date d'expiration est nulle
-  
+  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires.getTime() : true; // on considere le token comme expiré si la date d'expiration est nulle
+  console.log("Token expired status:", tokenExpired);
+
   if (tokenExpired) {
-    // Gérer le cas d'un token expiré
+    throw new Error("token expired"); // Gérer le cas d'un token expiré
   } else {
     user.is_account_validated = true;
     user.email_validation_token = null; 
     user.email_validation_token_expires = null; 
+    console.log("Updating user account validation status...");
     await user.save();
+    console.log("User account validated successfully.");
     return true;
   }
 
-  return false; 
+  //return false; 
 }
+
+@Mutation(() => Boolean)
+async resendValidationEmail(
+  @Arg("email") email: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  
+  // Générer un nouveau token de validation
+  const token = randomBytes(48).toString('hex');
+  user.email_validation_token = token;
+  user.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
+  
+  await user.save();
+
+  // Appeler la fonction d'envoi d'email
+  await sendValidationEmail(user.email, user.email_validation_token);
+
+  return true;
+}
+
 
   @Mutation(() => User, { nullable: true })
   async signIn(

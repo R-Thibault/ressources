@@ -53,7 +53,7 @@ export class User extends BaseEntity {
 
   @Column({ type: "timestamp", nullable: true })
   @Field( () => Int)
-  email_validation_token_expires!: number | null;
+  email_validation_token_expires!: Date | null;
 
   @Column({ type: "boolean", default: false })
   @Field()
@@ -141,9 +141,9 @@ export class UserCreateInput {
   @Field()
   @Matches(/^.{8,50}$/)
   password!: string;
-  @Field()
+  @Field({ nullable: true })
   lastname!: string;
-  @Field()
+  @Field({ nullable: true })
   firstname!: string;
 }
 

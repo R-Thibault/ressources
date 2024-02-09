@@ -37,3 +37,16 @@ export const MY_PROFILE = gql`
     }
   }
 `;
+
+
+export const RESEND_VALIDATION_EMAIL = gql`
+  mutation ResendValidationEmail($email: String!) {
+    resendValidationEmail(email: $email)
+  }
+`;
+
+export const VALIDATE_ACCOUNT = gql`
+  mutation ValidateAccount($token: String!) {
+    validateAccount(token: $token)
+  }
+`;
