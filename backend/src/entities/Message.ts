@@ -19,15 +19,15 @@ export class Message extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  // @ManyToOne(() => User, (users) => users.messages)
-  // @Field(() => [User])
-  // user!: User;
+  @Column({ type: "text", nullable: true }) // to false for prod
+  @Field()
+  message!: string;
 
   @ManyToOne(() => Group, (group) => group.messages)
   @Field(() => Group)
   group!: Group;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 
@@ -51,7 +51,13 @@ export class Message extends BaseEntity {
   updated_by!: User;
 }
 @InputType()
-export class MessageCreateInput {}
+export class MessageCreateInput {
+  @Field()
+  message!: string;
+}
 
 @InputType()
-export class MessageUpdateInput {}
+export class MessageUpdateInput {
+  @Field()
+  message!: string;
+}

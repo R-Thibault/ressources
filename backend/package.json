@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.6",
     "@apollo/server": "^4.9.5",
+    "@types/uuid": "^9.0.8",
     "argon2": "^0.31.2",
     "class-validator": "^0.14.0",
     "cookies": "^0.9.1",
@@ -25,7 +26,8 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
     "type-graphql": "^2.0.0-beta.3",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",

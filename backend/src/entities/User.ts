@@ -27,18 +27,18 @@ export class User extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false, unique: true })
+  @Column({ type: "varchar", length: 255, nullable: false, unique: true }) // to false for prod
   @Field()
   email!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   hashed_password!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   lastname!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   firstname!: string;
 
@@ -55,11 +55,11 @@ export class User extends BaseEntity {
   @Field()
   email_validation_token_expires!: number;
 
-  @Column({ type: "boolean", default: 0 })
+  @Column({ type: "boolean", default: false })
   @Field()
   is_account_validated!: boolean;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 

@@ -1,16 +1,23 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { MessageCreateInput, Message, MessageUpdateInput } from "../entities/Message";
+import {
+  MessageCreateInput,
+  Message,
+  MessageUpdateInput,
+} from "../entities/Message";
 import { validate } from "class-validator";
+import { DummyMessages } from "../dummyDatas";
 
 @Resolver(Message)
 export class MessageResolver {
   @Query(() => [Message])
-  async getAllMessage(): Promise<Message[]> {
+  async getAllMessages(): Promise<Message[]> {
     return await Message.find();
   }
 
   @Query(() => Message)
-  async getOneMessage(@Arg("id", () => ID) id: number): Promise<Message | null> {
+  async getOneMessage(
+    @Arg("id", () => ID) id: number
+  ): Promise<Message | null> {
     try {
       const message = await Message.findOne({ where: { id: id } });
       return message;
@@ -43,24 +50,23 @@ export class MessageResolver {
     @Arg("id", () => ID) id: number,
     @Arg("data", () => MessageUpdateInput) data: MessageUpdateInput
   ): Promise<Message | null> {
-    try {
-      const message = await Message.findOne({ where: { id: id } });
-      if (message) {
-        Object.assign(message, data);
-        const errors = await validate(message);
-        if (errors.length > 0) {
-        } else {
-          await message.save();
-        }
+    const message = await Message.findOne({ where: { id: id } });
+    if (message) {
+      Object.assign(message, data);
+      const errors = await validate(message);
+      if (errors.length > 0) {
+        throw new Error(`error occured ${JSON.stringify(errors)}`);
+      } else {
+        await message.save();
       }
-      return message;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
     }
+    return message;
   }
 
   @Mutation(() => Message, { nullable: true })
-  async deleteMessage(@Arg("id", () => ID) id: number): Promise<Message | null> {
+  async deleteMessage(
+    @Arg("id", () => ID) id: number
+  ): Promise<Message | null> {
     try {
       const message = await Message.findOne({ where: { id: id } });
       if (message) {
@@ -71,5 +77,29 @@ export class MessageResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
+  }
+
+  @Mutation(() => [Message])
+  async populateMessageTable(): Promise<Message[] | null> {
+    for (let i = 0; i < DummyMessages.length; i++) {
+      try {
+        const newMessage = new Message();
+        newMessage.message = DummyMessages[i].message;
+        newMessage.group = DummyMessages[i].group_id;
+        newMessage.created_by = DummyMessages[i].created_by;
+        newMessage.created_at = DummyMessages[i].created_at;
+
+        const error = await validate(newMessage);
+
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          const datas = await newMessage.save();
+        }
+      } catch (error) {
+        throw new Error(`error occured ${JSON.stringify(error)}`);
+      }
+    }
+    return await this.getAllMessages();
   }
 }

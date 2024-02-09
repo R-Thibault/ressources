@@ -21,13 +21,11 @@ export class Tag extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column()
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
-  @MinLength(1, { message: "titre trop court" })
-  @MaxLength(100, { message: "titre trop long" })
   name!: string;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 
@@ -52,7 +50,13 @@ export class Tag extends BaseEntity {
 }
 
 @InputType()
-export class TagCreateInput {}
+export class TagCreateInput {
+  @Field()
+  name!: string;
+}
 
 @InputType()
-export class TagUpdateInput {}
+export class TagUpdateInput {
+  @Field()
+  name!: string;
+}

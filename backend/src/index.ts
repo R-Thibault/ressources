@@ -7,10 +7,12 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import express from "express";
 import http from "http";
 import cors from "cors";
+import { populateBdd } from "./utils/populateBdd";
 import { getSchema, prodSchema, testSchema } from "./schema";
 
 const start = async () => {
   const schema = await getSchema(testSchema);
+
 
   const app = express();
   const httpServer = http.createServer(app);
@@ -44,5 +46,9 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:4000/`);
 
   await dataSource.initialize();
+  const user = await User.findOneBy({ email: "admin@ressources.com" });
+  if (!user) {
+    await populateBdd();
+  }
 };
 start();
