@@ -1,9 +1,11 @@
-#### Avant de builder le projet :
+# Build du Projet
+
+## Avant de builder le projet
 
 1 - Renommer le fichier .env.sample à la racine en .env et compléter les entrées
 2 - Renommer le fichier .env.sample à la racine du dossier backend en .env et compléter les entrées
 
-#### Pour builder et démarrer le projet via Docker :
+### Pour builder et démarrer le projet via Docker
 
 A la racine du projet, lancer la commande suivante
 
@@ -25,35 +27,10 @@ A la racine du projet, lancer la commande suivante
 
 Les informations de connexion sont celles renseignées dans les fichiers .env à la racine
 
-#### Pour populer la BDD avec un jeu de données :
+#### Pour populer la BDD avec un jeu de données
 
-Labbd sera automatiquement populer aprés l'initialisation de l'BDD SI un compte admin n'est pas présent dans la BDD
+La bdd sera automatiquement populer aprés l'initialisation de la BDD SI un compte admin n'est pas présent dans la BDD
 
 Le jeu de données qui sera intégré est visible dans le dossier /backend/src/dummyDatas.
-Une fois les 3 projets lancés, se rendre sur [http://localhost:4000]
-Depuis un nouvel onglet d'Apollo client, executer les requêtes suivantes :
-
-```bash
-mutation Mutation {
-  populateTagTable {
-    title
-    id
-  }
-  populateCategoryTable {
-    id
-    title
-  }
-  populateUserTable {
-    email
-  }
-  populateAdsTable {
-    ads {
-      id
-      title
-    }
-    maxPrice
-  }
-}
-```
 
 Pour se connecter, utiliser les informations de connexion qui se trouvent dans /backend/src/dummyDatas (DummyUser)
