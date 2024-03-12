@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Fonction pour obtenir les trois premières lettres de la branche actuelle
+get_branch_prefix() {
+    branch_name=$(git rev-parse --abbrev-ref HEAD)
+    echo "${branch_name:0:3}" | tr '[:lower:]' '[:upper:]'
+}
+
+# Récupérer les trois premières lettres de la branche
+branch_prefix=$(get_branch_prefix)
+
+# Lire le message de commit depuis le fichier .git/COMMIT_EDITMSG
+commit_message=$(cat .git/COMMIT_EDITMSG)
+
+# Ajouter les trois premières lettres de la branche suivies d'un tiret ("-")
+new_commit_message="${branch_prefix}- $commit_message"
+
+# Réécrire le message de commit avec le préfixe de la branche ajouté
+echo "$new_commit_message" > .git/COMMIT_EDITMSG
+
