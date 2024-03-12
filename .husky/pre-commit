@@ -6,6 +6,7 @@ get_branch_prefix() {
     echo "${branch_name:0:3}" | tr '[:lower:]' '[:upper:]'
 }
 
+
 # Récupérer les trois premières lettres de la branche
 branch_prefix=$(get_branch_prefix)
 
