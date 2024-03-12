@@ -27,6 +27,8 @@ Les informations de connexion sont celles renseignées dans les fichiers .env à
 
 #### Pour populer la BDD avec un jeu de données :
 
+Labbd sera automatiquement populer aprés l'initialisation de l'BDD SI un compte admin n'est pas présent dans la BDD
+
 Le jeu de données qui sera intégré est visible dans le dossier /backend/src/dummyDatas.
 Une fois les 3 projets lancés, se rendre sur [http://localhost:4000]
 Depuis un nouvel onglet d'Apollo client, executer les requêtes suivantes :
