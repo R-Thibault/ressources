@@ -23,28 +23,24 @@ export class Ressource extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   title!: string;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
-  @Field()
-  type!: string;
-
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   description!: string;
 
   @Column({ type: "boolean", default: 0 })
   @Field()
-  is_favorite!: string;
+  is_favorite!: boolean;
 
   @OneToOne(() => Image)
   @JoinColumn()
   @Field()
   image_id!: Image;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 
@@ -84,7 +80,14 @@ export class Ressource extends BaseEntity {
 }
 
 @InputType()
-export class RessourceCreateInput {}
+
+export class RessourceCreateInput {
+  @Field()
+  title!: string;
+}
 
 @InputType()
-export class RessourceUpdateInput {}
+export class RessourceUpdateInput {
+  @Field()
+  title!: string;
+}

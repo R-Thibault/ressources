@@ -18,15 +18,15 @@ export class Link extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   title!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   url!: string;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 
@@ -50,7 +50,13 @@ export class Link extends BaseEntity {
   updated_by!: User;
 }
 @InputType()
-export class LinkCreateInput {}
+export class LinkCreateInput {
+  @Field()
+  title!: string;
+}
 
 @InputType()
-export class LinkUpdateInput {}
+export class LinkUpdateInput {
+  @Field()
+  title!: string;
+}

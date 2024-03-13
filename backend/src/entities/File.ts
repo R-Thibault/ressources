@@ -19,19 +19,19 @@ export class File extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) //to false for prod
   @Field()
-  title!: string;
+  name!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   type!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   path!: string;
 
-  @Column({ type: "timestamp", nullable: false })
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;
 
@@ -55,7 +55,16 @@ export class File extends BaseEntity {
   updated_by!: User;
 }
 @InputType()
-export class FileCreateInput {}
+
+export class FileCreateInput {
+  @Field()
+  name!: string;
+}
 
 @InputType()
-export class FileUpdateInput {}
+export class FileUpdateInput {
+  @Field()
+  name!: string;
+}
+
+

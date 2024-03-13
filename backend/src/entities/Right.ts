@@ -16,7 +16,7 @@ export class Right extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   name!: string;
 
@@ -27,10 +27,12 @@ export class Right extends BaseEntity {
 
 @InputType()
 export class RightCreateInput {
-
+  @Field()
+  name!: string;
 }
 
 @InputType()
 export class RightUpdateInput {
-
+  @Field()
+  name!: string;
 }
