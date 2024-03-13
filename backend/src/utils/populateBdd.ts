@@ -68,7 +68,7 @@ export async function populateBdd() {
       const newImage = new Image();
       newImage.name = DummyImages[i].name;
       newImage.path = DummyImages[i].path;
-      newImage.created_by = DummyImages[i].created_by;
+      newImage.created_by_user = DummyImages[i].created_by_user;
       newImage.created_at = DummyImages[i].created_at;
 
       const error = await validate(newImage);
@@ -87,7 +87,7 @@ export async function populateBdd() {
     try {
       const newTag = new Tag();
       newTag.name = DummyTags[i].name;
-      newTag.created_by = DummyTags[i].created_by;
+      newTag.created_by_user = DummyTags[i].created_by_user;
 
       const error = await validate(newTag);
 
@@ -107,7 +107,7 @@ export async function populateBdd() {
       newGroup.name = DummyGroups[i].name;
       newGroup.description = DummyGroups[i].description;
       newGroup.token = DummyGroups[i].token;
-      newGroup.created_by = DummyGroups[i].created_by;
+      newGroup.created_by_user = DummyGroups[i].created_by_user;
       newGroup.created_at = DummyGroups[i].created_at;
 
       const error = await validate(newGroup);
@@ -144,7 +144,7 @@ export async function populateBdd() {
       const newMember = new Member();
       newMember.group = DummyMembers[i].group_id;
       newMember.last_visit = DummyMembers[i].last_visit;
-      newMember.created_by = DummyMembers[i].created_by;
+      newMember.user = DummyMembers[i].user;
       newMember.created_at = DummyMembers[i].created_at;
 
       const error = await validate(newMember);
@@ -164,7 +164,7 @@ export async function populateBdd() {
       const newMessage = new Message();
       newMessage.message = DummyMessages[i].message;
       newMessage.group = DummyMessages[i].group_id;
-      newMessage.created_by = DummyMessages[i].created_by;
+      newMessage.created_by_user = DummyMessages[i].created_by_user;
       newMessage.created_at = DummyMessages[i].created_at;
 
       const error = await validate(newMessage);
@@ -185,7 +185,7 @@ export async function populateBdd() {
       newFile.name = DummyFiles[i].name;
       newFile.type = DummyFiles[i].type;
       newFile.path = DummyFiles[i].path;
-      newFile.created_by = DummyFiles[i].created_by;
+      newFile.created_by_user = DummyFiles[i].created_by_user;
       newFile.created_at = DummyFiles[i].created_at;
 
       const error = await validate(newFile);
@@ -204,7 +204,7 @@ export async function populateBdd() {
       const newLink = new Link();
       newLink.title = DummyLinks[i].title;
       newLink.url = DummyLinks[i].url;
-      newLink.created_by = DummyLinks[i].created_by;
+      newLink.created_by_user = DummyLinks[i].created_by_user;
       newLink.created_at = DummyLinks[i].created_at;
 
       const error = await validate(newLink);
@@ -228,7 +228,7 @@ export async function populateBdd() {
       newRessource.image_id = DummyRessources[i].image_id;
       newRessource.file_id = DummyRessources[i].file_id;
       newRessource.link_id = DummyRessources[i].link_id;
-      newRessource.created_by = DummyRessources[i].created_by;
+      newRessource.created_by_user = DummyRessources[i].created_by_user;
       newRessource.created_at = DummyRessources[i].created_at;
 
       const error = await validate(newRessource);

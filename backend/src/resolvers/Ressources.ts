@@ -92,7 +92,7 @@ export class RessourceResolver {
         newRessource.image_id = DummyRessources[i].image_id;
         newRessource.file_id = DummyRessources[i].file_id;
         newRessource.link_id = DummyRessources[i].link_id;
-        newRessource.created_by = DummyRessources[i].created_by;
+        newRessource.created_by_user = DummyRessources[i].created_by_user;
         newRessource.created_at = DummyRessources[i].created_at;
 
         const error = await validate(newRessource);

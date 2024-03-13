@@ -35,19 +35,19 @@ export class Link extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.links_creation)
+  @JoinColumn({ name: "created_by" })
   @Field(() => User)
-  created_by!: User;
+  created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
   updated_at!: Date;
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.links_update)
+  @JoinColumn({ name: "updated_by" })
   @Field(() => User)
-  updated_by!: User;
+  updated_by_user!: User;
 }
 @InputType()
 export class LinkCreateInput {
