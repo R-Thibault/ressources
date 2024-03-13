@@ -32,6 +32,8 @@ export const MY_PROFILE = gql`
     item: myProfile {
       id
       email
+      lastname
+      firstname
     }
   }
 `;

@@ -43,6 +43,7 @@ export class Group extends BaseEntity {
     this.created_at = new Date();
   }
 
+
   @ManyToOne(() => User, (user) => user.groups_creation)
   @JoinColumn({ name: "created_by" })
   @Field(() => User)
