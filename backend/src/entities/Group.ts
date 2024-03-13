@@ -43,10 +43,10 @@ export class Group extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (users) => users.groups)
+  @JoinColumn({ name: "created_by" })
   @Field(() => User)
-  created_by!: User;
+  created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
   @Field()

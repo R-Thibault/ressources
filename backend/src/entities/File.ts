@@ -40,22 +40,21 @@ export class File extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (users) => users.files)
+  @JoinColumn({ name: "created_by" })
   @Field(() => User)
-  created_by!: User;
+  created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
   updated_at!: Date;
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (users) => users.files)
+  @JoinColumn({ name: "created_by" })
   @Field(() => User)
-  updated_by!: User;
+  updated_by_user!: User;
 }
 @InputType()
-
 export class FileCreateInput {
   @Field()
   name!: string;
@@ -66,5 +65,3 @@ export class FileUpdateInput {
   @Field()
   name!: string;
 }
-
-
