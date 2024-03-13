@@ -79,7 +79,7 @@ export class GroupResolver {
         newGroup.name = DummyGroups[i].name;
         newGroup.description = DummyGroups[i].description;
         newGroup.token = DummyGroups[i].token;
-        newGroup.created_by = DummyGroups[i].created_by;
+        newGroup.created_by_user = DummyGroups[i].created_by_user;
         newGroup.created_at = DummyGroups[i].created_at;
 
         const error = await validate(newGroup);
