@@ -86,7 +86,7 @@ export class MessageResolver {
         const newMessage = new Message();
         newMessage.message = DummyMessages[i].message;
         newMessage.group = DummyMessages[i].group_id;
-        newMessage.created_by = DummyMessages[i].created_by;
+        newMessage.created_by_user = DummyMessages[i].created_by_user;
         newMessage.created_at = DummyMessages[i].created_at;
 
         const error = await validate(newMessage);

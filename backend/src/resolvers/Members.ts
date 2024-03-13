@@ -82,7 +82,7 @@ export class MemberResolver {
         const newMember = new Member();
         newMember.group = DummyMembers[i].group_id;
         newMember.last_visit = DummyMembers[i].last_visit;
-        newMember.created_by = DummyMembers[i].created_by;
+        newMember.user = DummyMembers[i].user;
         newMember.created_at = DummyMembers[i].created_at;
 
         const error = await validate(newMember);

@@ -77,7 +77,7 @@ export class LinkResolver {
         const newLink = new Link();
         newLink.title = DummyLinks[i].title;
         newLink.url = DummyLinks[i].url;
-        newLink.created_by = DummyLinks[i].created_by;
+        newLink.created_by_user = DummyLinks[i].created_by_user;
         newLink.created_at = DummyLinks[i].created_at;
 
         const error = await validate(newLink);

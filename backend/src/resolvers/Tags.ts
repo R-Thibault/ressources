@@ -95,7 +95,7 @@ export class TagResolver {
       try {
         const newTag = new Tag();
         newTag.name = DummyTags[i].name;
-        newTag.created_by = DummyTags[i].created_by;
+        newTag.created_by_user = DummyTags[i].created_by_user;
 
         const error = await validateDatas(newTag);
 

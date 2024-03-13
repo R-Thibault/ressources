@@ -79,7 +79,7 @@ export class FileResolver {
         newFile.name = DummyFiles[i].name;
         newFile.type = DummyFiles[i].type;
         newFile.path = DummyFiles[i].path;
-        newFile.created_by = DummyFiles[i].created_by;
+        newFile.created_by_user = DummyFiles[i].created_by_user;
         newFile.created_at = DummyFiles[i].created_at;
 
         const error = await validate(newFile);

@@ -34,19 +34,19 @@ export class Tag extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User, (users) => users.tags)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.tags_creation)
+  @JoinColumn({ name: "created_by" })
   @Field(() => User)
-  created_by!: User;
+  created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
   @Field()
   updated_at!: Date;
 
-  @ManyToOne(() => User)
-  @JoinColumn()
-  @Field()
-  updated_by!: User;
+  @ManyToOne(() => User, (user) => user.tags_update)
+  @JoinColumn({ name: "updated_by" })
+  @Field(() => User)
+  updated_by_user!: User;
 }
 
 @InputType()

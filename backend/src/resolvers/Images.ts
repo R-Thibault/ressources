@@ -82,7 +82,7 @@ export class ImageResolver {
         const newImage = new Image();
         newImage.name = DummyImages[i].name;
         newImage.path = DummyImages[i].path;
-        newImage.created_by = DummyImages[i].created_by;
+        newImage.created_by_user = DummyImages[i].created_by_user;
         newImage.created_at = DummyImages[i].created_at;
 
         const error = await validate(newImage);

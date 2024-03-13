@@ -43,7 +43,8 @@ export class Group extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User, (users) => users.groups)
+
+  @ManyToOne(() => User, (user) => user.groups_creation)
   @JoinColumn({ name: "created_by" })
   @Field(() => User)
   created_by_user!: User;
@@ -52,10 +53,10 @@ export class Group extends BaseEntity {
   @Field()
   updated_at!: Date;
 
-  @ManyToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.groups_update)
+  @JoinColumn({ name: "updated_by" })
   @Field(() => User)
-  updated_by!: User;
+  updated_by_user!: User;
 
   @OneToMany(() => Member, (members) => members.group)
   @Field(() => [Member])

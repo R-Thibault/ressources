@@ -40,7 +40,9 @@ export class File extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => User, (users) => users.files)
+
+  @ManyToOne(() => User, (user) => user.files_creation)
+
   @JoinColumn({ name: "created_by" })
   @Field(() => User)
   created_by_user!: User;
@@ -49,8 +51,9 @@ export class File extends BaseEntity {
   @Field()
   updated_at!: Date;
 
-  @ManyToOne(() => User, (users) => users.files)
-  @JoinColumn({ name: "created_by" })
+  @ManyToOne(() => User, (user) => user.files_update)
+  @JoinColumn({ name: "updated_by" })
+
   @Field(() => User)
   updated_by_user!: User;
 }
