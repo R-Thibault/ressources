@@ -23,7 +23,7 @@ const client = new ApolloClient({
   link,
 });
 
-const publicPages = ["/sign-in", "/sign-up", "/", "/ads/[id]"];
+const publicPages = ["/sign-in", "/sign-up", "/"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();

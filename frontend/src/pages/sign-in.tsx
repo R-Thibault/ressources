@@ -42,7 +42,7 @@ export default function SignIn(props: LayoutProps): React.ReactNode {
         <span className={SignStyles.logo}>THE GOOD CORNER</span>
         <h3>Connexion</h3>
         <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
-          <input
+          <input 
             className={SignStyles.input}
             type="email"
             value={email}
