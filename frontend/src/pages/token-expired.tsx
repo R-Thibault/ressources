@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { RESEND_VALIDATION_EMAIL } from '../Request/user';
 import { useRouter } from 'next/router';
+import SignStyles from "@/styles/Sign.module.css";
 
 export default function ResendValidationEmailPage() {
   const [email, setEmail] = useState('');
@@ -14,28 +15,34 @@ export default function ResendValidationEmailPage() {
       await resendValidationEmail({ variables: { email } });
       setMessage('Un nouvel email de validation a été envoyé. Veuillez vérifier votre boîte de réception.');
     } catch (error) {
-      setMessage('Erreur lors de la tentative de renvoi de l\'email. Veuillez réessayer.');
+      setMessage('Erreur lors de la tentative de renvoi l\'email. Veuillez réessayer.');
     }
   };
 
-  // Gérer pour le retour sur la page de connexion ou d'inscription
   const handleBack = () => {
-    router.push('/'); // faire en fonction de la page qu'on veut mettre
+    router.push('/sign-up'); 
   };
 
   return (
-    <div>
+    <div  className={SignStyles.container}>
+        <p>Votre lien de validation a expiré</p>
+         
       <input
+        className={SignStyles.input}
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Entrez votre adresse email"
       />
-      <button onClick={() =>handleResendEmailClick} disabled={loading}>
+      <button 
+        className={SignStyles.button} 
+        onClick={handleResendEmailClick} disabled={loading}>
         Renvoyer l'email de validation
       </button>
       {message && <p>{message}</p>}
-      <button onClick={() =>handleBack}>Retour</button>
+      <button 
+        className={SignStyles.button} 
+        onClick={handleBack}>Retour page d'acceuil</button>
     </div>
   );
 }

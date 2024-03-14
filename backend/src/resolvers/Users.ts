@@ -14,7 +14,8 @@ import { ContextType, getUser } from "../middlewares/auth";
 import { DummyUsers } from "../dummyDatas";
 import { validate } from "class-validator";
 import { randomBytes } from "crypto";
-import { sendValidationEmail } from "../utils/sendemail";
+import { sendResetPasswordEmail, sendValidationEmail } from "../utils/sendemail";
+
 
 @Resolver(User)
 export class UserResolver {
@@ -99,13 +100,13 @@ export class UserResolver {
   const user = await User.findOneBy({ email_validation_token: token });
   if (!user) {
     console.log("User not found with token:", token);
-    throw new Error("user not trouvé"); // ou gérer l'utilisateur non trouvé
+    throw new Error("User not found" ); 
   }
-  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires.getTime() : true; // on considere le token comme expiré si la date d'expiration est nulle
+  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires.getTime() : true; 
   console.log("Token expired status:", tokenExpired);
 
   if (tokenExpired) {
-    throw new Error("token expired"); // Gérer le cas d'un token expiré
+    throw new Error("Token expired"); 
   } else {
     user.is_account_validated = true;
     user.email_validation_token = null; 
@@ -115,8 +116,6 @@ export class UserResolver {
     console.log("User account validated successfully.");
     return true;
   }
-
-  //return false; 
 }
 
 @Mutation(() => Boolean)
@@ -127,26 +126,63 @@ async resendValidationEmail(
   if (!user) {
     throw new Error("User not found");
   }
-  
   // Générer un nouveau token de validation
   const token = randomBytes(48).toString('hex');
   user.email_validation_token = token;
-  user.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
-  
+  user.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure  
   await user.save();
-
   // Appeler la fonction d'envoi d'email
   await sendValidationEmail(user.email, user.email_validation_token);
 
   return true;
 }
 
+@Mutation(() => Boolean)
+async requestPasswordReset(
+  @Arg("email") email: string
+): Promise<boolean>{
+  const user = await User.findOneBy({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const token = randomBytes(48).toString('hex');
+  user.reset_password_token = token;
+  user.reset_password_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
+  await user.save();
+    // Appeler la fonction d'envoi d'email pour la réinitialisation du mot de passe
+    await sendResetPasswordEmail(user.email, user.reset_password_token);
 
-  @Mutation(() => User, { nullable: true })
+    return true;
+}
+
+@Mutation(() => Boolean)
+async resetPassword(
+  @Arg("token") token: string,
+  @Arg("newPassword") newPassword: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ reset_password_token: token });
+  if (!user) {
+    throw new Error("Token invalid or expired");
+  }
+  // Mettre à jour le mot de passe de l'utilisateur
+  user.hashed_password = await argon2.hash(newPassword);
+  // Nettoyer les champs du token de réinitialisation
+  user.reset_password_token = null;
+  user.reset_password_token_expires = null;
+
+  await user.save();
+  console.log("Update account validated successfully.");
+  return true;
+}
+
+
+
+
+  @Mutation(() => User, { nullable: false })
   async signIn(
     @Ctx() context: ContextType,
     @Arg("data", () => UserSignInInput) data: UserSignInInput
-  ): Promise<User | null> {
+  ): Promise<User> {
     const existingUser = await User.findOneBy({ email: data.email });
     if (existingUser) {
       if (await argon2.verify(existingUser.hashed_password, data.password)) {
@@ -164,12 +200,18 @@ async resendValidationEmail(
           maxAge: 1000 * 60 * 60 * 24,
         });
 
-        return existingUser;
+        if(existingUser.is_account_validated){
+          return existingUser;
+        } else {
+        throw new Error('account not validated');
+        }
+        
       } else {
-        return null;
+        throw new Error('user and password dont match');
+        
       }
     } else {
-      return null;
+      throw new Error('user not found');
     }
   }
 

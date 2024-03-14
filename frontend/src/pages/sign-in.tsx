@@ -27,6 +27,7 @@ export default function SignIn(): React.ReactNode {
     e.preventDefault();
     try {
       const response = await signIn();
+      console.log(response)
       if (!error) {
         router.replace("/");
       }
@@ -34,6 +35,12 @@ export default function SignIn(): React.ReactNode {
       console.log(error);
     }
   }
+
+   // Gestionnaire pour le clic sur "Mot de passe oublié"
+   const handleForgotPasswordClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); 
+    router.push("/request-reset-password"); 
+  };
 
   return (
     <div className={SignStyles.container}>
@@ -57,7 +64,7 @@ export default function SignIn(): React.ReactNode {
         <button className={SignStyles.button} type="submit">
           Se connecter
         </button>
-        <a href="#" className={SignStyles.forgotPassword}>
+         <a href="/request-password-reset" onClick={handleForgotPasswordClick} className={SignStyles.forgotPassword}>
           Mot de passe oublié
         </a>
       </form>

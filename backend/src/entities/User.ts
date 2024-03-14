@@ -59,6 +59,14 @@ export class User extends BaseEntity {
   @Field()
   is_account_validated!: boolean;
 
+  @Column({ type: "varchar", length: 255, nullable: true })
+  @Field(() => String)
+  reset_password_token!: string | null;
+
+  @Column({ type: "timestamp", nullable: true })
+  @Field( () => Int)
+  reset_password_token_expires!: Date | null;
+
   @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
   created_at!: Date;

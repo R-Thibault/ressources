@@ -54,3 +54,158 @@ sendValidationEmail(email, token)
 ```
 
 
+# Configuration validation de compte et reinitialisation de mdp
+
+creation des mutations 
+
+```javascript
+ @Mutation(() => Boolean)
+  async validateAccount(
+  @Arg("token") token: string
+): Promise<boolean> {
+  console.log("validateAccount called with token:", token);
+  console.log("Searching for user with token...");
+  const user = await User.findOneBy({ email_validation_token: token });
+  if (!user) {
+    console.log("User not found with token:", token);
+    throw new Error("User not found" ); 
+  }
+  const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires.getTime() : true; 
+  console.log("Token expired status:", tokenExpired);
+
+  if (tokenExpired) {
+    throw new Error("Token expired"); 
+  } else {
+    user.is_account_validated = true;
+    user.email_validation_token = null; 
+    user.email_validation_token_expires = null; 
+    console.log("Updating user account validation status...");
+    await user.save();
+    console.log("User account validated successfully.");
+    return true;
+  }
+}
+```
+
+```javascript
+@Mutation(() => Boolean)
+async resendValidationEmail(
+  @Arg("email") email: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  // Générer un nouveau token de validation
+  const token = randomBytes(48).toString('hex');
+  user.email_validation_token = token;
+  user.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure  
+  await user.save();
+  // Appeler la fonction d'envoi d'email
+  await sendValidationEmail(user.email, user.email_validation_token);
+
+  return true;
+}
+```
+
+```javascript
+@Mutation(() => Boolean)
+async resendValidationEmail(
+  @Arg("email") email: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  // Générer un nouveau token de validation
+  const token = randomBytes(48).toString('hex');
+  user.email_validation_token = token;
+  user.email_validation_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure  
+  await user.save();
+  // Appeler la fonction d'envoi d'email
+  await sendValidationEmail(user.email, user.email_validation_token);
+
+  return true;
+}
+```
+
+```javascript
+@Mutation(() => Boolean)
+async requestPasswordReset(
+  @Arg("email") email: string
+): Promise<boolean>{
+  const user = await User.findOneBy({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const token = randomBytes(48).toString('hex');
+  user.reset_password_token = token;
+  user.reset_password_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
+  await user.save();
+    // Appeler la fonction d'envoi d'email pour la réinitialisation du mot de passe
+    await sendResetPasswordEmail(user.email, user.reset_password_token);
+
+    return true;
+}
+```
+```javascript
+@Mutation(() => Boolean)
+async resetPassword(
+  @Arg("token") token: string,
+  @Arg("newPassword") newPassword: string
+): Promise<boolean> {
+  const user = await User.findOneBy({ reset_password_token: token });
+  if (!user) {
+    throw new Error("Token invalid or expired");
+  }
+  // Mettre à jour le mot de passe de l'utilisateur
+  user.hashed_password = await argon2.hash(newPassword);
+  // Nettoyer les champs du token de réinitialisation
+  user.reset_password_token = null;
+  user.reset_password_token_expires = null;
+
+  await user.save();
+  console.log("Update account validated successfully.");
+  return true;
+}
+```
+
+Dans request/user il faut rajouter ces mutations 
+
+```javascript
+export const VALIDATE_ACCOUNT = gql`
+  mutation ValidateAccount($token: String!) {
+    validateAccount(token: $token)
+  }
+`;
+```
+
+```javascript
+export const RESEND_VALIDATION_EMAIL = gql`
+  mutation ResendValidationEmail($email: String!) {
+    resendValidationEmail(email: $email)
+  }
+`;
+```
+
+```javascript
+export const REQUEST_PASSWORD_RESET = gql`
+  mutation RequestPasswordReset($email: String!) {
+    requestPasswordReset(email: $email)
+  }
+`;
+```
+
+```javascript
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($token: String!, $newPassword: String!) {
+    resetPassword(token: $token, newPassword: $newPassword)
+  }
+`;
+
+```
+
+page /validation va prendre la mutation Validate_Account
+page /token-expired va prendre la mutation RESEND_VALIDATION_EMAIL
+page /request-reset-password va prendre la mutation REQUEST_PASSWORD_RESET
+page /reset-password va prendre la mutation RESET_PASSWORD
