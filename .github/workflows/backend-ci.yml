@@ -6,6 +6,13 @@ on:
       - "backend/**"
 
 jobs:
+ test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Goto backend and run tests
+        run: cd backend && npm i && npm test
   docker-image-backend:
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
