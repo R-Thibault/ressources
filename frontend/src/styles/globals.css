@@ -1,107 +1,101 @@
-* {
-  box-sizing: border-box;
-}
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+/* 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background-color: #f5f5f5;
-}
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-h1 {
-  margin: 0;
-}
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
 
-.button {
-  min-width: 40px;
-  height: 40px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 2px solid #ffa41b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #ffa41b;
-  background-color: white;
-  cursor: pointer;
-  margin-right: 10px;
-}
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
 
-.button-red {
-  min-width: 40px;
-  height: 40px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 2px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  font-size: 12px;
-  font-weight: bold;
-  color: red;
-  background-color: white;
-  cursor: pointer;
-}
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
 
-.button-primary {
-  background-color: #ffa41b;
-  color: white;
-}
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
-.text-field-with-button {
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-  gap: 4px;
-}
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-.main-search-field {
-  width: 100%;
-  min-width: 120px;
-  max-width: 360px;
-  flex-grow: 1;
-}
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-.text-field {
-  height: 40px;
-  background-color: white;
-  padding: 8px;
-  border: 2px solid #ffa41b;
-  border-radius: 8px;
-  font-size: 12px;
-  font-family: inherit;
-}
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
 
-.link-button {
-  text-decoration: none;
-}
+    --ring: 215 20.2% 65.1%;
 
-.desktop-long-label {
-  display: none;
-}
-
-.main-content {
-  margin: 80px 0;
-  width: 100%;
-}
-
-@media screen and (min-width: 720px) {
-  .mobile-short-label {
-    display: none;
+    --radius: 0.5rem;
   }
-  .desktop-long-label {
-    display: initial;
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
   }
 }
 
-.separator {
-  width: 100%;
-  height: 1px;
-  background-color: lightgray;
-  border: none;
-}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+} */
+
+/* Base */
+@import "./base/_reset.css";
+@import "./base/_reset.css";
+@import "./base/_global.css";
+@import "./base/_var.css";
+@import "./base/_font.css";
+
+/* Components */
+@import "./components/molecules/header.css";
+@import "./components/atoms/button.css";
+@import "./components/atoms/logo.css";
+@import "./components/organisms/layout.css";
+@import "./components/organisms/menu.css";
+@import "./components/molecules/menu-item.css";
+
+/* Pages */
+
+/* Bootstrap icons */
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
