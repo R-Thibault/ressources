@@ -6,7 +6,7 @@ on:
       - "backend/**"
 
 jobs:
-  test:
+  test-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
