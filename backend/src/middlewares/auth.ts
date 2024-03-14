@@ -39,10 +39,10 @@ export const customAuthChecker: AuthChecker<ContextType> = async (
   { root, args, context, info },
   roles
 ) => {
-  
   const connectedUser = await getUser(context.req, context.res);
 
   if (connectedUser) {
+    context.user = connectedUser;
     return true;
   } else {
     return false;
