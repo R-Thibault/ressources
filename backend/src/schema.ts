@@ -11,23 +11,20 @@ import { GroupResolver } from "./resolvers/Groups";
 import { FileResolver } from "./resolvers/Files";
 import { customAuthChecker } from "./middlewares/auth";
 
-export const testSchema: NonEmptyArray<Function> = [UserResolver];
-export const prodSchema: NonEmptyArray<Function> = [
-  TagResolver,
-  UserResolver,
-  RightResolver,
-  RessourceResolver,
-  MessageResolver,
-  MemberResolver,
-  LinkResolver,
-  ImageResolver,
-  GroupResolver,
-  FileResolver,
-];
-
-export async function getSchema(schema: NonEmptyArray<Function>) {
+export async function getSchema() {
   return await buildSchema({
-    resolvers: schema,
+    resolvers: [
+      TagResolver,
+      UserResolver,
+      RightResolver,
+      RessourceResolver,
+      MessageResolver,
+      MemberResolver,
+      LinkResolver,
+      ImageResolver,
+      GroupResolver,
+      FileResolver,
+    ],
     authChecker: customAuthChecker,
   });
 }
