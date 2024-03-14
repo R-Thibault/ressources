@@ -1,7 +1,17 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { Group, GroupCreateInput, GroupUpdateInput } from "../entities/Group";
+import {
+  Arg,
+  Authorized,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+  Ctx,
+} from "type-graphql";
+import { Group, GroupInput, GroupsMembers } from "../entities/Group";
+import { Member } from "../entities/Member";
 import { validate } from "class-validator";
 import { DummyGroups } from "../dummyDatas";
+import { ContextType } from "../middlewares/auth";
 
 @Resolver(Group)
 export class GroupResolver {
@@ -20,12 +30,57 @@ export class GroupResolver {
     }
   }
 
+  @Authorized()
+  @Query(() => [GroupsMembers])
+  async getMyGroups(@Ctx() context: ContextType): Promise<GroupsMembers[]> {
+    try {
+      let groups: GroupsMembers[] = [];
+
+      const group = await Group.find({
+        where: { created_by_user: { id: context.user?.id } },
+        relations: {
+          created_by_user: true,
+        },
+      });
+
+      if (group.length > 0) {
+        groups = groups.concat(group);
+      }
+
+      const groupMember = await Member.find({
+        where: { user: { id: context.user?.id } },
+        relations: {
+          group: true,
+        },
+      });
+
+      if (groupMember.length > 0) {
+        groupMember.forEach((element) => {
+          groups.push(element.group);
+        });
+      }
+
+      return groups;
+    } catch (error) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+  }
+
+  @Authorized()
   @Mutation(() => Group)
   async createGroup(
-    @Arg("data", () => GroupCreateInput) data: GroupCreateInput
+    @Ctx() context: ContextType,
+    @Arg("data", () => GroupInput) data: GroupInput
   ): Promise<Group> {
     try {
       const newGroup = new Group();
+      newGroup.name = data.name;
+      newGroup.description = data.description;
+
+      if (context.user) {
+        newGroup.created_by_user = context.user;
+      }
+
       const error = await validate(newGroup);
 
       if (error.length > 0) {
@@ -39,13 +94,15 @@ export class GroupResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Group, { nullable: true })
   async updateGroup(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => GroupUpdateInput) data: GroupUpdateInput
+    @Arg("data", () => GroupInput) data: GroupInput
   ): Promise<Group | null> {
     const group = await Group.findOne({ where: { id: id } });
     if (group) {
+      group.updated_at = new Date();
       Object.assign(group, data);
       const errors = await validate(group);
       if (errors.length > 0) {
@@ -53,10 +110,13 @@ export class GroupResolver {
       } else {
         await group.save();
       }
+      return group;
+    } else {
+      throw new Error(`No group found for id`);
     }
-    return group;
   }
 
+  @Authorized()
   @Mutation(() => Group, { nullable: true })
   async deleteGroup(@Arg("id", () => ID) id: number): Promise<Group | null> {
     try {
