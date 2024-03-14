@@ -8,12 +8,12 @@ services:
       - ./backend/src/:/app/src/
     env_file:
       - ./.env
-  front:
-    build: ./frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend/src/:/app/src/
+  # front:
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend/src/:/app/src/
   db:
     image: postgres
     ports:
