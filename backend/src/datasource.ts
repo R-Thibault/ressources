@@ -28,13 +28,15 @@ export const dataSourceOptions: PostgresConnectionOptions = {
   ],
   synchronize: true,
   logging: true,
-};
-
-export const dataSource = new DataSource({
- ...dataSourceOptions,
-  host: "db",
-  port: 5432,
+  host: process.env.POSTGRES_HOST ?? "db",
+  port: process.env.POSTGRES_PORT
+    ? Number(process.env.POSTGRES_PORT)
+    : 5432,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
+};
+
+export const dataSource = new DataSource({
+  ...dataSourceOptions,
 });

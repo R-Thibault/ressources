@@ -24,6 +24,7 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
           password: password,
           firstname: firstname,
           lastname: lastname,
+          isTest: false,
         },
       },
     }

@@ -1,6 +1,6 @@
 import { GraphQLSchema, graphql, print } from "graphql";
 import { DataSource } from "typeorm";
-import { getSchema, testSchema } from "../../src/schema";
+import { getSchema } from "../../src/schema";
 import { dataSourceOptions } from "../../src/datasource";
 import * as userMutations from "./mutations";
 import { serialize, parse } from "cookie";
@@ -39,15 +39,10 @@ function mockContext(token?: string) {
 }
 
 beforeAll(async () => {
-  schema = await getSchema(testSchema);
+  schema = await getSchema();
 
   dataSource = new DataSource({
     ...dataSourceOptions,
-    host: "127.0.0.1",
-    port: 5432,
-    username: "admin",
-    password: "hbgJLaMVsK2QWIltjH",
-    database: "good_corner",
     dropSchema: true,
     logging: false,
   });
@@ -70,6 +65,7 @@ describe("tests user resolver", () => {
           password: "monsuperpassword",
           firstname: "User",
           lastname: "Test",
+          isTest: true,
         },
       },
     })) as any;
@@ -85,6 +81,7 @@ describe("tests user resolver", () => {
           password: "monsuperpassword",
           firstname: "User",
           lastname: "Test",
+          isTest: true,
         },
       },
     })) as any;
@@ -99,6 +96,7 @@ describe("tests user resolver", () => {
         data: {
           email: "test@gmail.com",
           password: "monsuperpassword",
+          isTest: true,
         },
       },
       contextValue: mock.context,
