@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "docker stop dbtesting ; docker run --rm --name dbtesting -p 5434:5432 -e POSTGRES_PASSWORD=password -d postgres && POSTGRES_HOST=127.0.0.1 POSTGRES_PORT=5434 POSTGRES_USER=postgres POSTGRES_PASSWORD=password POSTGRES_DB=postgres jest ",
     "start": "tsnd --poll ./src/index.ts"
   },
   "author": "",

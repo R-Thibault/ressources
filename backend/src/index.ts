@@ -8,11 +8,11 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { populateBdd } from "./utils/populateBdd";
-import { getSchema, prodSchema, testSchema } from "./schema";
+import { getSchema } from "./schema";
 import { User } from "./entities/User";
 
 const start = async () => {
-  const schema = await getSchema(testSchema);
+  const schema = await getSchema();
 
   const app = express();
   const httpServer = http.createServer(app);
