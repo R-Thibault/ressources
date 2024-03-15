@@ -11,7 +11,7 @@ export default function ResetPasswordRequestPage() {
     e.preventDefault();
     try {
       await requestPasswordReset({ variables: { email } });
-      console.error(' demande de réinitialisation du mot de passe validé');
+      
     } catch (error) {
       console.error('Erreur lors de la demande de réinitialisation du mot de passe', error);
     }
@@ -19,6 +19,8 @@ export default function ResetPasswordRequestPage() {
 
   return (
     <div className={SignStyles.container}>
+      <span className={SignStyles.logo}>RESSOURCES</span>
+      <p className={SignStyles.paragraphe}>Team up and share</p>
       <form onSubmit={handleSubmit}>
         <input
           className={SignStyles.input}

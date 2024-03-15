@@ -95,25 +95,19 @@ export class UserResolver {
   async validateAccount(
   @Arg("token") token: string
 ): Promise<boolean> {
-  console.log("validateAccount called with token:", token);
-  console.log("Searching for user with token...");
   const user = await User.findOneBy({ email_validation_token: token });
   if (!user) {
-    console.log("User not found with token:", token);
     throw new Error("User not found" ); 
   }
   const tokenExpired = user.email_validation_token_expires ? Date.now() > user.email_validation_token_expires.getTime() : true; 
-  console.log("Token expired status:", tokenExpired);
-
+  
   if (tokenExpired) {
     throw new Error("Token expired"); 
   } else {
     user.is_account_validated = true;
     user.email_validation_token = null; 
     user.email_validation_token_expires = null; 
-    console.log("Updating user account validation status...");
     await user.save();
-    console.log("User account validated successfully.");
     return true;
   }
 }
@@ -133,7 +127,6 @@ async resendValidationEmail(
   await user.save();
   // Appeler la fonction d'envoi d'email
   await sendValidationEmail(user.email, user.email_validation_token);
-
   return true;
 }
 
@@ -151,7 +144,6 @@ async requestPasswordReset(
   await user.save();
     // Appeler la fonction d'envoi d'email pour la réinitialisation du mot de passe
     await sendResetPasswordEmail(user.email, user.reset_password_token);
-
     return true;
 }
 
@@ -162,18 +154,22 @@ async resetPassword(
 ): Promise<boolean> {
   const user = await User.findOneBy({ reset_password_token: token });
   if (!user) {
-    throw new Error("Token invalid or expired");
+    throw new Error("User not found");
   }
-  // Mettre à jour le mot de passe de l'utilisateur
-  user.hashed_password = await argon2.hash(newPassword);
-  // Nettoyer les champs du token de réinitialisation
-  user.reset_password_token = null;
-  user.reset_password_token_expires = null;
+  const tokenExpired = user.reset_password_token_expires ? Date.now() > user.reset_password_token_expires.getTime() : true;
 
-  await user.save();
-  console.log("Update account validated successfully.");
-  return true;
+  if (tokenExpired) {
+    throw new Error("Token expired");
+  } else {
+    // Mettre à jour le mot de passe de l'utilisateur
+    user.hashed_password = await argon2.hash(newPassword);
+    user.reset_password_token = null;
+    user.reset_password_token_expires = null;
+    await user.save();
+    return true;
+  }
 }
+
 
 
 

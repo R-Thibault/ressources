@@ -63,6 +63,10 @@
 
 .forgotPassword{
   color: #000000;
+  cursor: pointer;
+}
+.forgotPassword:hover {
+  font-weight: bold;
 }
 
 .errorMessage {
