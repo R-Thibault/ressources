@@ -1,3 +1,4 @@
 .card-width {
-  width: 18rem;
+  width: clamp(15em, 25vw, 20em);
+  border: 5px solid black;
 }

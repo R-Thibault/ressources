@@ -3,7 +3,7 @@
 # Fonction pour obtenir les trois premières lettres de la branche actuelle
 get_branch_prefix() {
     branch_name=$(git rev-parse --abbrev-ref HEAD)
-    echo "${branch_name}" | tr '[:lower:]' '[:upper:]'
+    echo "${branch_name}" 
 }
 
 
