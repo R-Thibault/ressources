@@ -65,6 +65,7 @@ describe("tests user resolver", () => {
           password: "monsuperpassword",
           firstname: "User",
           lastname: "Test",
+          isTest: true,
         },
       },
     })) as any;
@@ -80,6 +81,7 @@ describe("tests user resolver", () => {
           password: "monsuperpassword",
           firstname: "User",
           lastname: "Test",
+          isTest: true,
         },
       },
     })) as any;
@@ -94,6 +96,7 @@ describe("tests user resolver", () => {
         data: {
           email: "test@gmail.com",
           password: "monsuperpassword",
+          isTest: true,
         },
       },
       contextValue: mock.context,

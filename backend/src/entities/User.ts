@@ -52,7 +52,7 @@ export class User extends BaseEntity {
   email_validation_token!: string | null;
 
   @Column({ type: "timestamp", nullable: true })
-  @Field( () => Int)
+  @Field(() => Int)
   email_validation_token_expires!: Date | null;
 
   @Column({ type: "boolean", default: false })
@@ -64,7 +64,7 @@ export class User extends BaseEntity {
   reset_password_token!: string | null;
 
   @Column({ type: "timestamp", nullable: true })
-  @Field( () => Int)
+  @Field(() => Int)
   reset_password_token_expires!: Date | null;
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
@@ -153,6 +153,8 @@ export class UserCreateInput {
   lastname!: string;
   @Field({ nullable: true })
   firstname!: string;
+  @Field()
+  isTest!: boolean;
 }
 
 @InputType()
@@ -169,4 +171,6 @@ export class UserSignInInput {
   email!: string;
   @Field()
   password!: string;
+  @Field()
+  isTest!: boolean;
 }
