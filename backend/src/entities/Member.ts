@@ -22,6 +22,7 @@ export class Member extends BaseEntity {
   id!: number;
 
   @ManyToOne(() => Group, (group) => group.members)
+  @JoinColumn({ name: "group_id" })
   @Field(() => Group)
   group!: Group;
 
@@ -43,7 +44,7 @@ export class Member extends BaseEntity {
   }
 
   @ManyToOne(() => User, (user) => user.members)
-  @JoinColumn({ name: "created_by" })
+  @JoinColumn({ name: "user_id" })
   @Field(() => User)
   user!: User;
 

@@ -5,9 +5,12 @@ import MenuItem from "../molecules/menuItem";
 import Logo from "../atoms/logo";
 import { GroupType } from "@/types/group.types";
 import { LinkMenuType } from "@/types/menu.types";
+import ModalComponent from "./modal";
+import CreateGroupForm from "../createGroupForm";
 
 export default function Menu(): React.ReactNode {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
+  const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
 
   const [signOut, { error: signOutError }] = useMutation<null>(SIGN_OUT, {
     refetchQueries: [MY_PROFILE],
@@ -22,6 +25,10 @@ export default function Menu(): React.ReactNode {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleModalVisible(value: boolean) {
+    setGroupModalVisible(value);
   }
 
   const profileItems: LinkMenuType[] = [
@@ -120,6 +127,7 @@ export default function Menu(): React.ReactNode {
             className="bi bi-people"
             hasSubItems={groupItems.length > 0}
             subItems={groupItems}
+            openModal={handleModalVisible}
           />
         </div>
         <div className="menu_wrapper">
@@ -173,6 +181,9 @@ export default function Menu(): React.ReactNode {
           </div>
         </div>
       </nav>
+      <ModalComponent opened={groupModalVisible} openModal={handleModalVisible}>
+        <CreateGroupForm handleSubmit={handleModalVisible} />
+      </ModalComponent>
     </menu>
   );
 }
