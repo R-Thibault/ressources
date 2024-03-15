@@ -71,3 +71,19 @@
     transform: scale(1.1);
   }
 }
+
+.like_content {
+  position: absolute;
+  right: 10%;
+  .btn_like {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    i {
+      border-radius: 50%;
+      color: $primary-color2;
+    }
+  }
+}
