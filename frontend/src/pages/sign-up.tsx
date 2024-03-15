@@ -46,44 +46,42 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
 
   return (
     <Layout title={"S'inscrire"}>
-      <div className={SignStyles.container}>
-        <span className={SignStyles.logo}>THE GOOD CORNER</span>
+      <div className="container_signin">
+        <span className="logo">THE GOOD CORNER</span>
         <h3>Inscription</h3>
-        <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
+        <form className="form" onSubmit={(e) => submitForm(e)}>
           <input
-            className={SignStyles.input}
+            className="input"
             type="text"
             value={lastname}
             placeholder="Nom"
             onChange={(e) => setLastname(e.target.value)}
           />
           <input
-            className={SignStyles.input}
+            className="input"
             type="text"
             value={firstname}
             placeholder="Prénom"
             onChange={(e) => setFirstname(e.target.value)}
           />
           <input
-            className={SignStyles.input}
+            className="input"
             type="email"
             value={email}
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className={SignStyles.input}
+            className="input"
             type="password"
             value={password}
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           {failed && (
-            <span className={SignStyles.errorMessage}>
-              Une erreur est survenue
-            </span>
+            <span className="error_Message">Une erreur est survenue</span>
           )}
-          <button className={SignStyles.button} type="submit">
+          <button className="btn_primary menu_button_add_group" type="submit">
             Inscription
           </button>
         </form>

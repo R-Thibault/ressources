@@ -1,4 +1,4 @@
-.container {
+.container_signin {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,7 +6,6 @@
   width: 100%;
   min-height: 700px;
 }
-
 .logo {
   font-size: 2em;
   font-weight: bold;
@@ -45,7 +44,7 @@
   height: 45px;
   padding: 8px;
   border-radius: 8px;
-  border: 2px solid #8685EF;
+  border: 2px solid #8685ef;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,24 +52,15 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #8685EF;
+  background-color: #8685ef;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: #5f5dc4; 
+  background-color: #5f5dc4;
 }
 
-.forgotPassword{
-  color: #000000;
-  cursor: pointer;
-}
-.forgotPassword:hover {
-  font-weight: bold;
-}
-
-.errorMessage {
+.error_Message {
   font-size: 15px;
   color: red;
 }
-
