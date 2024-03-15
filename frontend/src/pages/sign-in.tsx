@@ -40,12 +40,12 @@ export default function SignIn() {
   };
 
   return (
-    <div className={SignStyles.container}>
-      <span className={SignStyles.logo}>RESSOURCES</span>
-      <p className={SignStyles.paragraphe}>Team up and share</p>
-      <form className={SignStyles.form} onSubmit={submitForm}>
+    <div className="container_signin">
+      <span className="logo">RESSOURCES</span>
+      <p className="paragraphe">Team up and share</p>
+      <form className="form" onSubmit={submitForm}>
         <input
-          className={SignStyles.input}
+          className="input"
           type="email"
           placeholder="Email"
           value={email}
@@ -53,24 +53,21 @@ export default function SignIn() {
           required
         />
         <input
-          className={SignStyles.input}
+          className="input"
           type="password"
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button className={SignStyles.button} type="submit" disabled={loading}>
+        <button className="btn_primary" type="submit" disabled={loading}>
           Se connecter
         </button>
-        <a
-          onClick={handleForgotPasswordClick}
-          className={SignStyles.forgotPassword}
-        >
+        <a onClick={handleForgotPasswordClick} className="forgot_Password">
           Mot de passe oublié
         </a>
       </form>
-      {errorMessage && <p className={SignStyles.error}>{errorMessage}</p>}
+      {errorMessage && <p className="error_Message">{errorMessage}</p>}
     </div>
   );
 }
