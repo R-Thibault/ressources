@@ -10,6 +10,7 @@ export type MenuItemType = {
   className: string;
   hasSubItems: boolean;
   subItems?: GroupType[] | LinkMenuType[];
+  openModal?(value: boolean): void;
 };
 
 export type LinkMenuType = {
