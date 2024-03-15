@@ -49,7 +49,10 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
         </div>
       )}
       {props.title === "Mes groupes" && props.menuOpened && (
-        <button className="btn_primary menu_button_add_group">
+        <button
+          className="btn_primary menu_button_add_group"
+          onClick={() => props.openModal && props.openModal(true)}
+        >
           <i className="bi bi-plus-circle" />
           <span>Ajouter un groupe</span>
         </button>

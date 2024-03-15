@@ -12,9 +12,9 @@
 @import "./components/organisms/menu";
 @import "./components/molecules/menu-item";
 @import "./components/atoms/lien";
+@import "./components/organisms/modal";
+@import "./components/molecules/form";
 
-/* Pages */
-
-/* Bootstrap icons */
+/* Pages */ /* Bootstrap */
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 @import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
