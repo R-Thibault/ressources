@@ -38,7 +38,6 @@ export const MY_PROFILE = gql`
   }
 `;
 
-
 export const RESEND_VALIDATION_EMAIL = gql`
   mutation ResendValidationEmail($email: String!) {
     resendValidationEmail(email: $email)
@@ -60,5 +59,14 @@ export const REQUEST_PASSWORD_RESET = gql`
 export const RESET_PASSWORD = gql`
   mutation ResetPassword($token: String!, $newPassword: String!) {
     resetPassword(token: $token, newPassword: $newPassword)
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($data: UserUpdateInput!, $updateUserId: ID!) {
+    item: updateUser(data: $data, id: $updateUserId) {
+      lastname
+      firstname
+    }
   }
 `;
