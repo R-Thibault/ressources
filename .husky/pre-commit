@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if (cd frontend && npm run eslint); then
+    echo "Frontend ESLint passed"
+else
+    echo "Frontend ESLint failed"
+    exit 1 # Abort the commit if frontend ESLint returns errors
+fi

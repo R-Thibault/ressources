@@ -28,7 +28,8 @@ const publicPages = ["/sign-in", "/sign-up", "/"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
-
+  console.log("test");
+  //console.log("test");
   const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
 
   useEffect(() => {
