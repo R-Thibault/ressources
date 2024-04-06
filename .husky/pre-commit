@@ -49,7 +49,7 @@ fi
 # Check if the frontend directory exists
 if [ -d "$BACKEND_DIR" ]; then
 
-    if (cd "$BACKEND_DIR" && npm run nextLint); then
+    if (cd "$BACKEND_DIR" && npm run eslint); then
         echo "Backend ESLint passed"
     else
         echo "Backend ESLint failed"
