@@ -12,7 +12,7 @@ export default function Menu(): React.ReactNode {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
   const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
 
-  const [signOut, { error: signOutError }] = useMutation<null>(SIGN_OUT, {
+  const [signOut] = useMutation<null>(SIGN_OUT, {
     refetchQueries: [MY_PROFILE],
   });
 
@@ -22,8 +22,8 @@ export default function Menu(): React.ReactNode {
     try {
       apolloClient.clearStore();
       await signOut();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   }
 

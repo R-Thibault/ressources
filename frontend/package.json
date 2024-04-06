@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "echo \"test linter frontend\"",
     "nextLint": "next lint",
-    "eslint": "eslint \"**/*.js\"",
     "test": "echo \"Running test\""
   },
   "dependencies": {

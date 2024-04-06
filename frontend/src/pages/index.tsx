@@ -1,6 +1,4 @@
-import RecentAds from "@/components/recentAds";
 import Layout from "@/components/organisms/layout";
-import CardsDisplay from "@/components/organisms/cardsDisplay";
 
 export default function Home(): React.ReactNode {
   return (

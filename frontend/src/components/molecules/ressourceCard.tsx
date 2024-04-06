@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Tag from "../atoms/tag";
 import LikeBtn from "../atoms/likeBtn";
 import Avatar from "../atoms/avatar";

@@ -30,7 +30,7 @@ export default function CreateGroupForm(props: {
         props.handleSubmit(false);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

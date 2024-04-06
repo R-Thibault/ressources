@@ -1,8 +1,61 @@
 #!/bin/bash
 
-if (cd frontend && npm run eslint); then
-    echo "Frontend ESLint passed"
+# if (cd ../frontend && npm run nextLint); then
+#     echo "Frontend ESLint passed"
+# else
+#     echo "Frontend ESLint failed"
+#     exit 1 # Abort the commit if frontend ESLint returns errors
+# fi
+
+
+# # Absolute path to the frontend directory
+# FRONTEND_DIR="C:\Users\thiba\Documents\wildCode\Projet fin d'année\wildShare\frontend"
+
+# # Check if the frontend directory exists
+# if [ -d "$FRONTEND_DIR" ]; then
+#     # Run ESLint for frontend
+#     if (cd "$FRONTEND_DIR" && npm run nextLint); then
+#         echo "Frontend ESLint passed"
+#     else
+#         echo "Frontend ESLint failed"
+#         exit 1 # Abort the commit if frontend ESLint returns errors
+#     fi
+# else
+#     echo "Frontend directory not found"
+#     exit 1 # Abort the commit if frontend directory is not found
+# fi
+
+# Get the directory of the pre-commit script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Navigate to the frontend directory (assuming it's located at "../frontend" relative to the script)
+FRONTEND_DIR="$SCRIPT_DIR/../frontend"
+BACKEND_DIR="$SCRIPT_DIR/../backend"
+
+# Check if the frontend directory exists
+if [ -d "$FRONTEND_DIR" ]; then
+
+    if (cd "$FRONTEND_DIR" && npm run nextLint); then
+        echo "Frontend ESLint passed"
+    else
+        echo "Frontend ESLint failed"
+        exit 1 # Abort the commit if frontend ESLint returns errors
+    fi
 else
-    echo "Frontend ESLint failed"
-    exit 1 # Abort the commit if frontend ESLint returns errors
+    echo "Frontend directory not found"
+    exit 1 # Abort the commit if frontend directory is not found
+fi
+
+# Check if the frontend directory exists
+if [ -d "$BACKEND_DIR" ]; then
+
+    if (cd "$BACKEND_DIR" && npm run nextLint); then
+        echo "Backend ESLint passed"
+    else
+        echo "Backend ESLint failed"
+        exit 1 # Abort the commit if frontend ESLint returns errors
+    fi
+else
+    echo "Backend directory not found"
+    exit 1 # Abort the commit if frontend directory is not found
 fi

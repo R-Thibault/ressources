@@ -81,7 +81,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
   useEffect(() => {
     if (props.query) {
       if (ad?.item) {
-        let tagsArray = [];
+        const tagsArray = [];
 
         for (const tag of ad.item.tags) {
           tagsArray.push({ id: +tag.id });
@@ -110,7 +110,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
         router.replace("/");
       }
     } catch (error) {
-      console.log(error);
       setErrors({ ...errors, submit: true });
     }
   }
@@ -127,7 +126,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
         router.replace("/");
       }
     } catch (error) {
-      console.log(error);
       setErrors({ ...errors, submit: true });
     }
   }
@@ -285,6 +283,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
                     : false
                 }
                 name={item.title}
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 onChange={(e) => handleSelectBox(item)}
               />
               <label htmlFor={item.title}>{item.title}</label>

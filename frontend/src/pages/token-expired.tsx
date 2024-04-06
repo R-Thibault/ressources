@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { RESEND_VALIDATION_EMAIL } from "../Request/user";
 import { useRouter } from "next/router";
-import SignStyles from "@/styles/Sign.module.css";
 
 export default function ResendValidationEmailPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [resendValidationEmail, { loading, error }] = useMutation(
+  const [resendValidationEmail, { loading }] = useMutation(
     RESEND_VALIDATION_EMAIL
   );
   const router = useRouter();

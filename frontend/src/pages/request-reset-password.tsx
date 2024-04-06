@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { REQUEST_PASSWORD_RESET } from "../Request/user";
-import SignStyles from "@/styles/Sign.module.css";
 
 export default function ResetPasswordRequestPage() {
   const [email, setEmail] = useState("");
