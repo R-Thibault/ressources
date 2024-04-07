@@ -20,17 +20,14 @@ export default function profile() {
       refetchQueries: [MY_PROFILE],
     }
   );
-  console.log(profileDatas);
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(undefined);
     setSuccess(undefined);
-    console.log("EVENT", event);
     const data: UserUpdateType = {
       lastname,
       firstname,
     };
-    console.log("DATA", data);
     if (
       data.lastname.trim().length === 0 ||
       data.firstname.trim().length === 0
@@ -50,7 +47,7 @@ export default function profile() {
       if (!result.errors?.length) {
         setSuccess("succes");
       } else {
-        console.log(result.errors);
+        console.error(result.errors);
       }
     }
   }
