@@ -24,6 +24,7 @@ export const DummyUsers: {
   firstname: string;
   image_id: any;
   created_at: Date;
+  is_account_validated: boolean;
 }[] = [
   {
     email: "user1@gmail.com",
@@ -32,6 +33,7 @@ export const DummyUsers: {
     firstname: "Jacques",
     image_id: { id: 1 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
+    is_account_validated: true,
   },
   {
     email: "user2@gmail.com",
@@ -40,6 +42,7 @@ export const DummyUsers: {
     firstname: "Brac",
     image_id: { id: 2 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
+    is_account_validated: true,
   },
   {
     email: "user3@gmail.com",
@@ -48,6 +51,7 @@ export const DummyUsers: {
     firstname: "Soto",
     image_id: { id: 3 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
+    is_account_validated: true,
   },
   {
     email: "user4@gmail.com",
@@ -56,6 +60,7 @@ export const DummyUsers: {
     firstname: "Jin",
     image_id: { id: 4 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
+    is_account_validated: true,
   },
 ];
 
