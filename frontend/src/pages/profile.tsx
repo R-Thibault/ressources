@@ -7,8 +7,8 @@ import { UserType, UserUpdateType } from "@/types/user.type";
 import { spawn } from "child_process";
 
 export default function profile() {
-  const [error, setError] = useState<"emptyFields">();
-  const [success, setSuccess] = useState<"succes">();
+  const [error, setError] = useState<Boolean>(false);
+  const [success, setSuccess] = useState<Boolean>(false);
   const [lastname, setLastname] = useState("");
   const [firstname, setFirstname] = useState("");
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
@@ -22,8 +22,8 @@ export default function profile() {
   );
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError(undefined);
-    setSuccess(undefined);
+    setError(false);
+    setSuccess(false);
     const data: UserUpdateType = {
       lastname,
       firstname,
@@ -32,7 +32,7 @@ export default function profile() {
       data.lastname.trim().length === 0 ||
       data.firstname.trim().length === 0
     ) {
-      setError("emptyFields");
+      setError(true);
     } else {
       if (!profileDatas || !profileDatas.id) {
         // setError("User ID is not available");
@@ -45,7 +45,7 @@ export default function profile() {
         },
       });
       if (!result.errors?.length) {
-        setSuccess("succes");
+        setSuccess(true);
       } else {
         console.error(result.errors);
       }
