@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Header from "./header";
 import Menu from "./menu";
 
 export type LayoutProps = {

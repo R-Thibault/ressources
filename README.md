@@ -4,6 +4,9 @@
 
 1 - Renommer le fichier .env.sample à la racine en .env et compléter les entrées
 2 - Renommer le fichier .env.sample à la racine du dossier backend en .env et compléter les entrées
+3 - **À la racine du projet, exécutez les commandes suivantes :**
+`npm install`
+`npx husky init`
 
 ### Pour builder et démarrer le projet via Docker
 

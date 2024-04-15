@@ -1,11 +1,10 @@
 import { SIGN_UP } from "@/Request/user";
-import Layout, { LayoutProps } from "@/components/organisms/layout";
-import SignStyles from "@/styles/Sign.module.css";
+import Layout from "@/components/organisms/layout";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
-export default function SignUp(props: LayoutProps): React.ReactNode {
+export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lastname, setLastname] = useState("");
@@ -34,12 +33,12 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
     e.preventDefault();
     try {
       setFailed(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await signUp();
       if (!error) {
         router.replace("/sign-in");
       }
     } catch (error) {
-      console.log(error);
       setFailed(true);
     }
   }

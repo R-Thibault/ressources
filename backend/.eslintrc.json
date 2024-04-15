@@ -7,7 +7,6 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@next/next/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -16,7 +15,5 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "rules": {
-    "no-console": ["error", { "allow": ["error"] }]
-  }
+  "rules": { "no-console": ["error", { "allow": ["error"] }] }
 }

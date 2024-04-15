@@ -1,17 +1,13 @@
-import Category from "../category";
-import { CategoryProps } from "../adCard";
 import { useQuery, useMutation, useApolloClient } from "@apollo/client";
-import { GET_ALL_CATEGORIES } from "@/Request/category";
 import { MY_PROFILE, SIGN_OUT } from "@/Request/user";
-import Image from "next/image";
 
 export default function Header(): React.ReactNode {
-  const { data } = useQuery<{ items: CategoryProps[] }>(GET_ALL_CATEGORIES);
-  const { data: dataMe, error } = useQuery<{
+  //const { data } = useQuery<{ items: CategoryProps[] }>(GET_ALL_CATEGORIES);
+  const { data: dataMe } = useQuery<{
     item: { id: number; email: string } | null;
   }>(MY_PROFILE);
 
-  const [signOut, { error: signOutError }] = useMutation<null>(SIGN_OUT, {
+  const [signOut] = useMutation<null>(SIGN_OUT, {
     refetchQueries: [MY_PROFILE],
   });
 
@@ -21,8 +17,8 @@ export default function Header(): React.ReactNode {
     try {
       apolloClient.clearStore();
       await signOut();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   }
 
