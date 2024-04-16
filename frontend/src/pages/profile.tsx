@@ -4,17 +4,16 @@ import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
 import { MY_PROFILE, UPDATE_USER } from "@/Request/user";
 import { UserType, UserUpdateType } from "@/types/user.type";
-import { spawn } from "child_process";
 
 export default function profile() {
-  const [error, setError] = useState<Boolean>(false);
-  const [success, setSuccess] = useState<Boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const [lastname, setLastname] = useState("");
   const [firstname, setFirstname] = useState("");
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
 
   const profileDatas = dataUser?.item;
-  const [doUpdate, { error: errors, loading: loadingUpdate }] = useMutation(
+  const [doUpdate] = useMutation(
     UPDATE_USER,
     {
       refetchQueries: [MY_PROFILE],
