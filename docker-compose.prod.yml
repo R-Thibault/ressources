@@ -1,0 +1,33 @@
+services:
+  server:
+    image: thibaultr0/wildshare-backend:latest
+    platform: linux/amd64
+    command: sh -c "npm run build && npm run prod"
+    env_file:
+      - ./.env
+  front:
+    image: thibaultr0/wildshare-frontend:latest
+    platform: linux/amd64
+    command: sh -c "npm run build"
+  db:
+    image: postgres
+    platform: linux/amd64
+    volumes:
+      - /var/lib/postgresql/data
+    env_file:
+      - ./.env
+  adminer:
+    image: adminer
+    platform: linux/amd64
+  nginx:
+    image: nginx:1.21.3
+    platform: linux/amd64
+    depends_on:
+      - server
+      - front
+    restart: always
+    ports:
+      - ${GATEWAY_PORT:-8000}:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+#     - ./logs:/var/log/nginx
