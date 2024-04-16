@@ -2,13 +2,11 @@ services:
   server:
     image: thibaultr0/wildshare-backend:latest
     platform: linux/amd64
-    command: sh -c "npm run build && npm run prod"
     env_file:
       - ./.env
   front:
     image: thibaultr0/wildshare-frontend:latest
     platform: linux/amd64
-    command: sh -c "npm run build"
   db:
     image: postgres
     platform: linux/amd64
