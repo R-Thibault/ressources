@@ -26,6 +26,7 @@ export class FileResolver {
   ): Promise<File> {
     try {
       const newFile = new File();
+      newFile.name = data.name;
       const error = await validate(newFile);
 
       if (error.length > 0) {
@@ -87,7 +88,7 @@ export class FileResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          const datas = await newFile.save();
+          await newFile.save();
         }
       } catch (error) {
         throw new Error(`error occured ${JSON.stringify(error)}`);

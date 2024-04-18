@@ -147,7 +147,7 @@ export class GroupResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          const datas = await newGroup.save();
+          await newGroup.save();
         }
       } catch (error) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
