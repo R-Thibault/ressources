@@ -57,10 +57,13 @@ export class Tag extends BaseEntity {
 export class TagCreateInput {
   @Field()
   name!: string;
+  @Field()
+  created_by_user!: User;
 }
 
 @InputType()
 export class TagUpdateInput {
   @Field()
   name!: string;
+  created_by_user!: number;
 }

@@ -1,8 +1,9 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Ctx } from "type-graphql";
 import { Tag, TagCreateInput, TagUpdateInput } from "../entities/Tag";
 import { validateDatas } from "../utils/validate";
 import { DummyTags } from "../dummyDatas";
 import { validate } from "class-validator";
+import { ContextType } from "../middlewares/auth";
 
 @Resolver(Tag)
 export class TagResolver {
@@ -26,9 +27,15 @@ export class TagResolver {
   }
 
   @Mutation(() => Tag)
-  async createTag(@Arg("data") data: TagCreateInput): Promise<Tag> {
+  async createTag(
+    @Arg("data", () => TagCreateInput) data: TagCreateInput,
+    @Ctx() context: ContextType
+  ): Promise<Tag> {
     try {
       const newTag = new Tag();
+      Object.assign(newTag, data, {
+        created_by_user: context.user,
+      });
       const error = await validate(newTag);
 
       if (error.length > 0) {
@@ -56,6 +63,7 @@ export class TagResolver {
       const datas = await tag?.remove();
       return datas;
     } catch (error) {
+      console.error(error);
       console.error(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
