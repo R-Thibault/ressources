@@ -6,10 +6,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  ManyToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  JoinTable,
   ManyToOne,
 } from "typeorm";
 import { User } from "./User";
@@ -37,7 +34,7 @@ export class Ressource extends BaseEntity {
 
   @OneToOne(() => Image)
   @JoinColumn()
-  @Field()
+  @Field(() => Image, { nullable: true })
   image_id!: Image;
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
@@ -55,22 +52,22 @@ export class Ressource extends BaseEntity {
   created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updated_at!: Date;
 
   @ManyToOne(() => User, (user) => user.ressources_update)
   @JoinColumn({ name: "updated_by" })
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   updated_by_user!: User;
 
   @OneToOne(() => File)
   @JoinColumn()
-  @Field()
+  @Field(() => File, { nullable: true })
   file_id!: File;
 
   @OneToOne(() => Link)
   @JoinColumn()
-  @Field()
+  @Field(() => Link, { nullable: true })
   link_id!: Link;
 }
 

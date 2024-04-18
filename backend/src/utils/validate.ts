@@ -8,7 +8,7 @@ export const validateDatas = async (
 ): Promise<ValidationError[]> => {
   const errors = await validate(datas);
   if (errors.length > 0) {
-    console.log(errors);
+    console.error(errors);
     return errors;
   }
   return [];
