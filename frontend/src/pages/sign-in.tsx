@@ -2,6 +2,9 @@ import React, { FormEvent, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { SIGN_IN, MY_PROFILE } from "@/Request/user";
 import { useRouter } from "next/router";
+import Logo from "@/components/atoms/logo";
+import { Alert } from "react-bootstrap";
+
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,33 +43,46 @@ export default function SignIn() {
 
   return (
     <div className="container_signin">
-      <span className="logo">RESSOURCES</span>
-      <p className="paragraphe">Team up and share</p>
-      <form className="form" onSubmit={submitForm}>
-        <input
-          className="input"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          className="input"
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className="btn_primary" type="submit" disabled={loading}>
-          Se connecter
-        </button>
-        <a onClick={handleForgotPasswordClick} className="forgot_Password">
-          Mot de passe oublié
-        </a>
-      </form>
-      {errorMessage && <p className="error_Message">{errorMessage}</p>}
+      <Logo className={"menu_white_logo"} link="/sign-in" />
+      <div className="signin_wrapper">
+        <span>Connexion</span>
+        <p className="title">Content de vous revoir</p>
+        <form className="form" onSubmit={submitForm}>
+          <input
+            className="input"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            className="input"
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {errorMessage && (
+            <Alert className="full_width" variant={"danger"}>
+              {errorMessage}
+            </Alert>
+          )}
+          <button className="btn_primary" type="submit" disabled={loading}>
+            Se connecter
+          </button>
+          <a onClick={handleForgotPasswordClick} className="forgot_Password">
+            Mot de passe oublié
+          </a>
+          <p className="signup_link">
+            Vous n'avez pas encore de compte ?{" "}
+            <a href="/sign-up" className="forgot_Password">
+              Créez en un dès maintenant !
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
