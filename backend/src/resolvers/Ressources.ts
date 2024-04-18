@@ -58,12 +58,38 @@ export class RessourceResolver {
     }
   }
 
+  @Query(() => [Ressource])
+  async getAllRessourceFromOneUser(
+    @Ctx() context: ContextType
+  ): Promise<Ressource[]> {
+    try {
+      const user = await getUser(context.req, context.res);
+      if (!user) {
+        throw new Error(`error`);
+      } else {
+        const ressource = await Ressource.find({
+          where: { created_by_user: { id: user.id } },
+          relations: {
+            image_id: true,
+            created_by_user: { image_id: true },
+            file_id: true,
+            link_id: true,
+          },
+        });
+        return ressource;
+      }
+    } catch (error) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+  }
+
   @Mutation(() => Ressource)
   async createRessource(
-    @Arg("data") data: RessourceCreateInput
+    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput
   ): Promise<Ressource> {
     try {
       const newRessource = new Ressource();
+      newRessource.title = data.title;
       const error = await validate(newRessource);
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
