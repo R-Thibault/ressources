@@ -1,8 +1,8 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
 import { ImageCreateInput, ImageUpdateInput, Image } from "../entities/Image";
-import { validateDatas } from "../utils/validate";
+
 import { validate } from "class-validator";
-import { DummyImages, DummyLinks } from "../dummyDatas";
+import { DummyImages } from "../dummyDatas";
 
 @Resolver(Image)
 export class ImageResolver {
@@ -90,7 +90,7 @@ export class ImageResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          const datas = await newImage.save();
+          await newImage.save();
         }
       } catch (error) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
