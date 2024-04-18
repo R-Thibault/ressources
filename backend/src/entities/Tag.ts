@@ -6,10 +6,12 @@ import {
   ManyToOne,
   BeforeInsert,
   JoinColumn,
+  ManyToMany,
 } from "typeorm";
 
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { User } from "./User";
+import { Ressource } from "./Ressource";
 
 @Entity()
 @ObjectType()
@@ -21,6 +23,11 @@ export class Tag extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
   name!: string;
+
+  @ManyToMany(() => Ressource, (ressource) => ressource.tags)
+  @JoinColumn()
+  @Field(() => Ressource)
+  ressources!: Ressource[];
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()
@@ -50,10 +57,13 @@ export class Tag extends BaseEntity {
 export class TagCreateInput {
   @Field()
   name!: string;
+  @Field()
+  created_by_user!: User;
 }
 
 @InputType()
 export class TagUpdateInput {
   @Field()
   name!: string;
+  created_by_user!: number;
 }
