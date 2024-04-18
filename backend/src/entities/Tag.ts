@@ -3,14 +3,11 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  OneToMany,
   ManyToOne,
   BeforeInsert,
-  OneToOne,
   JoinColumn,
 } from "typeorm";
-import { MaxLength, MinLength } from "class-validator";
+
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { User } from "./User";
 
