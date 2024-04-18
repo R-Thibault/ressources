@@ -8,11 +8,13 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   ManyToOne,
+  ManyToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Link } from "./Link";
 import { File } from "./File";
 import { Image } from "./Image";
+import { Tag } from "./Tag";
 @Entity()
 @ObjectType()
 export class Ressource extends BaseEntity {
@@ -59,6 +61,11 @@ export class Ressource extends BaseEntity {
   @JoinColumn({ name: "updated_by" })
   @Field(() => User, { nullable: true })
   updated_by_user!: User;
+
+  @ManyToMany(() => Tag, (tag) => tag.ressources)
+  @JoinColumn()
+  @Field(() => Tag, { nullable: true })
+  tags!: Tag[];
 
   @OneToOne(() => File)
   @JoinColumn()

@@ -46,6 +46,7 @@ export class RessourceResolver {
           relations: {
             image_id: true,
             created_by_user: { image_id: true },
+            tags: true,
             file_id: true,
             link_id: true,
           },
@@ -59,13 +60,15 @@ export class RessourceResolver {
 
   @Mutation(() => Ressource)
   async createRessource(
-    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput
+    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput,
+    @Ctx() context: ContextType
   ): Promise<Ressource> {
     try {
       const newRessource = new Ressource();
-      newRessource.title = data.title;
+      Object.assign(newRessource, data, {
+        created_by_user: context.user,
+      });
       const error = await validate(newRessource);
-
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
