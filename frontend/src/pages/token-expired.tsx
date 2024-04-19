@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { RESEND_VALIDATION_EMAIL } from "../Request/user";
+import { RESEND_VALIDATION_EMAIL } from "../requests/user";
 import { useRouter } from "next/router";
 
 export default function ResendValidationEmailPage() {

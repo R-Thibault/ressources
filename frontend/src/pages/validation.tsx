@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { VALIDATE_ACCOUNT } from "../Request/user";
+import { VALIDATE_ACCOUNT } from "../requests/user";
 import Logo from "@/components/atoms/logo";
 
 export default function ValidateAccountPage() {

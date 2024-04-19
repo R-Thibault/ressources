@@ -1,4 +1,4 @@
-import { SIGN_UP } from "@/Request/user";
+import { SIGN_UP } from "@/requests/user";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";

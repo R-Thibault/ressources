@@ -2,7 +2,7 @@ import Layout from "@/components/organisms/layout";
 import React, { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
-import { MY_PROFILE, UPDATE_USER } from "@/Request/user";
+import { MY_PROFILE, UPDATE_USER } from "@/requests/user";
 import { UserType, UserUpdateType } from "@/types/user.type";
 
 export default function profile() {

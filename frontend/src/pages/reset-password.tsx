@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { RESET_PASSWORD } from "../Request/user";
+import { RESET_PASSWORD } from "../requests/user";
 
 export default function ResetPasswordPage() {
   const router = useRouter();

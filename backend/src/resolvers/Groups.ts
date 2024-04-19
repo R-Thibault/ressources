@@ -51,6 +51,7 @@ export class GroupResolver {
         where: { user: { id: context.user?.id } },
         relations: {
           group: true,
+          user: true,
         },
       });
 
