@@ -3,24 +3,27 @@ import { useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
+import { checkPasswords, checkEmail } from "@/utils/checkInput";
 
 export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [lastname, setLastname] = useState("");
   const [firstname, setFirstname] = useState("");
 
-  const [failed, setFailed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [signUp, { data }] = useMutation<{ id: number; email: string }>(
     SIGN_UP,
     {
       variables: {
         data: {
-          email: email,
-          password: password,
-          firstname: firstname,
-          lastname: lastname,
+          email,
+          password,
+          confirmPassword,
+          firstname,
+          lastname,
           isTest: false,
         },
       },
@@ -30,11 +33,23 @@ export default function SignUp(): React.ReactNode {
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      setFailed(false);
+      setErrorMessage("");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await signUp();
+
+      const validPassword = checkPasswords(password, confirmPassword);
+      const validEmail = checkEmail(email);
+
+      if (validEmail) {
+        if (validPassword.result) {
+          await signUp();
+        } else {
+          setErrorMessage(validPassword.errorMessage);
+        }
+      } else {
+        setErrorMessage("Merci de renseigner un email valide!");
+      }
     } catch (error) {
-      setFailed(true);
+      setErrorMessage("Une erreur est survenue. Veuillez réessayer!");
     }
   }
 
@@ -80,12 +95,20 @@ export default function SignUp(): React.ReactNode {
                 required
                 type="password"
                 value={password}
-                placeholder="password"
+                placeholder="mot de passe"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {failed && (
+              <input
+                className="input"
+                required
+                type="password"
+                value={confirmPassword}
+                placeholder="confirmation mot de passe"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {errorMessage !== "" && (
                 <Alert className="full_width" variant={"danger"}>
-                  Une erreur est survenue
+                  {errorMessage}
                 </Alert>
               )}
               <button

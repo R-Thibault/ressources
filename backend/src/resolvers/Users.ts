@@ -18,6 +18,7 @@ import {
   sendResetPasswordEmail,
   sendValidationEmail,
 } from "../utils/sendemail";
+import { checkEmail, checkPasswords } from "../utils/checkInput";
 
 @Resolver(User)
 export class UserResolver {
@@ -80,6 +81,18 @@ export class UserResolver {
     if (existingUser) {
       throw new Error(`User already exists`);
     }
+
+    const validPassword = checkPasswords(data.password, data.confirmPassword);
+    const validEmail = checkEmail(data.email);
+
+    if (!validPassword.result) {
+      throw new Error(validPassword.errorMessage);
+    }
+
+    if (!validEmail) {
+      throw new Error("Merci de renseigner un email valide!");
+    }
+
     const newUser = new User();
     newUser.email = data.email;
     newUser.hashed_password = await argon2.hash(data.password);
@@ -138,6 +151,11 @@ export class UserResolver {
     if (!user) {
       throw new Error("User not found");
     }
+    const validEmail = checkEmail(email);
+
+    if (!validEmail) {
+      throw new Error("Merci de renseigner un email valide!");
+    }
     const token = randomBytes(48).toString("hex");
     user.reset_password_token = token;
     user.reset_password_token_expires = new Date(Date.now() + 3600000); // Expiration dans 1 heure
@@ -150,7 +168,8 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async resetPassword(
     @Arg("token") token: string,
-    @Arg("newPassword") newPassword: string
+    @Arg("newPassword") newPassword: string,
+    @Arg("confirmNewPassword") confirmNewPassword: string
   ): Promise<boolean> {
     const user = await User.findOneBy({ reset_password_token: token });
     if (!user) {
@@ -163,6 +182,12 @@ export class UserResolver {
     if (tokenExpired) {
       throw new Error("Token expired");
     } else {
+      const validPassword = checkPasswords(newPassword, confirmNewPassword);
+
+      if (!validPassword.result) {
+        throw new Error(validPassword.errorMessage);
+      }
+
       // Mettre à jour le mot de passe de l'utilisateur
       user.hashed_password = await argon2.hash(newPassword);
       user.reset_password_token = null;
@@ -240,7 +265,7 @@ export class UserResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          const datas = await newUser.save();
+          await newUser.save();
         }
       } catch (error) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
