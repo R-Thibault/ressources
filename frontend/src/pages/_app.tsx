@@ -12,7 +12,7 @@ import {
 import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { MY_PROFILE } from "@/Request/user";
+import { MY_PROFILE } from "@/requests/user";
 
 const link = createHttpLink({
   uri: API_URL,
@@ -24,7 +24,7 @@ const client = new ApolloClient({
   link,
 });
 
-const publicPages = ["/sign-in", "/sign-up", "/"];
+const publicPages = ["/sign-in", "/sign-up"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();

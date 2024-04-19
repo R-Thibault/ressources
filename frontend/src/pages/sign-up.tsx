@@ -1,6 +1,5 @@
-import { SIGN_UP } from "@/Request/user";
+import { SIGN_UP } from "@/requests/user";
 import { useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
@@ -13,9 +12,7 @@ export default function SignUp(): React.ReactNode {
 
   const [failed, setFailed] = useState(false);
 
-  const router = useRouter();
-
-  const [signUp, { data, error }] = useMutation<{ id: number; email: string }>(
+  const [signUp, { data }] = useMutation<{ id: number; email: string }>(
     SIGN_UP,
     {
       variables: {
@@ -36,9 +33,6 @@ export default function SignUp(): React.ReactNode {
       setFailed(false);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await signUp();
-      /*   if (!error) {
-        router.replace("/sign-in");
-      } */
     } catch (error) {
       setFailed(true);
     }

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useApolloClient } from "@apollo/client";
-import { MY_PROFILE, SIGN_OUT } from "@/Request/user";
+import { MY_PROFILE, SIGN_OUT } from "@/requests/user";
 
 export default function Header(): React.ReactNode {
   //const { data } = useQuery<{ items: CategoryProps[] }>(GET_ALL_CATEGORIES);

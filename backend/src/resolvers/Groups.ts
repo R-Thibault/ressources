@@ -31,11 +31,9 @@ export class GroupResolver {
   }
 
   @Authorized()
-  @Query(() => [GroupsMembers])
-  async getMyGroups(@Ctx() context: ContextType): Promise<GroupsMembers[]> {
+  @Query(() => [Group])
+  async getMyGroups(@Ctx() context: ContextType): Promise<Group[]> {
     try {
-      let groups: GroupsMembers[] = [];
-
       const group = await Group.find({
         where: { created_by_user: { id: context.user?.id } },
         relations: {
@@ -43,24 +41,21 @@ export class GroupResolver {
         },
       });
 
-      if (group.length > 0) {
-        groups = groups.concat(group);
-      }
-
       const groupMember = await Member.find({
         where: { user: { id: context.user?.id } },
         relations: {
           group: true,
+          user: true,
         },
       });
 
       if (groupMember.length > 0) {
         groupMember.forEach((element) => {
-          groups.push(element.group);
+          group.push(element.group);
         });
       }
 
-      return groups;
+      return group;
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }

@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGN_IN, MY_PROFILE } from "@/Request/user";
+import { SIGN_IN, MY_PROFILE } from "@/requests/user";
 import { useRouter } from "next/router";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";

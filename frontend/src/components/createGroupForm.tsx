@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import { Alert } from "react-bootstrap";
 import { FormEvent, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_GROUP } from "@/Request/group";
+import { CREATE_GROUP, GET_MY_GROUPS } from "@/requests/group";
 
 export default function CreateGroupForm(props: {
   handleSubmit(value: boolean): void;
@@ -20,6 +20,7 @@ export default function CreateGroupForm(props: {
         description: description,
       },
     },
+    refetchQueries: [GET_MY_GROUPS],
   });
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {

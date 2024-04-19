@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { REQUEST_PASSWORD_RESET } from "../Request/user";
+import { REQUEST_PASSWORD_RESET } from "../requests/user";
 
 export default function ResetPasswordRequestPage() {
   const [email, setEmail] = useState("");

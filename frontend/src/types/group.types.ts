@@ -4,5 +4,5 @@ export type GroupType = {
   id: number;
   name: string;
   description: string;
-  token: number;
+  token: string;
 } & ExtraTypes;
