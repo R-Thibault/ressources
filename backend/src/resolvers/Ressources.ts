@@ -111,14 +111,10 @@ export class RessourceResolver {
 
   @Mutation(() => Ressource)
   async createRessource(
-    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput,
-    @Ctx() context: ContextType
+    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput
   ): Promise<Ressource> {
     try {
       const newRessource = new Ressource();
-      Object.assign(newRessource, data, {
-        created_by_user: context.user,
-      });
       const error = await validate(newRessource);
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
