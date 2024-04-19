@@ -20,7 +20,7 @@ export default function Menu(): React.ReactNode {
 
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
 
-  const { data: userGroup } = useQuery(GET_MY_GROUPS);
+  const { data: userGroup } = useQuery<{ items: GroupType[] }>(GET_MY_GROUPS);
 
   const apolloClient = useApolloClient();
 
@@ -63,39 +63,6 @@ export default function Menu(): React.ReactNode {
     },
   ];
 
-  const groupItems: GroupType[] = [
-    {
-      id: 1,
-      name: "Groupe 1",
-      description: "Lorem ipsum",
-      token: 1234,
-      created_at: new Date(),
-      created_by_id: 1,
-      updated_at: new Date(),
-      update_by_id: 1,
-    },
-    {
-      id: 2,
-      name: "Nom de groupe super long pour voir le résultat",
-      description: "Lorem ipsum",
-      token: 1234,
-      created_at: new Date(),
-      created_by_id: 2,
-      updated_at: new Date(),
-      update_by_id: 2,
-    },
-    {
-      id: 3,
-      name: "Hello Groupe",
-      description: "Lorem ipsum",
-      token: 1234,
-      created_at: new Date(),
-      created_by_id: 1,
-      updated_at: new Date(),
-      update_by_id: 1,
-    },
-  ];
-
   return (
     <menu
       className={
@@ -135,7 +102,13 @@ export default function Menu(): React.ReactNode {
             focused={false}
             focusedClassName="bi bi-person-fill"
             className="bi bi-people"
-            hasSubItems={userGroup?.items.length > 0}
+            hasSubItems={
+              userGroup?.items
+                ? userGroup.items.length > 0
+                  ? true
+                  : false
+                : false
+            }
             subItems={userGroup?.items}
             openModal={handleModalVisible}
           />

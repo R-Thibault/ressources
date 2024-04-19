@@ -51,7 +51,7 @@ export class Group extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.groups_creation)
   @JoinColumn({ name: "created_by" })
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
