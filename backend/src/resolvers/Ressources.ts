@@ -60,7 +60,7 @@ export class RessourceResolver {
 
   @Mutation(() => Ressource)
   async createRessource(
-    @Arg("data", () => RessourceCreateInput) data: RessourceCreateInput
+    @Arg("data") data: RessourceCreateInput
   ): Promise<Ressource> {
     try {
       const newRessource = new Ressource();
