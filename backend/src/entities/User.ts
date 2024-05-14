@@ -149,6 +149,9 @@ export class UserCreateInput {
   @Field()
   @Matches(/^.{8,50}$/)
   password!: string;
+  @Field()
+  @Matches(/^.{8,50}$/)
+  confirmPassword!: string;
   @Field({ nullable: true })
   lastname!: string;
   @Field({ nullable: true })

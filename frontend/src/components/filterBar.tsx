@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { GET_ALL_TAGS } from "@/Request/tags";
+import { GET_ALL_TAGS } from "@/requests/tags";
 import styles from "@/styles/filterBar.module.css";
 
 export type TagsProps = {
