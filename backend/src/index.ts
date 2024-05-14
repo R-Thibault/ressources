@@ -10,6 +10,7 @@ import cors from "cors";
 import { populateBdd } from "./utils/populateBdd";
 import { getSchema } from "./schema";
 import { User } from "./entities/User";
+import { initializeRoutes } from "./routes";
 
 const start = async () => {
   const schema = await getSchema();
@@ -22,6 +23,8 @@ const start = async () => {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();
+
+  initializeRoutes(app);
 
   app.use(
     "/",
