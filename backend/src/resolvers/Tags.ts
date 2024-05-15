@@ -57,7 +57,6 @@ export class TagResolver {
       return datas;
     } catch (error) {
       console.error(error);
-      console.error(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
