@@ -114,6 +114,7 @@ export class RessourceResolver {
     @Arg("data") data: RessourceCreateInput
   ): Promise<Ressource> {
     try {
+      console.error(data);
       const newRessource = new Ressource();
       const error = await validate(newRessource);
       if (error.length > 0) {

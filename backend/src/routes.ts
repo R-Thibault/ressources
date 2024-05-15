@@ -1,7 +1,7 @@
 import multer from "multer";
 import { Express } from "express";
-import { Image } from "./entities/Image";
-import { User } from "./entities/User";
+// import { Image } from "./entities/Image";
+// import { User } from "./entities/User";
 
 export function initializeRoutes(app: Express) {
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
@@ -44,7 +44,7 @@ export function initializeRoutes(app: Express) {
     "/api/upload/avatar",
     uploadAvatarDirectory.single("file"),
     async (req, res) => {
-      console.log(req);
+      console.error(req, res);
       //   try {
       //     const user = await User.findOneBy({ id: req.body.userId });
       //     if (req.file && user) {
