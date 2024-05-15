@@ -7,9 +7,7 @@ export function initializeRoutes(app: Express) {
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
 
   const avatarStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "/app/upload/avatar");
-    },
+    destination: "/app/upload/avatar",
     filename: function (req, file, cb) {
       const filename = file.originalname.split(".");
       const mimetype = file.mimetype.split("/");
@@ -18,9 +16,7 @@ export function initializeRoutes(app: Express) {
   });
 
   const ressourcesStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "/app/upload/ressources");
-    },
+    destination: "/app/upload/ressources",
     filename: function (req, file, cb) {
       const filename = file.originalname.split(".");
       const mimetype = file.mimetype.split("/");
