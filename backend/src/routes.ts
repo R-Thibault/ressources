@@ -49,7 +49,6 @@ export function initializeRoutes(app: Express) {
           await sharp(req.file.buffer)
             .resize(150, 150, { fit: "contain" })
             .toFile(`/app/upload/avatar/${fileName}`);
-          console.log(req.file);
           const image = new Image();
           image.name = fileName;
           image.path = `/app/upload/avatar/${fileName}`;

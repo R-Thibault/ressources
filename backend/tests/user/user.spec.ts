@@ -62,7 +62,8 @@ describe("tests user resolver", () => {
       variableValues: {
         data: {
           email: "test@gmail.com",
-          password: "monsuperpassword",
+          password: "monSup3rP@ssword",
+          confirmPassword: "monSup3rP@ssword",
           firstname: "User",
           lastname: "Test",
           isTest: true,
@@ -78,7 +79,8 @@ describe("tests user resolver", () => {
       variableValues: {
         data: {
           email: "test@gmail.com",
-          password: "monsuperpassword",
+          password: "monSup3rP@ssword",
+          confirmPassword: "monSup3rP@ssword",
           firstname: "User",
           lastname: "Test",
           isTest: true,
@@ -95,7 +97,7 @@ describe("tests user resolver", () => {
       variableValues: {
         data: {
           email: "test@gmail.com",
-          password: "monsuperpassword",
+          password: "monSup3rP@ssword",
           isTest: true,
         },
       },

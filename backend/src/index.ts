@@ -24,6 +24,8 @@ const start = async () => {
   });
   await server.start();
 
+  initializeRoutes(app);
+
   app.use(
     cors<cors.CorsRequest>({
       credentials: true,
