@@ -45,7 +45,7 @@ export class RessourceResolver {
           where: { created_by_user: { id: user.id } },
           relations: {
             image_id: true,
-            created_by_user: { image_id: true },
+            created_by_user: { avatar: true },
             tags: true,
             file_id: true,
             link_id: true,

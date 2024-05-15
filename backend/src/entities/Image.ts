@@ -45,7 +45,7 @@ export class Image extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.images_update)
   @JoinColumn({ name: "updated_by" })
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   updated_by_user!: User;
 }
 
