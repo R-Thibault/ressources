@@ -6,6 +6,9 @@ services:
     command: npm start
     volumes:
       - ./backend/src/:/app/src/
+      - ./upload:/app/upload
+      - ./upload/avatar:/app/upload/avatar
+      - ./upload/ressources:/app/upload/ressources
     env_file:
       - ./.env
   # front:

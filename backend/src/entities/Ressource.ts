@@ -6,15 +6,19 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   ManyToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Link } from "./Link";
 import { File } from "./File";
 import { Image } from "./Image";
-import { Tag } from "./Tag";
+import { Group } from "./Group";
+import { ObjectID } from "./ObjectId";
 @Entity()
 @ObjectType()
 export class Ressource extends BaseEntity {
@@ -36,7 +40,7 @@ export class Ressource extends BaseEntity {
 
   @OneToOne(() => Image)
   @JoinColumn()
-  @Field(() => Image, { nullable: true })
+  @Field()
   image_id!: Image;
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
@@ -54,34 +58,39 @@ export class Ressource extends BaseEntity {
   created_by_user!: User;
 
   @Column({ type: "timestamp", nullable: true })
-  @Field({ nullable: true })
+  @Field()
   updated_at!: Date;
 
   @ManyToOne(() => User, (user) => user.ressources_update)
   @JoinColumn({ name: "updated_by" })
-  @Field(() => User, { nullable: true })
+  @Field(() => User)
   updated_by_user!: User;
-
-  @ManyToMany(() => Tag, (tag) => tag.ressources)
-  @JoinColumn()
-  @Field(() => Tag, { nullable: true })
-  tags!: Tag[];
 
   @OneToOne(() => File)
   @JoinColumn()
-  @Field(() => File, { nullable: true })
+  @Field(() => File)
   file_id!: File;
 
   @OneToOne(() => Link)
   @JoinColumn()
-  @Field(() => Link, { nullable: true })
+  @Field(() => Link)
   link_id!: Link;
+
+  @OneToMany(() => Group, (group) => group.ressources)
+  @Field(() => Group, { nullable: true })
+  group_id!: Group;
 }
 
 @InputType()
 export class RessourceCreateInput {
   @Field()
   title!: string;
+  @Field()
+  description!: string;
+  @Field({ nullable: true })
+  entityId!: number;
+  @Field({ nullable: true }) // enlever nullable:true
+  type!: string;
 }
 
 @InputType()

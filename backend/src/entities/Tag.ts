@@ -24,10 +24,10 @@ export class Tag extends BaseEntity {
   @Field()
   name!: string;
 
-  @ManyToMany(() => Ressource, (ressource) => ressource.tags)
+/*   @ManyToMany(() => Ressource, (ressource) => ressource.tags)
   @JoinColumn()
   @Field(() => Ressource)
-  ressources!: Ressource[];
+  ressources!: Ressource[]; */
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
   @Field()

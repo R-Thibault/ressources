@@ -23,7 +23,7 @@ export default function CreateGroupForm(props: {
     refetchQueries: [GET_MY_GROUPS],
   });
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       await createNewGroup();
@@ -33,7 +33,7 @@ export default function CreateGroupForm(props: {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <>

@@ -7,6 +7,7 @@ import {
   RessourceUpdateInput,
 } from "../entities/Ressource";
 import { ContextType, getUser } from "../middlewares/auth";
+import { File } from "../entities/File";
 
 @Resolver(Ressource)
 export class RessourceResolver {
@@ -46,58 +47,6 @@ export class RessourceResolver {
           relations: {
             image_id: true,
             created_by_user: { avatar: true },
-            tags: true,
-            file_id: true,
-            link_id: true,
-          },
-        });
-        return ressource;
-      }
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-
-  @Query(() => [Ressource])
-  async getAllRessourceFromOneUser(
-    @Ctx() context: ContextType
-  ): Promise<Ressource[]> {
-    try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
-        throw new Error(`error`);
-      } else {
-        const ressource = await Ressource.find({
-          where: { created_by_user: { id: user.id } },
-          relations: {
-            image_id: true,
-            created_by_user: { image_id: true },
-            file_id: true,
-            link_id: true,
-          },
-        });
-        return ressource;
-      }
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-
-  @Query(() => [Ressource])
-  async getAllRessourceFromOneUser(
-    @Ctx() context: ContextType
-  ): Promise<Ressource[]> {
-    try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
-        throw new Error(`error`);
-      } else {
-        const ressource = await Ressource.find({
-          where: { created_by_user: { id: user.id } },
-          relations: {
-            image_id: true,
-            created_by_user: { image_id: true },
-            tags: true,
             file_id: true,
             link_id: true,
           },
@@ -111,11 +60,26 @@ export class RessourceResolver {
 
   @Mutation(() => Ressource)
   async createRessource(
-    @Arg("data") data: RessourceCreateInput
+    @Arg("data") data: RessourceCreateInput,
+    @Ctx() context: ContextType
   ): Promise<Ressource> {
     try {
-      console.error(data);
+      const file = await File.findOneBy({
+        id: data.entityId,
+      });
+
       const newRessource = new Ressource();
+      newRessource.title = data.title;
+      newRessource.description = data.description;
+
+      if (file) {
+        newRessource.file_id = file;
+      }
+
+      if (context.user) {
+        newRessource.created_by_user = context.user;
+      }
+
       const error = await validate(newRessource);
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
@@ -124,6 +88,7 @@ export class RessourceResolver {
         return datas;
       }
     } catch (error) {
+      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
