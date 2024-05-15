@@ -11,11 +11,13 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Link } from "./Link";
 import { File } from "./File";
 import { Image } from "./Image";
+import { Group } from "./Group";
 @Entity()
 @ObjectType()
 export class Ressource extends BaseEntity {
@@ -72,6 +74,12 @@ export class Ressource extends BaseEntity {
   @JoinColumn()
   @Field()
   link_id!: Link;
+
+  @OneToMany(() => Group, (group) => group.ressources)
+  @Field(() => Group, {nullable: true})
+  group_id!: Group;
+
+
 }
 
 @InputType()

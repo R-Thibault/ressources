@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -15,6 +16,7 @@ import { User } from "./User";
 import { Member } from "./Member";
 import { Message } from "./Message";
 import { v4 as uuidv4 } from "uuid";
+import { Ressource } from "./Ressource";
 
 @Entity()
 @ObjectType()
@@ -70,7 +72,15 @@ export class Group extends BaseEntity {
   @OneToMany(() => Message, (messages) => messages.group)
   @Field(() => [Message])
   messages!: Message[];
+
+  @ManyToOne(() => Ressource, (ressources) => ressources.group_id)
+  @Field(() => [Ressource])
+  ressources!: Ressource[];
+
+  
 }
+
+
 
 @InputType()
 export class GroupInput {
