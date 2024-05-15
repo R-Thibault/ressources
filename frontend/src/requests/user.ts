@@ -34,6 +34,11 @@ export const MY_PROFILE = gql`
       email
       lastname
       firstname
+      avatar {
+        id
+        name
+        path
+      }
     }
   }
 `;
@@ -67,6 +72,22 @@ export const UPDATE_USER = gql`
     item: updateUser(data: $data, id: $updateUserId) {
       lastname
       firstname
+    }
+  }
+`;
+
+export const GET_USER = gql`
+  query GetOneUser($getOneUserId: ID!) {
+    item: getOneUser(id: $getOneUserId) {
+      id
+      email
+      firstname
+      lastname
+      avatar {
+        id
+        name
+        path
+      }
     }
   }
 `;
