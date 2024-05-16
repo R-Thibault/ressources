@@ -18,7 +18,6 @@ import { Link } from "./Link";
 import { File } from "./File";
 import { Image } from "./Image";
 import { Group } from "./Group";
-import { ObjectID } from "./ObjectId";
 @Entity()
 @ObjectType()
 export class Ressource extends BaseEntity {
