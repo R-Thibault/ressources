@@ -1,15 +1,18 @@
 import Form from "react-bootstrap/Form";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import axios, { AxiosProgressEvent } from "axios";
 import { API_URL } from "@/config/config";
 import { FileType } from "@/types/file.types";
+import { useMutation } from "@apollo/client";
+import { CREATE_LINK_MUTATION } from "@/requests/link";
+import { LinkType } from "@/types/link.types";
 
 export default function RessourcesFormStep1(props: {
   handleSelectRessourceType(value: string): void;
-  handleChangeFormStep(step: number, entityId: FileType): void;
+  handleChangeFormStep(step: number, entityId: FileType | LinkType ): void;
   type: string;
   userId: number | undefined;
 }) {
@@ -18,6 +21,21 @@ export default function RessourcesFormStep1(props: {
   const [error, setError] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [createLink, { data, error: errorLink }] = useMutation<{item: LinkType}>(
+    CREATE_LINK_MUTATION,
+    {
+      variables: {
+        data: {
+        url: link,
+        },
+      },
+    }
+  );
+  useEffect(() => {
+    if(!errorLink && data){
+      props.handleChangeFormStep(2, data.item)
+    }
+  },[data, errorLink]);
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -25,11 +43,21 @@ export default function RessourcesFormStep1(props: {
     }
   };
 
+  const handleSubmitLink = async (e : FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault()
+      await createLink()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       setError(false);
       setIsUploading(true);
+
       const formData = new FormData();
       if (file) {
         formData.append("file", file[0]);
@@ -58,7 +86,7 @@ export default function RessourcesFormStep1(props: {
   return (
     <Form
       className="d-flex justify-content-center align-items-center flex-column"
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={(e) =>props.type === "link" ?  handleSubmitLink(e) : handleSubmit(e) }
     >
       {!isUploading && (
         <Form.Group className="mb-3">
@@ -92,7 +120,7 @@ export default function RessourcesFormStep1(props: {
           <Form.Label>Votre lien</Form.Label>
           <Form.Control
             required
-            type="text"
+            type="url"
             placeholder="https://www.google.com"
             onChange={(e) => setLink(e.target.value)}
             value={link}
@@ -117,7 +145,7 @@ export default function RessourcesFormStep1(props: {
         <div className="button_container">
           <button
             className="btn_primary"
-            disabled={file === undefined}
+            disabled={props.type === "link" ? link === "" ? true : false : file === undefined}
             type="submit"
           >
             <i className="bi bi-plus-circle" />

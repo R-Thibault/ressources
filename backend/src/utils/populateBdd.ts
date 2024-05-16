@@ -202,7 +202,6 @@ export async function populateBdd() {
   for (let i = 0; i < DummyLinks.length; i++) {
     try {
       const newLink = new Link();
-      newLink.title = DummyLinks[i].title;
       newLink.url = DummyLinks[i].url;
       newLink.created_by_user = DummyLinks[i].created_by_user;
       newLink.created_at = DummyLinks[i].created_at;

@@ -8,6 +8,7 @@ import {
 } from "../entities/Ressource";
 import { ContextType, getUser } from "../middlewares/auth";
 import { File } from "../entities/File";
+import { Link } from "../entities/Link";
 
 @Resolver(Ressource)
 export class RessourceResolver {
@@ -65,18 +66,27 @@ export class RessourceResolver {
     @Ctx() context: ContextType
   ): Promise<Ressource> {
     try {
-      const file = await File.findOneBy({
-        id: data.entityId,
-      });
-
       const newRessource = new Ressource();
       newRessource.title = data.title;
       newRessource.description = data.description;
-
-      if (file) {
-        newRessource.file_id = file;
+      console.log(data);
+      if(data.type === "link" && data.entityId){
+        const link = await  Link.findOneBy({
+          id: data.entityId,
+        });
+        console.log(link, data.entityId)
+        if (link) {
+          newRessource.link_id = link;
+        }
+      }else{
+        const file = await File.findOneBy({
+          id: data.entityId,
+        });
+        if (file) {
+          newRessource.file_id = file;
+        }
       }
-
+    
       if (context.user) {
         newRessource.created_by_user = context.user;
       }

@@ -5,16 +5,16 @@ import { useQuery } from "@apollo/client";
 import { UserType } from "@/types/user.type";
 import { MY_PROFILE } from "@/requests/user";
 import { FileType } from "@/types/file.types";
+import { LinkType } from "@/types/link.types";
 
 export default function CreateRessourcesForm(props: {
   handleSubmit(value: boolean): void;
 }) {
   const [step, setStep] = useState<number>(1);
   const [type, setType] = useState<string>("link");
-  const [entity, setEntity] = useState<FileType | null>(null);
-
+  const [entity, setEntity] = useState<FileType | null | LinkType>(null);
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
-
+  
   const handleSelectRessourceType = (value: string) => {
     setType(value);
   };

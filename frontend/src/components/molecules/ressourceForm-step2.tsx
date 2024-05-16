@@ -5,15 +5,15 @@ import { Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 import { FileType } from "@/types/file.types";
 import { CREATE_RESSOURCE } from "@/requests/ressources";
+import { LinkType } from "@/types/link.types";
 
 export default function RessourcesFormStep2(props: {
   handleSubmit(value: boolean): void;
   type: string;
-  entity: FileType | null;
+  entity: FileType | null | LinkType;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-
   const [createNewRessource, { error }] = useMutation<{
     id: number;
     title: string;
@@ -23,7 +23,7 @@ export default function RessourcesFormStep2(props: {
       data: {
         title: title,
         description: description,
-        entityId: props.entity?.id,
+        entityId: Number(props.entity?.id),
         type: props.type,
       },
     },
@@ -46,7 +46,6 @@ export default function RessourcesFormStep2(props: {
       className="d-flex justify-content-center align-items-center flex-column"
       onSubmit={(e) => onSubmit(e)}
     >
-      {props.type === "file" ? (
         <>
           <Form.Group className="mb-3 w-100">
             <Form.Label>Titre de votre ressource</Form.Label>
@@ -70,9 +69,6 @@ export default function RessourcesFormStep2(props: {
             />
           </Form.Group>
         </>
-      ) : (
-        <p>link</p>
-      )}
 
       <div className="button_container">
         <button className="btn_primary" type="submit">

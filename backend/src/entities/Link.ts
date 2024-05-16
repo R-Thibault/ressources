@@ -19,10 +19,6 @@ export class Link extends BaseEntity {
 
   @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
-  title!: string;
-
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
-  @Field()
   url!: string;
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod
@@ -51,11 +47,5 @@ export class Link extends BaseEntity {
 @InputType()
 export class LinkCreateInput {
   @Field()
-  title!: string;
-}
-
-@InputType()
-export class LinkUpdateInput {
-  @Field()
-  title!: string;
+  url!: string;
 }

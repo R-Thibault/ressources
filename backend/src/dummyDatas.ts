@@ -294,37 +294,31 @@ export const DummyRessources: {
 ];
 
 export const DummyLinks: {
-  title: string;
   url: string;
   created_by_user: any;
   created_at: Date;
 }[] = [
   {
-    title: "OpenAI Blog",
     url: "https://openai.com/blog/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
-    title: "GitHub Repository",
     url: "https://github.com/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
-    title: "Mozilla Developer Network",
     url: "https://developer.mozilla.org/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
-  {
-    title: "Stack Overflow",
+  { 
     url: "https://stackoverflow.com/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
-    title: "Medium",
     url: "https://medium.com/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
