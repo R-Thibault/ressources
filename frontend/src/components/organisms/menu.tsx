@@ -7,7 +7,7 @@ import Logo from "../atoms/logo";
 import { GroupType } from "@/types/group.types";
 import { LinkMenuType } from "@/types/menu.types";
 import ModalComponent from "./modal";
-import CreateGroupForm from "../createGroupForm";
+import CreateGroupForm from "./createGroupForm";
 import { UserType } from "@/types/user.type";
 
 export default function Menu(): React.ReactNode {

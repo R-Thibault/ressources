@@ -24,14 +24,11 @@ const start = async () => {
   });
   await server.start();
 
-  initializeRoutes(app);
-
   app.use(
     cors<cors.CorsRequest>({
       credentials: true,
       origin: "http://localhost:3000",
-      methods: ["POST", "GET"],
-    })
+    }),
   );
 
   initializeRoutes(app);
