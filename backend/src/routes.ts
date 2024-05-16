@@ -1,12 +1,14 @@
 import multer from "multer";
-import { Express } from "express";
+import express, { Express } from "express";
 import { Image } from "./entities/Image";
 import { User } from "./entities/User";
 import sharp from "sharp";
 import mime from "mime-types";
 import { File } from "./entities/File";
+import path from "path";
 
 export function initializeRoutes(app: Express) {
+  app.use("/files", express.static(path.join(__dirname, "../upload")));
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
   const acceptedFileMimeType = ["image/jpg", "image/png", "image/jpeg"];
 
@@ -57,9 +59,11 @@ export function initializeRoutes(app: Express) {
         const user = await User.findOneBy({ id: req.body.userId });
         if (req.file && req.file.mimetype.startsWith("image/") && user) {
           const extension = mime.extension(req.file.mimetype);
+          const originalName = req.file.originalname.split(".");
           const fileName = `${Date.now()}-U${user.id}-${
-            req.file.originalname
+            originalName[0]
           }.${extension}`;
+          console.log("FILENAME::::::", fileName);
           await sharp(req.file.buffer)
             .resize(150, 150, { fit: "contain" })
             .toFile(`/app/upload/avatar/${fileName}`);

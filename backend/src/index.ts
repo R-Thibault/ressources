@@ -11,6 +11,7 @@ import { populateBdd } from "./utils/populateBdd";
 import { getSchema } from "./schema";
 import { User } from "./entities/User";
 import { initializeRoutes } from "./routes";
+import path from "path";
 
 const start = async () => {
   const schema = await getSchema();
@@ -28,11 +29,11 @@ const start = async () => {
     cors<cors.CorsRequest>({
       credentials: true,
       origin: "http://localhost:3000",
-    }),
+    })
   );
-
+  console.log("directory-name 👉️", path.join(__dirname, "app/upload/avatar"));
+  // app.use("/avatar", express.static("app/upload/avatar"));
   initializeRoutes(app);
-
   app.use(
     "/",
     express.json({ limit: "50mb" }),
