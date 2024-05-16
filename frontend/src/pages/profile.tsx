@@ -86,7 +86,7 @@ export default function profile() {
   useEffect(() => {
     if (dataUser && dataUser.item && dataUser.item.avatar) {
       setProfileDatas(dataUser.item);
-      setAvatarSrc(`${dataUser.item.avatar.path}`);
+      setAvatarSrc(`${API_URL}/files/avatar/${dataUser.item.avatar.name}`);
     }
   }, [dataUser]);
   return (
@@ -112,8 +112,8 @@ export default function profile() {
                 />
                 <Image
                   className="rounded-circle mt-5"
-                  width={200}
-                  height={200}
+                  height={150}
+                  width={150}
                   alt="jaky nackos"
                   priority
                   src={
@@ -122,10 +122,9 @@ export default function profile() {
                 />
               </div>
               <span className="font-weight-bold">
-                {`${firstname} ${lastname}`}
+                {`${profileDatas?.firstname} ${profileDatas?.lastname}`}
               </span>
               <span className="text-black-50">{profileDatas?.email}</span>
-              <span> {avatarSrc}</span>
             </div>
           </div>
           <div className="col-md-6 border-right">
@@ -153,7 +152,7 @@ export default function profile() {
                     type="text"
                     className="form-control"
                     placeholder="Prénom"
-                    value={firstname}
+                    value={profileDatas?.firstname}
                     onChange={(e) => setFirstname(e.target.value)}
                   />
                 </div>
@@ -162,7 +161,7 @@ export default function profile() {
                   <input
                     type="text"
                     className="form-control"
-                    value={lastname}
+                    value={profileDatas?.lastname}
                     placeholder="Nom de famille"
                     onChange={(e) => setLastname(e.target.value)}
                   />
