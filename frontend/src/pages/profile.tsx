@@ -11,6 +11,7 @@ export default function profile() {
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [profileDatas, setProfileDatas] = useState<UserType | null>(null);
+  const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
   const [lastname, setLastname] = useState("");
   const [firstname, setFirstname] = useState("");
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
@@ -83,8 +84,9 @@ export default function profile() {
     }
   }
   useEffect(() => {
-    if (dataUser) {
-      setProfileDatas(dataUser?.item);
+    if (dataUser && dataUser.item && dataUser.item.avatar) {
+      setProfileDatas(dataUser.item);
+      setAvatarSrc(`${dataUser.item.avatar.path}`);
     }
   }, [dataUser]);
   return (
@@ -115,10 +117,7 @@ export default function profile() {
                   alt="jaky nackos"
                   priority
                   src={
-                    profileDatas?.avatar
-                      ? `${profileDatas.avatar?.path}` ??
-                        "/assets/avatars/jake-nackos.jpg"
-                      : "/assets/avatars/jake-nackos.jpg"
+                    avatarSrc ? avatarSrc : "/assets/avatars/jake-nackos.jpg"
                   }
                 />
               </div>
@@ -126,7 +125,7 @@ export default function profile() {
                 {`${firstname} ${lastname}`}
               </span>
               <span className="text-black-50">{profileDatas?.email}</span>
-              <span> </span>
+              <span> {avatarSrc}</span>
             </div>
           </div>
           <div className="col-md-6 border-right">
