@@ -31,6 +31,7 @@ export async function populateBdd() {
     adminUser.email = "admin@ressources.com";
     adminUser.hashed_password = await argon2.hash("DummyPassword");
     adminUser.created_at = new Date();
+    adminUser.is_account_validated = true;
     const error = await validate(adminUser);
 
     if (error.length > 0) {
@@ -50,6 +51,7 @@ export async function populateBdd() {
       newUser.lastname = DummyUsers[i].lastname;
       newUser.firstname = DummyUsers[i].firstname;
       newUser.created_at = DummyUsers[i].created_at;
+      newUser.is_account_validated = DummyUsers[i].is_account_validated;
 
       const error = await validate(newUser);
 
