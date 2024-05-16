@@ -1,4 +1,4 @@
-import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 import { validate } from "class-validator";
 import { DummyRessources } from "../dummyDatas";
 import {
@@ -58,6 +58,7 @@ export class RessourceResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Ressource)
   async createRessource(
     @Arg("data") data: RessourceCreateInput,
