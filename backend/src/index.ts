@@ -24,8 +24,6 @@ const start = async () => {
   });
   await server.start();
 
-  initializeRoutes(app);
-
   app.use(
     cors<cors.CorsRequest>({
       credentials: true,
@@ -34,6 +32,7 @@ const start = async () => {
   );
 
   initializeRoutes(app);
+  
   app.use(
     "/",
     express.json({ limit: "50mb" }),
@@ -50,7 +49,7 @@ const start = async () => {
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve)
   );
-  //console.log(`🚀 Server ready at http://localhost:4000/`);
+  console.log(`🚀 Server ready at http://localhost:4000/`);
 
   await dataSource.initialize();
   const user = await User.findOneBy({ email: "admin@ressources.com" });

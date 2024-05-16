@@ -78,6 +78,8 @@ export class Ressource extends BaseEntity {
   @OneToMany(() => Group, (group) => group.ressources)
   @Field(() => Group, { nullable: true })
   group_id!: Group;
+  
+}
 
 @InputType()
 export class RessourceCreateInput {

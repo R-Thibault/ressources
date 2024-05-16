@@ -12,7 +12,7 @@ import { LinkType } from "@/types/link.types";
 
 export default function RessourcesFormStep1(props: {
   handleSelectRessourceType(value: string): void;
-  handleChangeFormStep(step: number, entityId: FileType | LinkType ): void;
+  handleChangeFormStep(step: number, entityId: FileType | LinkType): void;
   type: string;
   userId: number | undefined;
 }) {
@@ -21,21 +21,20 @@ export default function RessourcesFormStep1(props: {
   const [error, setError] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [createLink, { data, error: errorLink }] = useMutation<{item: LinkType}>(
-    CREATE_LINK_MUTATION,
-    {
-      variables: {
-        data: {
+  const [createLink, { data, error: errorLink }] = useMutation<{
+    item: LinkType;
+  }>(CREATE_LINK_MUTATION, {
+    variables: {
+      data: {
         url: link,
-        },
       },
-    }
-  );
+    },
+  });
   useEffect(() => {
-    if(!errorLink && data){
-      props.handleChangeFormStep(2, data.item)
+    if (!errorLink && data) {
+      props.handleChangeFormStep(2, data.item);
     }
-  },[data, errorLink]);
+  }, [data, errorLink]);
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -43,14 +42,14 @@ export default function RessourcesFormStep1(props: {
     }
   };
 
-  const handleSubmitLink = async (e : FormEvent<HTMLFormElement>) => {
+  const handleSubmitLink = async (e: FormEvent<HTMLFormElement>) => {
     try {
-      e.preventDefault()
-      await createLink()
+      e.preventDefault();
+      await createLink();
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
-  }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
@@ -86,7 +85,9 @@ export default function RessourcesFormStep1(props: {
   return (
     <Form
       className="d-flex justify-content-center align-items-center flex-column"
-      onSubmit={(e) =>props.type === "link" ?  handleSubmitLink(e) : handleSubmit(e) }
+      onSubmit={(e) =>
+        props.type === "link" ? handleSubmitLink(e) : handleSubmit(e)
+      }
     >
       {!isUploading && (
         <Form.Group className="mb-3">
@@ -145,7 +146,13 @@ export default function RessourcesFormStep1(props: {
         <div className="button_container">
           <button
             className="btn_primary"
-            disabled={props.type === "link" ? link === "" ? true : false : file === undefined}
+            disabled={
+              props.type === "link"
+                ? link === ""
+                  ? true
+                  : false
+                : file === undefined
+            }
             type="submit"
           >
             <i className="bi bi-plus-circle" />

@@ -37,7 +37,8 @@ export function initializeRoutes(app: Express) {
     },
   });
 
-  const uploadRessourcesDirectory = multer({ storage: ressourcesStorage,
+  const uploadRessourcesDirectory = multer({
+    storage: ressourcesStorage,
     limits: {
       fileSize: 1048576 * 5,
     },
@@ -62,7 +63,6 @@ export function initializeRoutes(app: Express) {
           const fileName = `${Date.now()}-U${user.id}-${
             originalName[0]
           }.${extension}`;
-          console.log("FILENAME::::::", fileName);
           await sharp(req.file.buffer)
             .resize(150, 150, { fit: "contain" })
             .toFile(`/app/upload/avatar/${fileName}`);
@@ -74,7 +74,6 @@ export function initializeRoutes(app: Express) {
           user.avatar = result;
           await user.save();
           res.json(result);
-          } 
         } else {
           res.status(404).send({
             message: "Une erreur est survenue",
@@ -83,7 +82,7 @@ export function initializeRoutes(app: Express) {
       } catch (error) {
         res.status(404).send({
           message: error,
-        });      
+        });
       }
     }
   );
@@ -95,7 +94,7 @@ export function initializeRoutes(app: Express) {
       try {
         if (req.file && req.body.userId) {
           const user = await User.findOneBy({ id: req.body.userId });
-          if(!user){
+          if (!user) {
             res.status(404).send({
               message: "utilisateur introuvable",
             });
