@@ -67,25 +67,30 @@ export class Ressource extends BaseEntity {
 
   @OneToOne(() => File)
   @JoinColumn()
-  @Field()
+  @Field(() => File)
   file_id!: File;
 
   @OneToOne(() => Link)
   @JoinColumn()
-  @Field()
+  @Field(() => Link)
   link_id!: Link;
 
   @OneToMany(() => Group, (group) => group.ressources)
-  @Field(() => Group, {nullable: true})
+  @Field(() => Group, { nullable: true })
   group_id!: Group;
-
-
+  
 }
 
 @InputType()
 export class RessourceCreateInput {
   @Field()
   title!: string;
+  @Field()
+  description!: string;
+  @Field({ nullable: true })
+  entityId!: number;
+  @Field({ nullable: true }) // enlever nullable:true
+  type!: string;
 }
 
 @InputType()

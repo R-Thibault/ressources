@@ -30,7 +30,10 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async getOneUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     try {
-      const user = await User.findOne({ where: { id: id } });
+      const user = await User.findOne({
+        where: { id: id },
+        relations: { avatar: true },
+      });
       return user;
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);

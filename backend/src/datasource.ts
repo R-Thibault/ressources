@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 import { DataSource } from "typeorm";
 import { Tag } from "./entities/Tag";
@@ -29,9 +30,7 @@ export const dataSourceOptions: PostgresConnectionOptions = {
   synchronize: true,
   logging: true,
   host: process.env.POSTGRES_HOST ?? "db",
-  port: process.env.POSTGRES_PORT
-    ? Number(process.env.POSTGRES_PORT)
-    : 5432,
+  port: process.env.POSTGRES_PORT ? Number(process.env.POSTGRES_PORT) : 5432,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,

@@ -1,4 +1,4 @@
-import { NonEmptyArray, buildSchema } from "type-graphql";
+import { buildSchema } from "type-graphql";
 import { TagResolver } from "./resolvers/Tags";
 import { UserResolver } from "./resolvers/Users";
 import { RightResolver } from "./resolvers/Right";

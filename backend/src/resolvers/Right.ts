@@ -1,7 +1,8 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 import { Right, RightUpdateInput, RightCreateInput } from "../entities/Right";
 import { validate } from "class-validator";
 import { DummyRights } from "../dummyDatas";
+import { ContextType } from "../middlewares/auth";
 
 @Resolver(Right)
 export class RightResolver {
@@ -22,10 +23,14 @@ export class RightResolver {
 
   @Mutation(() => Right)
   async createRight(
-    @Arg("data", () => RightCreateInput) data: RightCreateInput
+    @Arg("data", () => RightCreateInput) data: RightCreateInput,
+    @Ctx() context: ContextType
   ): Promise<Right> {
     try {
       const newRight = new Right();
+      Object.assign(newRight, data, {
+        created_by_user: context.user,
+      });
       const error = await validate(newRight);
 
       if (error.length > 0) {
@@ -83,7 +88,7 @@ export class RightResolver {
         if (error.length > 0) {
           throw new Error(`error occured ${JSON.stringify(error)}`);
         } else {
-          const datas = await newRight.save();
+          await newRight.save();
         }
       } catch (error) {
         throw new Error(`error occured ${JSON.stringify(error)}`);

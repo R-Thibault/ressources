@@ -28,9 +28,7 @@ const publicPages = ["/sign-in", "/sign-up"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
-  console.error("test");
   const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
-
   useEffect(() => {
     if (!publicPages.includes(router.pathname)) {
       if (error) {

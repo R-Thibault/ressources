@@ -6,7 +6,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
@@ -17,10 +16,6 @@ export class Link extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
   id!: number;
-
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
-  @Field()
-  title!: string;
 
   @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
@@ -52,11 +47,5 @@ export class Link extends BaseEntity {
 @InputType()
 export class LinkCreateInput {
   @Field()
-  title!: string;
-}
-
-@InputType()
-export class LinkUpdateInput {
-  @Field()
-  title!: string;
+  url!: string;
 }

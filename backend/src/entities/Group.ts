@@ -76,11 +76,7 @@ export class Group extends BaseEntity {
   @ManyToOne(() => Ressource, (ressources) => ressources.group_id)
   @Field(() => [Ressource])
   ressources!: Ressource[];
-
-  
 }
-
-
 
 @InputType()
 export class GroupInput {

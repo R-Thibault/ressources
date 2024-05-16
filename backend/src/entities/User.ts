@@ -1,4 +1,3 @@
-require("dotenv").config();
 import {
   BaseEntity,
   Column,
@@ -44,7 +43,6 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Image)
   @JoinColumn()
-  @Field()
   avatar!: Image;
 
   @Column({ type: "varchar", length: 255, nullable: true })

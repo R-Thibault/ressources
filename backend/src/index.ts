@@ -24,14 +24,17 @@ const start = async () => {
   });
   await server.start();
 
-  initializeRoutes(app);
-
   app.use(
-    "/",
     cors<cors.CorsRequest>({
       credentials: true,
       origin: "http://localhost:3000",
-    }),
+    })
+  );
+
+  initializeRoutes(app);
+  
+  app.use(
+    "/",
     express.json({ limit: "50mb" }),
     expressMiddleware(server, {
       context: async (arg) => {
