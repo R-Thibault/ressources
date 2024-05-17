@@ -35,25 +35,12 @@ export class GroupResolver {
   async getMyGroups(@Ctx() context: ContextType): Promise<Group[]> {
     try {
       const group = await Group.find({
-        where: { created_by_user: { id: context.user?.id } },
+        where: { members: { user: { id: context.user?.id } } },
         relations: {
           created_by_user: true,
+          members: { user: true },
         },
       });
-
-      const groupMember = await Member.find({
-        where: { user: { id: context.user?.id } },
-        relations: {
-          group: true,
-          user: true,
-        },
-      });
-
-      if (groupMember.length > 0) {
-        groupMember.forEach((element) => {
-          group.push(element.group);
-        });
-      }
 
       return group;
     } catch (error) {
@@ -69,11 +56,13 @@ export class GroupResolver {
   ): Promise<Group> {
     try {
       const newGroup = new Group();
+      const newMember = new Member();
       newGroup.name = data.name;
       newGroup.description = data.description;
 
       if (context.user) {
         newGroup.created_by_user = context.user;
+        newMember.user = context.user;
       }
 
       const error = await validate(newGroup);
@@ -81,8 +70,11 @@ export class GroupResolver {
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newGroup.save();
-        return datas;
+        const group = await newGroup.save();
+        newMember.group = group;
+        newMember.last_visit = new Date();
+        await newMember.save();
+        return group;
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
