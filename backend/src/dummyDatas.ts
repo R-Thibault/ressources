@@ -13,6 +13,12 @@ function randomDate(start: Date, end: Date) {
   );
 }
 
+/**
+ * return a random number between two values
+ * @param min
+ * @param max
+ * @returns
+ */
 function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
