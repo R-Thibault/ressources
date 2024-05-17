@@ -23,13 +23,15 @@ import { Member } from "../entities/Member";
 import { Link } from "../entities/Link";
 import { Ressource } from "../entities/Ressource";
 import { Right } from "../entities/Right";
-import { validateDatas } from "./validate";
 
 export async function populateBdd() {
+  // Creation de l'utilisateur Admin en 1er, permet de ne populé la base de donnée qu'une fois.
   try {
     const adminUser = new User();
     adminUser.email = "admin@ressources.com";
     adminUser.hashed_password = await argon2.hash("DummyPassword");
+    adminUser.firstname = "Admin";
+    adminUser.lastname = "Admin";
     adminUser.created_at = new Date();
     adminUser.is_account_validated = true;
     const error = await validate(adminUser);
@@ -42,7 +44,7 @@ export async function populateBdd() {
   } catch (error) {
     throw new Error(`error occured ${JSON.stringify(error)}`);
   }
-
+  // Obligation de crée les utilisateurs en 1er pour pouvoir faire la relation "created_by_user" avec les autres tables
   for (let i = 0; i < DummyUsers.length; i++) {
     try {
       const newUser = new User();
@@ -52,7 +54,7 @@ export async function populateBdd() {
       newUser.firstname = DummyUsers[i].firstname;
       newUser.created_at = DummyUsers[i].created_at;
       newUser.is_account_validated = DummyUsers[i].is_account_validated;
-
+      //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
       const error = await validate(newUser);
 
       if (error.length > 0) {
@@ -211,11 +213,13 @@ export async function populateBdd() {
       const error = await validate(newLink);
 
       if (error.length > 0) {
+        console.log(error);
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
         const datas = await newLink.save();
       }
     } catch (error) {
+      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
@@ -229,17 +233,20 @@ export async function populateBdd() {
       newRessource.image_id = DummyRessources[i].image_id;
       newRessource.file_id = DummyRessources[i].file_id;
       newRessource.link_id = DummyRessources[i].link_id;
+      newRessource.group_id = DummyRessources[i].group_id;
       newRessource.created_by_user = DummyRessources[i].created_by_user;
       newRessource.created_at = DummyRessources[i].created_at;
 
       const error = await validate(newRessource);
 
       if (error.length > 0) {
+        console.log(error);
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
         const datas = await newRessource.save();
       }
     } catch (error) {
+      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
@@ -249,7 +256,7 @@ export async function populateBdd() {
     const user = await User.findOneBy({ id: i + 2 });
 
     if (user) {
-      Object.assign(user, { image_id: DummyUsers[i].image_id });
+      Object.assign(user, { avatar: DummyUsers[i].avatar });
 
       const error = await validate(user);
 
