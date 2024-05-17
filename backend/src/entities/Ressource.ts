@@ -75,10 +75,9 @@ export class Ressource extends BaseEntity {
   @Field(() => Link)
   link_id!: Link;
 
-  @OneToMany(() => Group, (group) => group.ressources)
+  @ManyToOne(() => Group, (group) => group.ressources)
   @Field(() => Group, { nullable: true })
   group_id!: Group;
-  
 }
 
 @InputType()

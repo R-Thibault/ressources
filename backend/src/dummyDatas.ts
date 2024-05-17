@@ -1,4 +1,3 @@
-import { Admin } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -13,6 +12,12 @@ function randomDate(start: Date, end: Date) {
   );
 }
 
+/**
+ * return a random number between two values
+ * @param min number
+ * @param max number
+ * @returns a random number between min and max
+ */
 function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
@@ -22,7 +27,7 @@ export const DummyUsers: {
   password: string;
   lastname: string;
   firstname: string;
-  image_id: any;
+  avatar: any;
   created_at: Date;
   is_account_validated: boolean;
 }[] = [
@@ -31,7 +36,7 @@ export const DummyUsers: {
     password: "superPassword",
     lastname: "Jean",
     firstname: "Jacques",
-    image_id: { id: 1 },
+    avatar: { id: 1 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
     is_account_validated: true,
   },
@@ -40,7 +45,7 @@ export const DummyUsers: {
     password: "superPassword2",
     lastname: "Thomas",
     firstname: "Brac",
-    image_id: { id: 2 },
+    avatar: { id: 2 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
     is_account_validated: true,
   },
@@ -49,7 +54,7 @@ export const DummyUsers: {
     password: "superPassword3",
     lastname: "Léa",
     firstname: "Soto",
-    image_id: { id: 3 },
+    avatar: { id: 3 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
     is_account_validated: true,
   },
@@ -58,7 +63,7 @@ export const DummyUsers: {
     password: "superPassword4",
     lastname: "June",
     firstname: "Jin",
-    image_id: { id: 4 },
+    avatar: { id: 4 },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
     is_account_validated: true,
   },
@@ -178,6 +183,7 @@ export const DummyRessources: {
   image_id: any;
   file_id: any;
   link_id: any;
+  group_id: any;
   created_by_user: any;
   created_at: Date;
 }[] = [
@@ -189,6 +195,7 @@ export const DummyRessources: {
     image_id: null,
     file_id: { id: 1 },
     link_id: null,
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -200,6 +207,7 @@ export const DummyRessources: {
     image_id: null,
     file_id: { id: 2 },
     link_id: null,
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -211,6 +219,7 @@ export const DummyRessources: {
     image_id: null,
     file_id: { id: 3 },
     link_id: null,
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -222,6 +231,7 @@ export const DummyRessources: {
     image_id: null,
     file_id: { id: 4 },
     link_id: null,
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -233,6 +243,7 @@ export const DummyRessources: {
     image_id: null,
     file_id: { id: 5 },
     link_id: null,
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -244,6 +255,7 @@ export const DummyRessources: {
     image_id: { id: 6 },
     file_id: null,
     link_id: { id: 1 },
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -255,6 +267,7 @@ export const DummyRessources: {
     image_id: { id: 7 },
     file_id: null,
     link_id: { id: 2 },
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -266,6 +279,7 @@ export const DummyRessources: {
     image_id: { id: 8 },
     file_id: null,
     link_id: { id: 3 },
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -277,6 +291,7 @@ export const DummyRessources: {
     image_id: { id: 9 },
     file_id: null,
     link_id: { id: 4 },
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -288,6 +303,7 @@ export const DummyRessources: {
     image_id: { id: 10 },
     file_id: null,
     link_id: { id: 5 },
+    group_id: { id: getRandomArbitrary(1, 5) },
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
@@ -313,7 +329,7 @@ export const DummyLinks: {
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
-  { 
+  {
     url: "https://stackoverflow.com/",
     created_by_user: { id: getRandomArbitrary(1, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),

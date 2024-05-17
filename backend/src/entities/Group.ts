@@ -73,7 +73,7 @@ export class Group extends BaseEntity {
   @Field(() => [Message])
   messages!: Message[];
 
-  @ManyToOne(() => Ressource, (ressources) => ressources.group_id)
+  @OneToMany(() => Ressource, (ressources) => ressources.group_id)
   @Field(() => [Ressource])
   ressources!: Ressource[];
 }
