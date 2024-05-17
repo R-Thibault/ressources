@@ -2,13 +2,13 @@ import { useState } from "react";
 import RessourcesFormStep1 from "../molecules/ressourceForm-step1";
 import RessourcesFormStep2 from "../molecules/ressourceForm-step2";
 import { useQuery } from "@apollo/client";
-import { UserType } from "@/types/user.type";
+import { UserType } from "@/types/user.types";
 import { MY_PROFILE } from "@/requests/user";
 import { FileType } from "@/types/file.types";
 import { LinkType } from "@/types/link.types";
 
 export default function CreateRessourcesForm(props: {
-  handleSubmit(value: boolean): void;
+  onClose(value: boolean): void;
 }) {
   const [step, setStep] = useState<number>(1);
   const [type, setType] = useState<string>("link");
@@ -25,7 +25,7 @@ export default function CreateRessourcesForm(props: {
   };
 
   const handleSubmit = (value: boolean) => {
-    props.handleSubmit(value);
+    props.onClose(value);
   };
 
   return (

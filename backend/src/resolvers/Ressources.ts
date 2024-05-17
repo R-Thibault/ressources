@@ -1,4 +1,12 @@
-import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { validate } from "class-validator";
 import { DummyRessources } from "../dummyDatas";
 import {
@@ -59,6 +67,30 @@ export class RessourceResolver {
     }
   }
 
+  @Query(() => [Ressource])
+  async getRessourcesByGroupId(
+    @Arg("groupId", () => ID) groupId: number
+  ): Promise<Ressource[]> {
+    try {
+      const ressources = await Ressource.find({
+        where: { group_id: { id: groupId } },
+        relations: {
+          image_id: true,
+          created_by_user: { avatar: true },
+          file_id: true,
+          link_id: true,
+          group_id: true,
+        },
+      });
+      if (!ressources) {
+        throw new Error("ressource not found");
+      }
+      return ressources;
+    } catch (error) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+  }
+
   @Authorized()
   @Mutation(() => Ressource)
   async createRessource(
@@ -69,16 +101,14 @@ export class RessourceResolver {
       const newRessource = new Ressource();
       newRessource.title = data.title;
       newRessource.description = data.description;
-      console.log(data);
-      if(data.type === "link" && data.entityId){
-        const link = await  Link.findOneBy({
+      if (data.type === "link" && data.entityId) {
+        const link = await Link.findOneBy({
           id: data.entityId,
         });
-        console.log(link, data.entityId)
         if (link) {
           newRessource.link_id = link;
         }
-      }else{
+      } else {
         const file = await File.findOneBy({
           id: data.entityId,
         });
@@ -86,7 +116,7 @@ export class RessourceResolver {
           newRessource.file_id = file;
         }
       }
-    
+
       if (context.user) {
         newRessource.created_by_user = context.user;
       }

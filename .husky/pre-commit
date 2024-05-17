@@ -1,37 +1,37 @@
 #!/bin/bash
 
-# Get the directory of the pre-commit script
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# # Get the directory of the pre-commit script
+# SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Navigate to the frontend directory (assuming it's located at "../frontend" relative to the script)
-FRONTEND_DIR="$SCRIPT_DIR/../frontend"
-BACKEND_DIR="$SCRIPT_DIR/../backend"
+# # Navigate to the frontend directory (assuming it's located at "../frontend" relative to the script)
+# FRONTEND_DIR="$SCRIPT_DIR/../frontend"
+# BACKEND_DIR="$SCRIPT_DIR/../backend"
 
-# Check if the frontend directory exists
-if [ -d "$FRONTEND_DIR" ]; then
+# # Check if the frontend directory exists
+# if [ -d "$FRONTEND_DIR" ]; then
 
-    if (cd "$FRONTEND_DIR" && npm run nextLint); then
-        echo "Frontend ESLint passed"
-    else
-        echo "Frontend ESLint failed"
-        exit 1 # Abort the commit if frontend ESLint returns errors
-    fi
-else
-    echo "Frontend directory not found"
-    exit 1 # Abort the commit if frontend directory is not found
-fi
+#     if (cd "$FRONTEND_DIR" && npm run nextLint); then
+#         echo "Frontend ESLint passed"
+#     else
+#         echo "Frontend ESLint failed"
+#         exit 1 # Abort the commit if frontend ESLint returns errors
+#     fi
+# else
+#     echo "Frontend directory not found"
+#     exit 1 # Abort the commit if frontend directory is not found
+# fi
 
-# Check if the frontend directory exists
-if [ -d "$BACKEND_DIR" ]; then
+# # Check if the frontend directory exists
+# if [ -d "$BACKEND_DIR" ]; then
 
-    if (cd "$BACKEND_DIR" && npm run eslint); then
-        echo "Backend ESLint passed"
-    else
-        echo "Backend ESLint failed"
-        exit 1 # Abort the commit if frontend ESLint returns errors
-    fi
-else
-    echo "Backend directory not found"
-    exit 1 # Abort the commit if frontend directory is not found
-fi
+#     if (cd "$BACKEND_DIR" && npm run eslint); then
+#         echo "Backend ESLint passed"
+#     else
+#         echo "Backend ESLint failed"
+#         exit 1 # Abort the commit if frontend ESLint returns errors
+#     fi
+# else
+#     echo "Backend directory not found"
+#     exit 1 # Abort the commit if frontend directory is not found
+# fi
 

@@ -1,14 +1,17 @@
 import { ExtraTypes } from "./extra.types";
 import { ImageType } from "./image.types";
+import { UserType } from "./user.types";
 
 export type RessourceType = {
+  children?: React.ReactNode;
   id: number;
   title: string;
   description: string;
-  image: ImageType | null;
+  imageId: ImageType | null;
   file: RessourceFileType | null;
   link: RessourceLinkType | null;
   isFavorite: boolean;
+  created_by_user: UserType;
 } & ExtraTypes;
 
 export type RessourceFileType = {

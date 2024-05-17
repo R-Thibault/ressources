@@ -15,6 +15,7 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
   const chevronClassName = subMenuExpanded
     ? "bi bi-chevron-up sub_menu_chevron"
     : "bi bi-chevron-down sub_menu_chevron";
+  console.log(props.link);
 
   return (
     <div className="menu_item_container">
@@ -39,7 +40,7 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
           <ul>
             {props.subItems?.map((item) => (
               <a
-                href={"name" in item ? `/group/${item.token}` : item.link}
+                href={"name" in item ? `/group/${item.id}` : item.link}
                 key={"name" in item ? item.name : item.title}
               >
                 <li>{"name" in item ? item.name : item.title}</li>

@@ -22,3 +22,11 @@
     margin-bottom: 20px;
   }
 }
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  padding: 16px;
+}

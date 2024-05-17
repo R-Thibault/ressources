@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_GROUP, GET_MY_GROUPS } from "@/requests/group";
 
 export default function CreateGroupForm(props: {
-  handleSubmit(value: boolean): void;
+  onClose(value: boolean): void;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -28,7 +28,7 @@ export default function CreateGroupForm(props: {
       e.preventDefault();
       await createNewGroup();
       if (!error) {
-        props.handleSubmit(false);
+        props.onClose(false);
       }
     } catch (error) {
       console.error(error);

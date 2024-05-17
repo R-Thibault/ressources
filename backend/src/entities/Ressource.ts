@@ -39,7 +39,7 @@ export class Ressource extends BaseEntity {
 
   @OneToOne(() => Image)
   @JoinColumn()
-  @Field()
+  @Field(() => Image, { nullable: true })
   image_id!: Image;
 
   @Column({ type: "timestamp", nullable: true }) // to false for prod

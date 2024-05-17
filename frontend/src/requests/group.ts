@@ -25,3 +25,14 @@ export const GET_MY_GROUPS = gql`
     }
   }
 `;
+
+export const GET_ONE_GROUP = gql`
+  query GetOneGroup($id: ID!) {
+    item: getOneGroup(id: $id) {
+      id
+      name
+      description
+      created_at
+    }
+  }
+`;

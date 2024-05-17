@@ -24,7 +24,7 @@ export default function Dashboard(): React.ReactNode {
           </button>
         </div>
         <ModalComponent opened={modalVisible} openModal={handleModalVisible}>
-          <CreateRessourcesForm handleSubmit={handleModalVisible} />
+          <CreateRessourcesForm onClose={handleModalVisible} />
         </ModalComponent>
       </div>
     </Layout>
