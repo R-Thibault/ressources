@@ -3,9 +3,9 @@ import styles from "@/styles/NewAd.module.css";
 import { useRouter } from "next/router";
 import { AdCardProps, CategoryProps } from "@/components/adCard";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_CATEGORIES } from "@/Request/category";
-import { GET_ALL_TAGS } from "@/Request/tags";
-import { CREATE_NEW_AD, GET_AD_BY_ID, UPDATE_AD } from "@/Request/ads";
+import { GET_ALL_CATEGORIES } from "@/requests/category";
+import { GET_ALL_TAGS } from "@/requests/tags";
+import { CREATE_NEW_AD, GET_AD_BY_ID, UPDATE_AD } from "@/requests/ads";
 
 export type DataEntries = {
   title: string;
@@ -81,7 +81,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
   useEffect(() => {
     if (props.query) {
       if (ad?.item) {
-        let tagsArray = [];
+        const tagsArray = [];
 
         for (const tag of ad.item.tags) {
           tagsArray.push({ id: +tag.id });
@@ -110,7 +110,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
         router.replace("/");
       }
     } catch (error) {
-      console.log(error);
       setErrors({ ...errors, submit: true });
     }
   }
@@ -127,7 +126,6 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
         router.replace("/");
       }
     } catch (error) {
-      console.log(error);
       setErrors({ ...errors, submit: true });
     }
   }
@@ -285,6 +283,7 @@ export default function AdForm(props: AdFormProps): React.ReactNode {
                     : false
                 }
                 name={item.title}
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 onChange={(e) => handleSelectBox(item)}
               />
               <label htmlFor={item.title}>{item.title}</label>

@@ -1,0 +1,113 @@
+.menu_item_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+  cursor: pointer;
+  .menu_item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    i {
+      font-size: 2.35em;
+      color: $primary-color1;
+    }
+    a {
+      margin-left: 15px;
+      font-size: 1.125em;
+      color: white;
+      font-family: poppinsLight;
+      width: 70%;
+      text-decoration: none;
+    }
+    .sub_menu_chevron {
+      color: white;
+      font-size: 1em;
+    }
+    & :hover {
+      transform: none;
+    }
+    .user_profile_button {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: $primary-color8;
+      text-decoration: none;
+      span {
+        font-size: 0.5em;
+        font-family: poppinsMedium;
+        color: white;
+      }
+    }
+  }
+  .menu_item:hover {
+    background-color: $black-shadow;
+    i {
+      transform: scale(1.1);
+    }
+  }
+  .menu_button_add_group {
+    width: 50px;
+    margin-top: 15px;
+    border-radius: 10px;
+  }
+}
+
+.menu_item--focused {
+  border-right: solid 4px $primary-color5;
+}
+
+.menu_item_content_center {
+  justify-content: center;
+}
+
+.menu_item_content_flex-start {
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+
+.sub_menu_item {
+  width: 100%;
+  background-color: $primary-color4;
+  ul {
+    width: 100%;
+    height: auto;
+    a {
+      text-decoration: none;
+      li {
+        font-size: 1em;
+        color: black;
+        font-family: poppinsLight;
+        padding-block: 10px;
+        padding-left: 70px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      & :hover {
+        background-color: $black-shadow;
+      }
+    }
+  }
+}
+
+#menu_item_container_close_button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  .menu_item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+  }
+}

@@ -1,0 +1,6 @@
+.card-width {
+  width: clamp(15em, 25vw, 20em);
+  border: 5px solid black;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}

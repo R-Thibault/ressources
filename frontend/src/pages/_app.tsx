@@ -1,4 +1,5 @@
-import "@/styles/globals.css";
+import "@/assets/scss/main.scss";
+// import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import {
@@ -11,7 +12,7 @@ import {
 import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { MY_PROFILE } from "@/Request/user";
+import { MY_PROFILE } from "@/requests/user";
 
 const link = createHttpLink({
   uri: API_URL,
@@ -23,13 +24,11 @@ const client = new ApolloClient({
   link,
 });
 
-const publicPages = ["/sign-in", "/sign-up", "/", "/ads/[id]"];
+const publicPages = ["/sign-in", "/sign-up"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
-
   const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
-
   useEffect(() => {
     if (!publicPages.includes(router.pathname)) {
       if (error) {
@@ -37,7 +36,6 @@ function Auth(props: { children: React.ReactNode }) {
       }
     }
   }, [router, error, data]);
-
   return props.children;
 }
 

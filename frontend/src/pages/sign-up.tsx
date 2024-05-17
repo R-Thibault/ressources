@@ -1,24 +1,30 @@
-import { SIGN_UP } from "@/Request/user";
-import Layout, { LayoutProps } from "@/components/layout";
-import SignStyles from "@/styles/Sign.module.css";
+import { SIGN_UP } from "@/requests/user";
 import { useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
+import Logo from "@/components/atoms/logo";
+import { Alert } from "react-bootstrap";
+import { checkPasswords, checkEmail } from "@/utils/checkInput";
 
-export default function SignUp(props: LayoutProps): React.ReactNode {
+export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [failed, setFailed] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
 
-  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [signUp, { error }] = useMutation<{ id: number; email: string }>(
+  const [signUp, { data }] = useMutation<{ id: number; email: string }>(
     SIGN_UP,
     {
       variables: {
         data: {
-          email: email,
-          password: password,
+          email,
+          password,
+          confirmPassword,
+          firstname,
+          lastname,
+          isTest: false,
         },
       },
     }
@@ -27,47 +33,111 @@ export default function SignUp(props: LayoutProps): React.ReactNode {
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      setFailed(false);
-      const response = await signUp();
-      if (!error) {
-        router.replace("/sign-in");
+      setErrorMessage("");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+      const validPassword = checkPasswords(password, confirmPassword);
+      const validEmail = checkEmail(email);
+
+      if (validEmail) {
+        if (validPassword.result) {
+          await signUp();
+        } else {
+          setErrorMessage(validPassword.errorMessage);
+        }
+      } else {
+        setErrorMessage("Merci de renseigner un email valide!");
       }
     } catch (error) {
-      console.log(error);
-      setFailed(true);
+      setErrorMessage("Une erreur est survenue. Veuillez réessayer!");
     }
   }
 
   return (
-    <Layout title={"S'inscrire"}>
-      <div className={SignStyles.container}>
-        <span className={SignStyles.logo}>THE GOOD CORNER</span>
-        <h3>Inscription</h3>
-        <form className={SignStyles.form} onSubmit={(e) => submitForm(e)}>
-          <input
-            className={SignStyles.input}
-            type="email"
-            value={email}
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className={SignStyles.input}
-            type="password"
-            value={password}
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {failed && (
-            <span className={SignStyles.errorMessage}>
-              Une erreur est survenue
-            </span>
-          )}
-          <button className={SignStyles.button} type="submit">
-            Inscription
-          </button>
-        </form>
+    <div className="container_signin">
+      <Logo className={"menu_white_logo"} link="/sign-up" />
+
+      <div className="signin_wrapper">
+        {!data ? (
+          <>
+            <span>Inscription</span>
+            <p className="title">
+              Inscrivez-vous dès maintenant en remplissant le formulaire
+              ci-dessous
+            </p>
+            <form className="form" onSubmit={(e) => submitForm(e)}>
+              <input
+                className="input"
+                required
+                type="text"
+                value={lastname}
+                placeholder="Nom"
+                onChange={(e) => setLastname(e.target.value)}
+              />
+              <input
+                className="input"
+                type="text"
+                required
+                value={firstname}
+                placeholder="Prénom"
+                onChange={(e) => setFirstname(e.target.value)}
+              />
+              <input
+                className="input"
+                required
+                type="email"
+                value={email}
+                placeholder="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                className="input"
+                required
+                type="password"
+                value={password}
+                placeholder="mot de passe"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <input
+                className="input"
+                required
+                type="password"
+                value={confirmPassword}
+                placeholder="confirmation mot de passe"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {errorMessage !== "" && (
+                <Alert className="full_width" variant={"danger"}>
+                  {errorMessage}
+                </Alert>
+              )}
+              <button
+                className="btn_primary menu_button_add_group"
+                type="submit"
+              >
+                Créer un compte
+              </button>
+              <p className="signup_link">
+                Vous avez déjà un compte ?{" "}
+                <a href="/sign-in" className="forgot_Password">
+                  Connectez-vous dès maintenant !
+                </a>
+              </p>
+            </form>
+          </>
+        ) : (
+          <>
+            <span>Vérifiez votre boite mail !</span>
+            <p className="title">
+              Un mail de validation de compte a été envoyé sur votre adresse
+              mail. Verifiez vos courriers indésirables.
+            </p>
+            <a href="/sign-in" className="forgot_Password">
+              Retour à la page d'accueil
+            </a>
+          </>
+        )}
       </div>
-    </Layout>
+    </div>
   );
 }

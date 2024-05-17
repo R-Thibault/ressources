@@ -16,9 +16,9 @@ export const fetchAds = async (
   try {
     const result = await axios.get<AdCardProps[]>(url);
     ads = result.data;
-  } catch (error) {
+  } catch (err) {
     error = true;
-    console.log(error);
+    console.error(err);
   }
   return { ads, error };
 };
@@ -33,9 +33,9 @@ export const fetchCategories = async (): Promise<{
   try {
     const result = await axios.get<CategoryProps[]>(`${API_URL}/category`);
     categories = result.data;
-  } catch (error) {
+  } catch (err) {
     error = true;
-    console.log(error);
+    console.error(err);
   }
   return { categories, error };
 };
@@ -50,9 +50,9 @@ export const fetchTags = async (): Promise<{
   try {
     const result = await axios.get<TagsProps[]>(`${API_URL}/tag`);
     tags = result.data;
-  } catch (error) {
+  } catch (err) {
     error = true;
-    console.log(error);
+    console.error(err);
   }
   return { tags, error };
 };
@@ -69,9 +69,9 @@ export const fetchAd = async (
   try {
     const result = await axios.get<AdCardProps>(`${API_URL}/ads/${id}`);
     ad = result.data;
-  } catch (error) {
+  } catch (err) {
     error = true;
-    console.log(error);
+    console.error(err);
   }
   return { ad, error };
 };

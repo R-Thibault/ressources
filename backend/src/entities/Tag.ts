@@ -3,11 +3,15 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  BeforeInsert,
+  JoinColumn,
   ManyToMany,
 } from "typeorm";
-import { MaxLength, MinLength } from "class-validator";
-import { Ad } from "./Ad";
+
 import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { User } from "./User";
+import { Ressource } from "./Ressource";
 
 @Entity()
 @ObjectType()
@@ -16,19 +20,47 @@ export class Tag extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column()
+  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
   @Field()
-  @MinLength(1, { message: "titre trop court" })
-  @MaxLength(100, { message: "titre trop long" })
-  title!: string;
+  name!: string;
 
-  @ManyToMany(() => Ad, (ads) => ads.tags)
-  @Field(() => [Ad])
-  ads!: Ad[];
+/*   @ManyToMany(() => Ressource, (ressource) => ressource.tags)
+  @JoinColumn()
+  @Field(() => Ressource)
+  ressources!: Ressource[]; */
+
+  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Field()
+  created_at!: Date;
+
+  @BeforeInsert()
+  updateDate() {
+    this.created_at = new Date();
+  }
+
+  @ManyToOne(() => User, (user) => user.tags_creation)
+  @JoinColumn({ name: "created_by" })
+  @Field(() => User)
+  created_by_user!: User;
+
+  @Column({ type: "timestamp", nullable: true })
+  @Field()
+  updated_at!: Date;
+
+  @ManyToOne(() => User, (user) => user.tags_update)
+  @JoinColumn({ name: "updated_by" })
+  @Field(() => User)
+  updated_by_user!: User;
 }
 
 @InputType()
-export class InputTag {
+export class TagCreateInput {
   @Field()
-  title!: string;
+  name!: string;
+}
+
+@InputType()
+export class TagUpdateInput {
+  @Field()
+  name!: string;
 }

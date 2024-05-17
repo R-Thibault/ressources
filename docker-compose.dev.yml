@@ -1,27 +1,31 @@
 services:
-    server:
-        build: ./backend
-        ports: 
-            - 4000:4000
-        command: npm start
-        volumes:
-            - ./backend/src/:/app/src/
-        env_file:
-            - ./backend/.env
-    front:
-        build: ./frontend
-        ports:
-            - 3000:3000
-        volumes: 
-            - ./frontend/src/:/app/src/
-    db:
-        image: postgres
-        volumes:
-            - /var/lib/postgresql/data
-        env_file:
-            - ./.env
-        
-    adminer:
-        image: adminer
-        ports:
-            - 8080:8080
+  server:
+    build: ./backend
+    ports:
+      - 4000:4000
+    command: npm start
+    volumes:
+      - ./backend/src/:/app/src/
+      - ./upload:/app/upload
+      - ./upload/avatar:/app/upload/avatar
+      - ./upload/ressources:/app/upload/ressources
+    env_file:
+      - ./.env
+  # front:
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend/src/:/app/src/
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
+    env_file:
+      - ./.env
+  adminer:
+    image: adminer
+    ports:
+      - 8000:8080

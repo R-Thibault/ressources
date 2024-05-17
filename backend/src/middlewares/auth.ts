@@ -21,7 +21,10 @@ export async function getUser(req: any, res: any): Promise<User | null> {
       const decodedToken = jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
 
       if (typeof decodedToken === "object" && "id" in decodedToken) {
-        const user = await User.findOneBy({ id: decodedToken.id });
+        const user = await User.findOne({
+          where: { id: decodedToken.id },
+          relations: { avatar: true },
+        });
         if (user) {
           return user;
         } else {
@@ -39,10 +42,10 @@ export const customAuthChecker: AuthChecker<ContextType> = async (
   { root, args, context, info },
   roles
 ) => {
-  
   const connectedUser = await getUser(context.req, context.res);
 
   if (connectedUser) {
+    context.user = connectedUser;
     return true;
   } else {
     return false;

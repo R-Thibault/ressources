@@ -1,0 +1,29 @@
+.menu_white_logo {
+  position: relative;
+  margin-bottom: 30px;
+  a {
+    img {
+      width: 100%;
+      height: 100%;
+      content: url("../../../images/logo_full_white.svg");
+    }
+  }
+}
+
+.menu_small_logo {
+  margin-bottom: 60px;
+  a {
+    img {
+      width: 100%;
+      height: 100%;
+      content: url("../../../images/logo_small.svg");
+    }
+  }
+}
+.menu_small_logo:hover {
+  a {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}

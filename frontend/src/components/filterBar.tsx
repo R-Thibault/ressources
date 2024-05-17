@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
-import { GET_ALL_TAGS } from "@/Request/tags";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_TAGS } from "@/requests/tags";
 import styles from "@/styles/filterBar.module.css";
 
 export type TagsProps = {
@@ -37,6 +36,7 @@ export default function FilterBar(props: FilterBarProps): React.ReactNode {
             type="checkbox"
             id={item.title}
             name={item.title}
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             onChange={(e) => addSelectedTag(item)}
             checked={
               props.selectedTags.find((tag) => tag === +item.id) ? true : false
