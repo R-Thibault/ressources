@@ -26,12 +26,11 @@ export default function GroupDashboard(): React.ReactNode {
     },
   });
 
-  const { data: dataRessources, error } = useQuery(GET_RESSOURCES_BY_GROUP_ID, {
+  const { data: dataRessources } = useQuery(GET_RESSOURCES_BY_GROUP_ID, {
     variables: {
       groupId,
     },
   });
-  console.log(error);
   if (data?.item) {
     return (
       <Layout title={"Dashboard Groupe"}>

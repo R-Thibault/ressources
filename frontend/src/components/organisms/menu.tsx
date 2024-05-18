@@ -79,7 +79,7 @@ export default function Menu(): React.ReactNode {
           />
           <MenuItem
             title="Mon profil"
-            link="/profile"
+            link="/profil"
             menuOpened={menuOpened}
             focused={true}
             focusedClassName="bi bi-person-fill"

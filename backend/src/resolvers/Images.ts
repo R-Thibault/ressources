@@ -1,8 +1,18 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { ImageCreateInput, ImageUpdateInput, Image } from "../entities/Image";
 
 import { validate } from "class-validator";
 import { DummyImages } from "../dummyDatas";
+import { ContextType } from "../middlewares/auth";
+import { User } from "../entities/User";
 
 @Resolver(Image)
 export class ImageResolver {
@@ -72,6 +82,39 @@ export class ImageResolver {
       return image;
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+  }
+
+  @Authorized()
+  @Mutation(() => Image, { nullable: true })
+  async deleteAvatar(
+    @Arg("id", () => ID) id: number,
+    @Ctx() context: ContextType
+  ): Promise<Image | null> {
+    try {
+      if (!context.user) {
+        throw new Error(`User not found.`);
+      }
+      const image = await Image.findOne({ where: { id: id } });
+      if (!image) {
+        throw new Error(`Image with ID ${id} not found.`);
+      }
+      const user = await User.findOne({
+        where: { id: context.user.id },
+        relations: { avatar: true },
+      });
+      if (!user) {
+        throw new Error(`User not found.`);
+      }
+      if (user.avatar && user.avatar.id === image.id) {
+        // Remove the avatar reference from the user
+        user.avatar.remove();
+      } else {
+        throw new Error(`The user does not have the specified avatar.`);
+      }
+      return image;
+    } catch (error) {
+      throw new Error(`error occured here ${JSON.stringify(error)}`);
     }
   }
 
