@@ -196,7 +196,7 @@ export const DummyRessources: {
     file_id: { id: 1 },
     link_id: null,
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -208,7 +208,7 @@ export const DummyRessources: {
     file_id: { id: 2 },
     link_id: null,
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -220,7 +220,7 @@ export const DummyRessources: {
     file_id: { id: 3 },
     link_id: null,
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -232,7 +232,7 @@ export const DummyRessources: {
     file_id: { id: 4 },
     link_id: null,
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -244,7 +244,7 @@ export const DummyRessources: {
     file_id: { id: 5 },
     link_id: null,
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -256,7 +256,7 @@ export const DummyRessources: {
     file_id: null,
     link_id: { id: 1 },
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -268,7 +268,7 @@ export const DummyRessources: {
     file_id: null,
     link_id: { id: 2 },
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -280,7 +280,7 @@ export const DummyRessources: {
     file_id: null,
     link_id: { id: 3 },
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -292,7 +292,7 @@ export const DummyRessources: {
     file_id: null,
     link_id: { id: 4 },
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
   {
@@ -304,7 +304,7 @@ export const DummyRessources: {
     file_id: null,
     link_id: { id: 5 },
     group_id: { id: getRandomArbitrary(1, 5) },
-    created_by_user: { id: getRandomArbitrary(1, 5) },
+    created_by_user: { id: getRandomArbitrary(2, 5) },
     created_at: randomDate(new Date(2012, 0, 1), new Date()),
   },
 ];

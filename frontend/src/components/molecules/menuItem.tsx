@@ -15,7 +15,6 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
   const chevronClassName = subMenuExpanded
     ? "bi bi-chevron-up sub_menu_chevron"
     : "bi bi-chevron-down sub_menu_chevron";
-  console.log(props.link);
 
   return (
     <div className="menu_item_container">
