@@ -4,7 +4,6 @@ import {
   Column,
   Entity,
   ManyToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Member } from "./Member";
