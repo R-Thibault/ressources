@@ -8,9 +8,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { ImageCreateInput, ImageUpdateInput, Image } from "../entities/Image";
-
 import { validate } from "class-validator";
-import { DummyImages } from "../dummyDatas";
 import { ContextType } from "../middlewares/auth";
 import { User } from "../entities/User";
 
@@ -116,29 +114,5 @@ export class ImageResolver {
     } catch (error) {
       throw new Error(`error occured here ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Image])
-  async populateImageTable(): Promise<Image[] | null> {
-    for (let i = 0; i < DummyImages.length; i++) {
-      try {
-        const newImage = new Image();
-        newImage.name = DummyImages[i].name;
-        newImage.path = DummyImages[i].path;
-        newImage.created_by_user = DummyImages[i].created_by_user;
-        newImage.created_at = DummyImages[i].created_at;
-
-        const error = await validate(newImage);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newImage.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllImages();
   }
 }

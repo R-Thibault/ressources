@@ -5,7 +5,6 @@ import {
   MessageUpdateInput,
 } from "../entities/Message";
 import { validate } from "class-validator";
-import { DummyMessages } from "../dummyDatas";
 
 @Resolver(Message)
 export class MessageResolver {
@@ -77,29 +76,5 @@ export class MessageResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Message])
-  async populateMessageTable(): Promise<Message[] | null> {
-    for (let i = 0; i < DummyMessages.length; i++) {
-      try {
-        const newMessage = new Message();
-        newMessage.message = DummyMessages[i].message;
-        newMessage.group = DummyMessages[i].group_id;
-        newMessage.created_by_user = DummyMessages[i].created_by_user;
-        newMessage.created_at = DummyMessages[i].created_at;
-
-        const error = await validate(newMessage);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          const datas = await newMessage.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllMessages();
   }
 }

@@ -1,7 +1,6 @@
 import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 import { Right, RightUpdateInput, RightCreateInput } from "../entities/Right";
 import { validate } from "class-validator";
-import { DummyRights } from "../dummyDatas";
 import { ContextType } from "../middlewares/auth";
 
 @Resolver(Right)
@@ -74,26 +73,5 @@ export class RightResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Right])
-  async populateRightTable(): Promise<Right[] | null> {
-    for (let i = 0; i < DummyRights.length; i++) {
-      try {
-        const newRight = new Right();
-        newRight.name = DummyRights[i].name;
-
-        const error = await validate(newRight);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newRight.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllRights();
   }
 }

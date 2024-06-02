@@ -1,7 +1,6 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
 import { File, FileCreateInput, FileUpdateInput } from "../entities/File";
 import { validate } from "class-validator";
-import { DummyFiles } from "../dummyDatas";
 
 @Resolver(File)
 export class FileResolver {
@@ -70,30 +69,5 @@ export class FileResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [File])
-  async populateFileTable(): Promise<File[] | null> {
-    for (let i = 0; i < DummyFiles.length; i++) {
-      try {
-        const newFile = new File();
-        newFile.name = DummyFiles[i].name;
-        newFile.type = DummyFiles[i].type;
-        newFile.path = DummyFiles[i].path;
-        newFile.created_by_user = DummyFiles[i].created_by_user;
-        newFile.created_at = DummyFiles[i].created_at;
-
-        const error = await validate(newFile);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newFile.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllFiles();
   }
 }
