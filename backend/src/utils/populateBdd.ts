@@ -313,10 +313,8 @@ export async function populateBdd() {
       newRessource.title = faker.lorem.words(2);
       newRessource.description = faker.lorem.sentence();
       newRessource.is_favorite = faker.datatype.boolean();
-      newRessource.image_id =
-        createdImages[Math.floor(Math.random() * createdImages.length)];
-      newRessource.link_id =
-        createdLinks[Math.floor(Math.random() * createdLinks.length)];
+      newRessource.image_id = createdImages[i + 1];
+      newRessource.link_id = createdLinks[i + 1];
       newRessource.group_id =
         createdGroups[Math.floor(Math.random() * createdGroups.length)];
       newRessource.created_by_user =
@@ -340,12 +338,11 @@ export async function populateBdd() {
 
   // add image to user
   for (let i = 0; i < createdUsers.length; i++) {
-    const user = await User.findOneBy({ id: i + 2 });
+    const user = await User.findOneBy({ id: i + 1 });
 
     if (user) {
       Object.assign(user, {
-        avatar:
-          createdAvatars[Math.floor(Math.random() * createdAvatars.length)],
+        avatar: createdAvatars[i + 1],
       });
 
       const error = await validate(user);

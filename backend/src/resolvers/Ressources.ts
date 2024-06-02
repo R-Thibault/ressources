@@ -128,7 +128,6 @@ export class RessourceResolver {
         return datas;
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
