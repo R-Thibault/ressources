@@ -41,7 +41,7 @@ export class User extends BaseEntity {
   @Field()
   firstname!: string;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: "SET NULL", nullable: true })
   @JoinColumn()
   @Field(() => Image, { nullable: true })
   avatar!: Image;

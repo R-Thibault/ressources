@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 import { Resolver, Query, Arg, Mutation, Ctx, ID } from "type-graphql";
 import {

@@ -34,11 +34,11 @@ export const MY_PROFILE = gql`
       email
       lastname
       firstname
-      ## avatar {
-      ## id
-      ## name
-      ##path
-      ## }
+      avatar {
+        id
+        name
+        path
+      }
     }
   }
 `;

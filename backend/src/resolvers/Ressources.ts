@@ -43,7 +43,7 @@ export class RessourceResolver {
   }
 
   @Query(() => [Ressource])
-  async getAllRessourceFromOneUser(
+  async getAllRessourcesFromOneUser(
     @Ctx() context: ContextType
   ): Promise<Ressource[]> {
     try {
