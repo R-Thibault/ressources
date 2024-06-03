@@ -49,8 +49,8 @@
 }
 
 .btn_add_ressources {
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   transition: all 0.3s ease 0s;
   background: $primary-color1;
   border-radius: 30px;
@@ -93,8 +93,9 @@
   }
 }
 
-.like_content {
+.card_bottom_buttons_container {
   position: absolute;
+  bottom: -15px;
   right: 10%;
   .btn_like {
     border-radius: 50%;
@@ -107,8 +108,29 @@
       color: $primary-color2;
     }
   }
+  .btn_favorite {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    i {
+      border-radius: 50%;
+      color: $primary-color5;
+    }
+  }
 }
 
+.btn_sort {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.25em;
+  color: black;
+}
+.btn_sort:hover {
+  color: $primary-color2;
+}
 .profile_btn {
   border: none;
   position: absolute;

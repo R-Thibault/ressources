@@ -8,3 +8,12 @@ export const GET_ALL_TAGS = gql`
     }
   }
 `;
+
+export const GET_ALL_TAGS_FROM_ONE_USER = gql`
+  query GetAllTagsFromOneUser {
+    items: getAllTagsFromOneUser {
+      id
+      name
+    }
+  }
+`;

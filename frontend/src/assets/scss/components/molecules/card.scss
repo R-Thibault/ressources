@@ -1,6 +1,23 @@
-.card-width {
+.card-custom {
   width: clamp(15em, 25vw, 20em);
-  border: 5px solid black;
   box-sizing: border-box;
-  margin-bottom: 16px;
+  .card_header_btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 1.25em;
+    color: black;
+  }
+  .card_header_btn:hover {
+    color: $primary-color2;
+  }
+  .title {
+    font-family: poppinsMedium;
+    font-size: 1.25em;
+  }
+  .description {
+    font-family: poppinsRegular;
+    font-size: 0.875em;
+    color: black;
+  }
 }

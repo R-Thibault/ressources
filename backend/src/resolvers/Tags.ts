@@ -1,5 +1,6 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Authorized, Ctx } from "type-graphql";
 import { Tag, TagCreateInput, TagUpdateInput } from "../entities/Tag";
+import { ContextType, getUser } from "../middlewares/auth";
 import { validateDatas } from "../utils/validate";
 import { DummyTags } from "../dummyDatas";
 import { validate } from "class-validator";
@@ -9,6 +10,26 @@ export class TagResolver {
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     return await Tag.find({});
+  }
+
+  @Authorized()
+  @Query(() => [Tag])
+  async getAllTagsFromOneUser(@Ctx() context: ContextType): Promise<Tag[]> {
+    try {
+      if (!context.user) {
+        throw new Error(`error`);
+      } else {
+        const ressource = await Tag.find({
+          where: { created_by_user: { id: context.user.id } },
+          relations: {
+            created_by_user: true,
+          },
+        });
+        return ressource;
+      }
+    } catch (error) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
   }
 
   @Query(() => Tag)

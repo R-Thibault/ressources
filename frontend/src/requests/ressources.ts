@@ -40,8 +40,8 @@ export const GET_RESSOURCES_BY_GROUP_ID = gql`
 `;
 
 export const GET_ALL_RESSOURCES_FROM_ONE_USER = gql`
-  query GetAllRessourceFromOneUser {
-    items: getAllRessourceFromOneUser {
+  query GetAllRessourcesFromOneUser {
+    items: getAllRessourcesFromOneUser {
       id
       title
       description

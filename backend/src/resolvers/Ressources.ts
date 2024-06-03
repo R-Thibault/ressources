@@ -42,17 +42,17 @@ export class RessourceResolver {
     }
   }
 
+  @Authorized()
   @Query(() => [Ressource])
   async getAllRessourcesFromOneUser(
     @Ctx() context: ContextType
   ): Promise<Ressource[]> {
     try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
+      if (!context.user) {
         throw new Error(`error`);
       } else {
         const ressource = await Ressource.find({
-          where: { created_by_user: { id: user.id } },
+          where: { created_by_user: { id: context.user.id } },
           relations: {
             image_id: true,
             created_by_user: { avatar: true },

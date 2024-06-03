@@ -4,13 +4,18 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+  padding: 2%;
+  h1 {
+    font-size: 2em;
+  }
   .add_ressources_button {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin: 20px 0;
+    margin: 2em 0;
     h2 {
-      margin: 0 10px;
+      font-size: 1.5em;
+      margin-right: 10px;
     }
   }
   .progress_circular_container {
@@ -28,5 +33,5 @@
   flex-wrap: wrap;
   gap: 16px;
   justify-content: flex-start;
-  padding: 16px;
+  margin-top: 3em;
 }
