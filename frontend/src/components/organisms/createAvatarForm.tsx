@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export default function CreateAvatarForm() {
   const [imageError, setImageError] = useState<string | null>(null);
-  const [imageData, setImageData] = useState();
+  // const [imageData, setImageData] = useState();
   const [image, setImage] = useState<string | null>(null);
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
 

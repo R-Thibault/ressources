@@ -64,11 +64,9 @@ export default function Dashboard(): React.ReactNode {
     }
   };
 
-  const {
-    data: dataTags,
-    error: errorTags,
-    loading: loadingTags,
-  } = useQuery<{ items: TagType[] }>(GET_ALL_TAGS_FROM_ONE_USER);
+  const { data: dataTags } = useQuery<{ items: TagType[] }>(
+    GET_ALL_TAGS_FROM_ONE_USER
+  );
 
   function handleSelectTag(tag: TagType) {
     if (selectedTags.find((item) => item === tag)) {

@@ -20,7 +20,7 @@ const link = createHttpLink({
   credentials: "include",
 });
 
-const cache = new InMemoryCache({
+new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {

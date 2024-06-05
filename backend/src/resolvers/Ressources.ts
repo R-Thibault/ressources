@@ -14,7 +14,7 @@ import {
   RessourceCreateInput,
   RessourceUpdateInput,
 } from "../entities/Ressource";
-import { ContextType, getUser } from "../middlewares/auth";
+import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
 
