@@ -3,6 +3,7 @@ import {
   Authorized,
   Ctx,
   ID,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -42,8 +43,10 @@ export class RessourceResolver {
   }
 
   @Query(() => [Ressource])
-  async getAllRessourcesFromOneUser(
-    @Ctx() context: ContextType
+  async getRessourcesByUser(
+    @Ctx() context: ContextType,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
       const user = await getUser(context.req, context.res);
@@ -58,6 +61,12 @@ export class RessourceResolver {
             file_id: true,
             link_id: true,
           },
+          order: {
+            title: "ASC",
+            created_at: "ASC",
+          },
+          skip: skip,
+          take: take,
         });
         return ressource;
       }
@@ -68,7 +77,9 @@ export class RessourceResolver {
 
   @Query(() => [Ressource])
   async getRessourcesByGroupId(
-    @Arg("groupId", () => ID) groupId: number
+    @Arg("groupId", () => ID) groupId: number,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
       const ressources = await Ressource.find({
@@ -80,6 +91,12 @@ export class RessourceResolver {
           link_id: true,
           group_id: true,
         },
+        order: {
+          title: "ASC",
+          created_at: "ASC",
+        },
+        skip: skip,
+        take: take,
       });
       if (!ressources) {
         throw new Error("ressource not found");

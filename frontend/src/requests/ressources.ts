@@ -11,8 +11,8 @@ export const CREATE_RESSOURCE = gql`
 `;
 
 export const GET_RESSOURCES_BY_GROUP_ID = gql`
-  query GetRessourcesByGroupId($groupId: ID!) {
-    item: getRessourcesByGroupId(groupId: $groupId) {
+  query GetRessourcesByGroupId($groupId: ID!, $take: Int, $skip: Int) {
+    items: getRessourcesByGroupId(groupId: $groupId, take: $take, skip: $skip) {
       id
       title
       description
@@ -40,8 +40,8 @@ export const GET_RESSOURCES_BY_GROUP_ID = gql`
 `;
 
 export const GET_ALL_RESSOURCES_FROM_ONE_USER = gql`
-  query GetAllRessourceFromOneUser {
-    items: getAllRessourceFromOneUser {
+  query getRessourcesByUser($skip: Int, $take: Int) {
+    items: getRessourcesByUser(skip: $skip, take: $take) {
       id
       title
       description

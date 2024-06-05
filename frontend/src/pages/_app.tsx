@@ -13,10 +13,21 @@ import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { MY_PROFILE } from "@/requests/user";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 
 const link = createHttpLink({
   uri: API_URL,
   credentials: "include",
+});
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        launchesPast: offsetLimitPagination(),
+      },
+    },
+  },
 });
 
 const client = new ApolloClient({
