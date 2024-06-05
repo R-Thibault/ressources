@@ -1,0 +1,22 @@
+.search_input_container {
+  width: 250px;
+  height: 40px;
+  border-radius: 30px;
+  border: 1px solid $primary-color7;
+  padding: 0 10px 0px 20px;
+  i {
+    color: $primary-color7;
+    margin-right: 5px;
+  }
+  input {
+    border: none;
+    font-family: poppinsLight;
+    font-size: 0.875em;
+    outline: none;
+    color: black;
+    width: 100%;
+  }
+  &::placeholder {
+    color: $primary-color7;
+  }
+}

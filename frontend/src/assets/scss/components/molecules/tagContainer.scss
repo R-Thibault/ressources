@@ -3,7 +3,25 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  height: 3rem;
-  margin: 1rem;
+  gap: 10px;
+  .tag_input {
+    display: none;
+  }
+
+  .tag_text {
+    padding: 0.5rem 0.75em;
+    border-radius: 30px;
+    border: 2px solid $primary-color13;
+    background-color: transparent;
+    color: $primary-color13;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.75em;
+    text-transform: uppercase;
+  }
+
+  .tag_input:checked ~ .tag_text {
+    background-color: $primary-color13;
+    color: white;
+  }
 }
