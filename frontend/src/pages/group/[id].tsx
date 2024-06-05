@@ -22,7 +22,7 @@ export default function GroupDashboard(): React.ReactNode {
   const router = useRouter();
   const groupId = Number(router.query.id);
   const [, setSkip] = useState<number>(0);
-  const [take] = useState<number>(8);
+  const [take] = useState<number>(10);
 
   const { data: dataGroup } = useQuery<{ item: GroupType }>(GET_ONE_GROUP, {
     variables: {
@@ -40,7 +40,7 @@ export default function GroupDashboard(): React.ReactNode {
     variables: {
       groupId,
       skip: 0,
-      take: 8,
+      take: take,
     },
   });
   const isFetchingMore = networkStatus === NetworkStatus.fetchMore;

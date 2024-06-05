@@ -13,7 +13,7 @@ export default function CreateAvatarForm() {
   const [image, setImage] = useState<string | null>(null);
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
 
-  const onImageChange = (event) => {
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     }

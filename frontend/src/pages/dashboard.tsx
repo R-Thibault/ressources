@@ -16,7 +16,7 @@ export default function Dashboard(): React.ReactNode {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [, setSkip] = useState<number>(0);
-  const [take] = useState<number>(8);
+  const [take] = useState<number>(10);
 
   function handleModalVisible(value: boolean) {
     setModalVisible(value);
