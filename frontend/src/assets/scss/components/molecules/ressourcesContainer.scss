@@ -34,4 +34,13 @@
   gap: 16px;
   justify-content: flex-start;
   margin-top: 3em;
+  justify-content: space-evenly;
+  padding: 16px;
+}
+
+.spinner {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
 }

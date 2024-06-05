@@ -14,12 +14,12 @@ import { faker } from "@faker-js/faker";
 export async function populateBdd() {
   // used to set the number of data you want to generate
   const numberOfUsers = 5;
-  const numberOfImages = 20;
+  const numberOfImages = 75;
   const numberOfAvatar = numberOfUsers;
   const numberOfTags = 20;
-  const numberOfGroups = 20;
+  const numberOfGroups = 5;
   const numberOfMembers = 20;
-  const numberOfRessources = 20;
+  const numberOfRessources = 75;
   //const numberOfFiles = 20;
   const numberOfLinks = 20;
   const numberOfMessages = 20;
