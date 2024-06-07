@@ -9,6 +9,7 @@ import { LinkMenuType } from "@/types/menu.types";
 import ModalComponent from "./modal";
 import CreateGroupForm from "./createGroupForm";
 import { UserType } from "@/types/user.types";
+import { useRouter } from 'next/router'; 
 
 export default function Menu(): React.ReactNode {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
@@ -23,11 +24,13 @@ export default function Menu(): React.ReactNode {
   const { data: userGroup } = useQuery<{ items: GroupType[] }>(GET_MY_GROUPS);
 
   const apolloClient = useApolloClient();
+  const router = useRouter(); 
 
   async function logOut() {
     try {
-      apolloClient.clearStore();
       await signOut();
+      apolloClient.clearStore();
+      router.replace('/sign-in'); 
     } catch (err) {
       console.error(err);
     }
