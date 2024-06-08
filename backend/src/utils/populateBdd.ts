@@ -1,19 +1,5 @@
-import gql from "graphql-tag";
 import * as argon2 from "argon2";
-import {
-  DummyFiles,
-  DummyGroups,
-  DummyImages,
-  DummyLinks,
-  DummyMembers,
-  DummyMessages,
-  DummyRessources,
-  DummyRights,
-  DummyTags,
-  DummyUsers,
-} from "../dummyDatas";
 import { Image } from "../entities/Image";
-import { File } from "../entities/File";
 import { validate } from "class-validator";
 import { User } from "../entities/User";
 import { Tag } from "../entities/Tag";
@@ -23,8 +9,30 @@ import { Member } from "../entities/Member";
 import { Link } from "../entities/Link";
 import { Ressource } from "../entities/Ressource";
 import { Right } from "../entities/Right";
+import { faker } from "@faker-js/faker";
 
 export async function populateBdd() {
+  // used to set the number of data you want to generate
+  const numberOfUsers = 5;
+  const numberOfImages = 75;
+  const numberOfAvatar = numberOfUsers;
+  const numberOfTags = 20;
+  const numberOfGroups = 5;
+  const numberOfMembers = 20;
+  const numberOfRessources = 75;
+  //const numberOfFiles = 20;
+  const numberOfLinks = 20;
+  const numberOfMessages = 20;
+
+  //used to store the generated Datas for future relations
+  const createdUsers = [];
+  const createdImages = [];
+  const createdTags = [];
+  const createdGroups = [];
+  const createdMembers = [];
+  const createdLinks = [];
+  const createdAvatars = [];
+
   // Creation de l'utilisateur Admin en 1er, permet de ne populé la base de donnée qu'une fois.
   try {
     const adminUser = new User();
@@ -39,92 +47,147 @@ export async function populateBdd() {
     if (error.length > 0) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     } else {
-      const datas = await adminUser.save();
+      await adminUser.save();
     }
   } catch (error) {
     throw new Error(`error occured ${JSON.stringify(error)}`);
   }
   // Obligation de crée les utilisateurs en 1er pour pouvoir faire la relation "created_by_user" avec les autres tables
-  for (let i = 0; i < DummyUsers.length; i++) {
+  for (let i = 0; i < numberOfUsers; i++) {
     try {
       const newUser = new User();
-      newUser.email = DummyUsers[i].email;
-      newUser.hashed_password = await argon2.hash(DummyUsers[i].password);
-      newUser.lastname = DummyUsers[i].lastname;
-      newUser.firstname = DummyUsers[i].firstname;
-      newUser.created_at = DummyUsers[i].created_at;
-      newUser.is_account_validated = DummyUsers[i].is_account_validated;
+      newUser.email = faker.internet.email();
+      newUser.hashed_password = await argon2.hash("superPassword1");
+      newUser.lastname = faker.person.lastName();
+      newUser.firstname = faker.person.firstName();
+      newUser.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
+      newUser.is_account_validated = true;
       //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
       const error = await validate(newUser);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newUser.save();
+        await newUser.save();
+        createdUsers.push(newUser);
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyImages.length; i++) {
+  for (let i = 0; i < numberOfImages; i++) {
     try {
       const newImage = new Image();
-      newImage.name = DummyImages[i].name;
-      newImage.path = DummyImages[i].path;
-      newImage.created_by_user = DummyImages[i].created_by_user;
-      newImage.created_at = DummyImages[i].created_at;
+      newImage.name = faker.word.adjective();
+      newImage.path = faker.image.url();
+      newImage.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)]; // Randomly select a user
+      newImage.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
 
       const error = await validate(newImage);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newImage.save();
+        await newImage.save();
+        createdImages.push(newImage);
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyTags.length; i++) {
+  for (let i = 0; i < numberOfAvatar; i++) {
+    try {
+      const newAvatar = new Image();
+      newAvatar.name = faker.word.adjective();
+      newAvatar.path = faker.image.avatar();
+      newAvatar.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)]; // Randomly select a user
+      newAvatar.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
+
+      const error = await validate(newAvatar);
+
+      if (error.length > 0) {
+        throw new Error(`error occured ${JSON.stringify(error)}`);
+      } else {
+        await newAvatar.save();
+        createdAvatars.push(newAvatar);
+      }
+    } catch (error) {
+      throw new Error(`error occured ${JSON.stringify(error)}`);
+    }
+  }
+
+  for (let i = 0; i < numberOfTags; i++) {
     try {
       const newTag = new Tag();
-      newTag.name = DummyTags[i].name;
-      newTag.created_by_user = DummyTags[i].created_by_user;
+      newTag.name = faker.word.adjective();
+      newTag.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
 
       const error = await validate(newTag);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newTag.save();
+        await newTag.save();
+        createdTags.push(newTag);
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyGroups.length; i++) {
+  for (let i = 0; i < numberOfGroups; i++) {
     try {
       const newGroup = new Group();
-      newGroup.name = DummyGroups[i].name;
-      newGroup.description = DummyGroups[i].description;
-      newGroup.token = DummyGroups[i].token;
-      newGroup.created_by_user = DummyGroups[i].created_by_user;
-      newGroup.created_at = DummyGroups[i].created_at;
+      newGroup.name = faker.word.adjective();
+      newGroup.description = faker.lorem.paragraph(2);
+      newGroup.token = faker.string.uuid();
+      newGroup.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      newGroup.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
 
       const error = await validate(newGroup);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newGroup.save();
+        await newGroup.save();
+        createdGroups.push(newGroup);
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
+
+  const DummyRights: {
+    name: string;
+  }[] = [
+    {
+      name: "GROUP_ADMIN",
+    },
+    {
+      name: "USER",
+    },
+    {
+      name: "ADMIN",
+    },
+  ];
 
   for (let i = 0; i < DummyRights.length; i++) {
     try {
@@ -136,170 +199,159 @@ export async function populateBdd() {
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newRight.save();
+        await newRight.save();
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyMembers.length; i++) {
+  for (let i = 0; i < numberOfMembers; i++) {
     try {
       const newMember = new Member();
-      newMember.group = DummyMembers[i].group_id;
-      newMember.last_visit = DummyMembers[i].last_visit;
-      newMember.user = DummyMembers[i].user;
-      newMember.created_at = DummyMembers[i].created_at;
+      newMember.group =
+        createdGroups[Math.floor(Math.random() * createdGroups.length)];
+      newMember.last_visit = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
+      newMember.user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      newMember.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
 
       const error = await validate(newMember);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newMember.save();
+        await newMember.save();
+        createdMembers.push(newMember);
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyMessages.length; i++) {
+  for (let i = 0; i < numberOfMessages; i++) {
     try {
       const newMessage = new Message();
-      newMessage.message = DummyMessages[i].message;
-      newMessage.group = DummyMessages[i].group_id;
-      newMessage.created_by_user = DummyMessages[i].created_by_user;
-      newMessage.created_at = DummyMessages[i].created_at;
-
+      newMessage.message = faker.lorem.sentence();
+      newMessage.group =
+        createdGroups[Math.floor(Math.random() * createdGroups.length)];
+      newMessage.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      newMessage.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
       const error = await validate(newMessage);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newMessage.save();
+        await newMessage.save();
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyFiles.length; i++) {
-    try {
-      const newFile = new File();
-      newFile.name = DummyFiles[i].name;
-      newFile.type = DummyFiles[i].type;
-      newFile.path = DummyFiles[i].path;
-      newFile.created_by_user = DummyFiles[i].created_by_user;
-      newFile.created_at = DummyFiles[i].created_at;
+  // for (let i = 0; i < DummyFiles.length; i++) {
+  //   try {
+  //     const newFile = new File();
+  //     newFile.name = DummyFiles[i].name;
+  //     newFile.type = DummyFiles[i].type;
+  //     newFile.path = DummyFiles[i].path;
+  //     newFile.created_by_user =
+  //       createdUsers[Math.floor(Math.random() * createdUsers.length)];
+  //     newFile.created_at = faker.date.recent({
+  //       days: 100,
+  //       refDate: Date.now(),
+  //     });
 
-      const error = await validate(newFile);
+  //     const error = await validate(newFile);
 
-      if (error.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      } else {
-        const datas = await newFile.save();
-      }
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-  for (let i = 0; i < DummyLinks.length; i++) {
+  //     if (error.length > 0) {
+  //       throw new Error(`error occured ${JSON.stringify(error)}`);
+  //     } else {
+  //       await newFile.save();
+  //     }
+  //   } catch (error) {
+  //     throw new Error(`error occured ${JSON.stringify(error)}`);
+  //   }
+  // }
+  for (let i = 0; i < numberOfLinks; i++) {
     try {
       const newLink = new Link();
-      newLink.url = DummyLinks[i].url;
-      newLink.created_by_user = DummyLinks[i].created_by_user;
-      newLink.created_at = DummyLinks[i].created_at;
+      newLink.url = faker.internet.url();
+      newLink.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      newLink.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
 
       const error = await validate(newLink);
 
       if (error.length > 0) {
-        console.log(error);
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newLink.save();
+        await newLink.save();
+        createdLinks.push(newLink);
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  for (let i = 0; i < DummyRessources.length; i++) {
+  for (let i = 0; i < numberOfRessources; i++) {
     try {
       const newRessource = new Ressource();
-      newRessource.title = DummyRessources[i].title;
-      newRessource.description = DummyRessources[i].description;
-      newRessource.is_favorite = DummyRessources[i].is_favorite;
-      newRessource.image_id = DummyRessources[i].image_id;
-      newRessource.file_id = DummyRessources[i].file_id;
-      newRessource.link_id = DummyRessources[i].link_id;
-      newRessource.group_id = DummyRessources[i].group_id;
-      newRessource.created_by_user = DummyRessources[i].created_by_user;
-      newRessource.created_at = DummyRessources[i].created_at;
+      newRessource.title = faker.lorem.words(2);
+      newRessource.description = faker.lorem.sentence();
+      newRessource.is_favorite = faker.datatype.boolean();
+      newRessource.image_id = createdImages[i + 1];
+      newRessource.link_id = createdLinks[i + 1];
+      newRessource.group_id =
+        createdGroups[Math.floor(Math.random() * createdGroups.length)];
+      newRessource.created_by_user =
+        createdUsers[Math.floor(Math.random() * createdUsers.length)];
+      newRessource.created_at = faker.date.recent({
+        days: 100,
+        refDate: Date.now(),
+      });
 
       const error = await validate(newRessource);
 
       if (error.length > 0) {
-        console.log(error);
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
-        const datas = await newRessource.save();
+        await newRessource.save();
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
   // add image to user
-  for (let i = 0; i < DummyUsers.length; i++) {
-    const user = await User.findOneBy({ id: i + 2 });
+  for (let i = 0; i < createdUsers.length; i++) {
+    const user = await User.findOneBy({ id: i + 1 });
 
     if (user) {
-      Object.assign(user, { avatar: DummyUsers[i].avatar });
+      Object.assign(user, {
+        avatar: createdAvatars[i + 1],
+      });
 
       const error = await validate(user);
 
       if (error.length === 0) {
-        const datas = await user.save();
+        await user.save();
       } else {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       }
     }
   }
 }
-
-// export const mutationPopulate = gql`
-//   mutation {
-//     populateImageTable {
-//       id
-//     }
-//     populateUserTable {
-//       id
-//     }
-//     populateTagTable {
-//       id
-//     }
-//     populateGroupTable {
-//       id
-//     }
-//     populateRightTable {
-//       id
-//     }
-//     populateMemberTable {
-//       id
-//     }
-//     populateMessageTable {
-//       id
-//     }
-//     populateFileTable {
-//       id
-//     }
-//     populateLinkTable {
-//       id
-//     }
-//     populateRessourceTable {
-//       id
-//     }
-//   }
-// `;

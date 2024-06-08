@@ -2,7 +2,6 @@ import { Resolver, Query, Arg, Mutation, Authorized, Ctx } from "type-graphql";
 import { Tag, TagCreateInput, TagUpdateInput } from "../entities/Tag";
 import { ContextType, getUser } from "../middlewares/auth";
 import { validateDatas } from "../utils/validate";
-import { DummyTags } from "../dummyDatas";
 import { validate } from "class-validator";
 
 @Resolver(Tag)
@@ -106,27 +105,5 @@ export class TagResolver {
     } else {
       throw new Error(`no ad found`);
     }
-  }
-
-  @Mutation(() => [Tag])
-  async populateTagTable(): Promise<Tag[] | null> {
-    for (let i = 0; i < DummyTags.length; i++) {
-      try {
-        const newTag = new Tag();
-        newTag.name = DummyTags[i].name;
-        newTag.created_by_user = DummyTags[i].created_by_user;
-
-        const error = await validateDatas(newTag);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newTag.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllTags();
   }
 }

@@ -18,7 +18,6 @@ export default function RessourceCard(
   props: RessourceCardProps
 ): React.ReactNode {
   const { ressource } = props;
-
   return (
     <>
       <div className="card card-custom mb-3" style={{ borderRadius: 30 }}>

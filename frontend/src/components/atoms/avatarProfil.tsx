@@ -18,22 +18,21 @@ export default function avatarProfil(props: avatarProfilType) {
   return (
     <>
       {avatarSrc ? (
-        <>
-          <Image
-            className="rounded-circle mt-2"
-            height={150}
-            width={150}
-            alt="jaky nackos"
-            priority
-            src={avatarSrc}
-            onErrorCapture={() => {
-              setAvatarSrc("/assets/avatars/no-image.png");
-              setImageError(
-                "Une erreur est survenue pendant le chargement de votre image, veuillez contactez un administrateur"
-              );
-            }}
-          />
-        </>
+        <Image
+          unoptimized
+          className="rounded-circle mt-2"
+          height={150}
+          width={150}
+          alt="jaky nackos"
+          priority
+          src={avatarSrc}
+          onErrorCapture={() => {
+            setAvatarSrc("/assets/avatars/no-image.png");
+            setImageError(
+              "Une erreur est survenue pendant le chargement de votre image, veuillez contactez un administrateur"
+            );
+          }}
+        />
       ) : (
         <>
           <div className="rounded-circle mt-5 avatar_default">
