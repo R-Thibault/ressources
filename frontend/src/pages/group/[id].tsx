@@ -11,6 +11,7 @@ import { Spinner } from "react-bootstrap";
 import { InView } from "react-intersection-observer";
 import SharingGroupForm from "@/components/organisms/sharingGroupForm";
 import ModalComponent from "@/components/organisms//modal";
+import CreateRessourcesForm from "@/components/organisms/createRessourcesForm";
 
 export type GroupProps = {
   group: GroupType;
@@ -23,11 +24,19 @@ export type RessourceProps = {
 export default function GroupDashboard(): React.ReactNode {
   const router = useRouter();
   const groupId = Number(router.query.id);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalInviteMemberVisible, setModalInviteMemberVisible] =
+    useState<boolean>(false);
+  const [modalRessourceVisible, setmodalRessourceVisible] =
+    useState<boolean>(false);
 
-  function handleModalVisible(value: boolean) {
-    setModalVisible(value);
+  function handleInviteMemberModal(value: boolean) {
+    setModalInviteMemberVisible(value);
   }
+
+  function handleResourceModal(value: boolean) {
+    setmodalRessourceVisible(value);
+  }
+
   const [, setSkip] = useState<number>(0);
   const [take] = useState<number>(10);
 
@@ -88,7 +97,7 @@ export default function GroupDashboard(): React.ReactNode {
             <h1>{dataGroup.item.name}</h1>
             <button
               className="btn_primary menu_button_add_group mx-4"
-              onClick={() => handleModalVisible(true)}
+              onClick={() => handleInviteMemberModal(true)}
             >
               <i className="bi bi-plus-circle" />
               <span>Partager</span>
@@ -103,7 +112,7 @@ export default function GroupDashboard(): React.ReactNode {
           <h2>Ressources</h2>
           <button
             className="btn_rounded btn_add_ressources"
-            onClick={() => handleModalVisible(true)}
+            onClick={() => handleResourceModal(true)}
           >
             <i className="bi bi-plus-circle" />
           </button>
@@ -126,8 +135,20 @@ export default function GroupDashboard(): React.ReactNode {
             </div>
           </div>
         </div>
-        <ModalComponent opened={modalVisible} openModal={handleModalVisible}>
-          <SharingGroupForm groupId={groupId} onClose={handleModalVisible} />
+        <ModalComponent
+          opened={modalRessourceVisible}
+          openModal={handleResourceModal}
+        >
+          <CreateRessourcesForm onClose={handleResourceModal} />
+        </ModalComponent>
+        <ModalComponent
+          opened={modalInviteMemberVisible}
+          openModal={handleInviteMemberModal}
+        >
+          <SharingGroupForm
+            groupId={groupId}
+            onClose={handleInviteMemberModal}
+          />
         </ModalComponent>
       </div>
     </Layout>
