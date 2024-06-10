@@ -6,12 +6,10 @@ import {
   ManyToOne,
   BeforeInsert,
   JoinColumn,
-  ManyToMany,
 } from "typeorm";
 
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { User } from "./User";
-import { Ressource } from "./Ressource";
 
 @Entity()
 @ObjectType()
@@ -24,7 +22,7 @@ export class Tag extends BaseEntity {
   @Field()
   name!: string;
 
-/*   @ManyToMany(() => Ressource, (ressource) => ressource.tags)
+  /*   @ManyToMany(() => Ressource, (ressource) => ressource.tags)
   @JoinColumn()
   @Field(() => Ressource)
   ressources!: Ressource[]; */

@@ -25,6 +25,7 @@
     "react-bootstrap": "^2.10.1",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",
+    "react-intersection-observer": "^9.10.2",
     "sass": "^1.72.0",
     "typescript": "5.2.2"
   },

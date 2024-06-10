@@ -6,12 +6,8 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  ManyToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  JoinTable,
   ManyToOne,
-  OneToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Link } from "./Link";

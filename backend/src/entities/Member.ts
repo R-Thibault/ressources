@@ -7,7 +7,6 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
@@ -20,11 +19,6 @@ export class Member extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
   id!: number;
-
-  @ManyToOne(() => Group, (group) => group.members)
-  @JoinColumn({ name: "group_id" })
-  @Field(() => Group)
-  group!: Group;
 
   @Column({ type: "timestamp" })
   @Field()
@@ -42,6 +36,11 @@ export class Member extends BaseEntity {
   updateDate() {
     this.created_at = new Date();
   }
+
+  @ManyToOne(() => Group, (group) => group.members)
+  @JoinColumn({ name: "group_id" })
+  @Field(() => Group)
+  group!: Group | null;
 
   @ManyToOne(() => User, (user) => user.members)
   @JoinColumn({ name: "user_id" })

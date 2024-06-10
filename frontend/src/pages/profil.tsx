@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
 import { MY_PROFILE, UPDATE_USER } from "@/requests/user";
 import { UserType, UserUpdateType } from "@/types/user.types";
-import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
 import ModalComponent from "@/components/organisms/modal";
 import CreateAvatarForm from "@/components/organisms/createAvatarForm";
@@ -62,7 +61,6 @@ export default function profile() {
       }
     }
   }
-
   const deleteAvatar = async () => {
     try {
       const result = await doDeleteAvatar();
@@ -79,7 +77,7 @@ export default function profile() {
     if (dataUser && dataUser.item) {
       setProfileDatas(dataUser.item);
       if (dataUser.item.avatar) {
-        setAvatarSrc(`${API_URL}/files/avatar/${dataUser.item.avatar.name}`);
+        setAvatarSrc(dataUser.item.avatar.path);
       }
     }
   }, [dataUser]);

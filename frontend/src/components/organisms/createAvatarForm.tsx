@@ -9,11 +9,11 @@ import Image from "next/image";
 
 export default function CreateAvatarForm() {
   const [imageError, setImageError] = useState<string | null>(null);
-  const [imageData, setImageData] = useState();
+  // const [imageData, setImageData] = useState();
   const [image, setImage] = useState<string | null>(null);
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
 
-  const onImageChange = (event) => {
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     }

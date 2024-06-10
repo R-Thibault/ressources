@@ -3,18 +3,18 @@ import {
   Authorized,
   Ctx,
   ID,
+  Int,
   Mutation,
   Query,
   Resolver,
 } from "type-graphql";
 import { validate } from "class-validator";
-import { DummyRessources } from "../dummyDatas";
 import {
   Ressource,
   RessourceCreateInput,
   RessourceUpdateInput,
 } from "../entities/Ressource";
-import { ContextType, getUser } from "../middlewares/auth";
+import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
 
@@ -44,8 +44,10 @@ export class RessourceResolver {
 
   @Authorized()
   @Query(() => [Ressource])
-  async getAllRessourcesFromOneUser(
-    @Ctx() context: ContextType
+  async getRessourcesByUser(
+    @Ctx() context: ContextType,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
       if (!context.user) {
@@ -59,6 +61,12 @@ export class RessourceResolver {
             file_id: true,
             link_id: true,
           },
+          order: {
+            title: "ASC",
+            created_at: "ASC",
+          },
+          skip: skip,
+          take: take,
         });
         return ressource;
       }
@@ -69,7 +77,9 @@ export class RessourceResolver {
 
   @Query(() => [Ressource])
   async getRessourcesByGroupId(
-    @Arg("groupId", () => ID) groupId: number
+    @Arg("groupId", () => ID) groupId: number,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
       const ressources = await Ressource.find({
@@ -81,6 +91,12 @@ export class RessourceResolver {
           link_id: true,
           group_id: true,
         },
+        order: {
+          title: "ASC",
+          created_at: "ASC",
+        },
+        skip: skip,
+        take: take,
       });
       if (!ressources) {
         throw new Error("ressource not found");
@@ -129,7 +145,6 @@ export class RessourceResolver {
         return datas;
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
@@ -166,33 +181,5 @@ export class RessourceResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Ressource])
-  async populateRessourceTable(): Promise<Ressource[] | null> {
-    for (let i = 0; i < DummyRessources.length; i++) {
-      try {
-        const newRessource = new Ressource();
-        newRessource.title = DummyRessources[i].title;
-        newRessource.description = DummyRessources[i].description;
-        newRessource.is_favorite = DummyRessources[i].is_favorite;
-        newRessource.image_id = DummyRessources[i].image_id;
-        newRessource.file_id = DummyRessources[i].file_id;
-        newRessource.link_id = DummyRessources[i].link_id;
-        newRessource.created_by_user = DummyRessources[i].created_by_user;
-        newRessource.created_at = DummyRessources[i].created_at;
-
-        const error = await validate(newRessource);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newRessource.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllRessources();
   }
 }

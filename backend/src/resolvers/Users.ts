@@ -12,7 +12,6 @@ import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { ContextType, getUser } from "../middlewares/auth";
-import { DummyUsers } from "../dummyDatas";
 import { validate } from "class-validator";
 import { randomBytes } from "crypto";
 import {
@@ -251,30 +250,5 @@ export class UserResolver {
   async myProfile(@Ctx() context: ContextType): Promise<User | null> {
     const user = await getUser(context.req, context.res);
     return user;
-  }
-
-  @Mutation(() => [User])
-  async populateUserTable(): Promise<User[] | null> {
-    for (let i = 0; i < DummyUsers.length; i++) {
-      try {
-        const newUser = new User();
-        newUser.email = DummyUsers[i].email;
-        newUser.hashed_password = await argon2.hash(DummyUsers[i].password);
-        newUser.lastname = DummyUsers[i].lastname;
-        newUser.firstname = DummyUsers[i].firstname;
-        newUser.created_at = DummyUsers[i].created_at;
-
-        const error = await validateDatas(newUser);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newUser.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllUsers();
   }
 }

@@ -10,6 +10,12 @@ export const CREATE_GROUP = gql`
   }
 `;
 
+export const SEND_GROUP_INVITATION = gql`
+  mutation InviteGroupMembers($email: String!, $groupId: ID!) {
+    inviteGroupMembers(email: $email, groupId: $groupId)
+  }
+`;
+
 export const GET_MY_GROUPS = gql`
   query getMyGroups {
     items: getMyGroups {

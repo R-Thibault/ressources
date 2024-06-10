@@ -62,3 +62,15 @@ export async function sendResetPasswordEmail(
 
   await sendEmail(email, subject, html);
 }
+
+export async function sendGroupInvitation(
+  email: string,
+  groupId: string
+): Promise<void> {
+  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const groupUrl = `${baseUrl}/group/${groupId}`;
+  const subject = "Invitation à rejoindre un groupe";
+  const html = `Veuillez cliquez sur ce lien pour accéder au groupe : <a href="${groupUrl}">${groupUrl}</a>`;
+
+  await sendEmail(email, subject, html);
+}
