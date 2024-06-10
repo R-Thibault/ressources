@@ -83,17 +83,17 @@ export default function GroupDashboard(): React.ReactNode {
   return (
     <Layout title={"Dashboard Groupe"}>
       <div className="ressources_main_container">
-      <button
-          className="btn_primary menu_button_add_group"        
-          onClick={() => handleModalVisible(true)}>
-          <i className="bi bi-plus-circle" />
-          <span>Partager</span>
-        </button>
         {dataGroup ? (
-          <>
-            <h2>{dataGroup.item.name}</h2>
-            <p>{dataGroup.item.description}</p>
-          </>
+          <div className="d-flex justify-content-between align-items-center">
+            <h1>{dataGroup.item.name}</h1>
+            <button
+              className="btn_primary menu_button_add_group mx-4"
+              onClick={() => handleModalVisible(true)}
+            >
+              <i className="bi bi-plus-circle" />
+              <span>Partager</span>
+            </button>
+          </div>
         ) : (
           <>
             <h2>Group Not Found</h2>

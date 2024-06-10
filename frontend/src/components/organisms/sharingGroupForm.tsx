@@ -11,7 +11,7 @@ export default function SharingGroupForm(props: {
 }): React.ReactElement {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [sendGroupInvitation] = useMutation(SEND_GROUP_INVITATION);
+  const [sendGroupInvitation, { error }] = useMutation(SEND_GROUP_INVITATION);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,26 +20,31 @@ export default function SharingGroupForm(props: {
       const validEmail = checkEmail(email);
 
       if (!validEmail) {
-          setErrorMessage("Merci de renseigner un email valide!");
-          return;
-        }
-        const result = await sendGroupInvitation({
-          variables: {
-            groupId: props.groupId,
-            email: email,
-          },
-        });
-        if (result.errors) {
-          console.error("Erreur lors de l'envoi de l'invitation :", result.errors);
-          setErrorMessage("Une erreur est survenue. Veuillez réessayer !");
-          return;
-        }
-    
-        } catch (error) {
-          console.error("Erreur lors de l'envoi de l'invitation :", error);
-          setErrorMessage("Une erreur est survenue. Veuillez réessayer!");
-        }
-  }
+        setErrorMessage("Merci de renseigner un email valide!");
+        return;
+      }
+      const result = await sendGroupInvitation({
+        variables: {
+          groupId: props.groupId,
+          email: email,
+        },
+      });
+      if (!error) {
+        props.onClose(false);
+      }
+      if (result.errors) {
+        console.error(
+          "Erreur lors de l'envoi de l'invitation :",
+          result.errors
+        );
+        setErrorMessage("Une erreur est survenue. Veuillez réessayer !");
+        return;
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de l'invitation :", error);
+      setErrorMessage("Une erreur est survenue. Veuillez réessayer!");
+    }
+  };
   return (
     <>
       <div className="title">
@@ -63,11 +68,7 @@ export default function SharingGroupForm(props: {
             <span>Partager</span>
           </button>
         </div>
-        {errorMessage && (
-          <Alert variant={"danger"}>
-            {errorMessage}
-          </Alert>
-        )}
+        {errorMessage && <Alert variant={"danger"}>{errorMessage}</Alert>}
       </Form>
     </>
   );

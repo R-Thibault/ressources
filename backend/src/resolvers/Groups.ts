@@ -130,7 +130,7 @@ export class GroupResolver {
 
       if (!user) {
         throw new Error(`No user found with email: ${email}`);
-        // au lieu de throw une erreur, générer un mail d'invitation, mais retourner la page d'inscsription + l'id du groupe
+        // au lieu de throw une erreur, genérer un mail d'invitation, mais retourner la page d'inscsription + l'id du groupe
       }
       const newMember = new Member();
       newMember.user = user;
@@ -142,7 +142,6 @@ export class GroupResolver {
       await sendGroupInvitation(email, String(groupId));
       return true;
     } catch (error) {
-      console.log(error);
       throw new Error(`Failed to send group invitation`);
     }
   }

@@ -11,8 +11,8 @@ export const CREATE_GROUP = gql`
 `;
 
 export const SEND_GROUP_INVITATION = gql`
-  mutation SendGroupInvitation($groupId: Int!, $email: String!) {
-    sendGroupInvitation(groupId: $groupId, email: $email)
+  mutation InviteGroupMembers($email: String!, $groupId: ID!) {
+    inviteGroupMembers(email: $email, groupId: $groupId)
   }
 `;
 

@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { MY_PROFILE } from "@/requests/user";
 import { offsetLimitPagination } from "@apollo/client/utilities";
+import { UserType } from "@/types/user.types";
 
 const link = createHttpLink({
   uri: API_URL,
@@ -39,10 +40,11 @@ const publicPages = ["/sign-in", "/sign-up"];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();
-  const { data, error } = useQuery<{ id: number; email: string }>(MY_PROFILE);
+  const { data, error } = useQuery<{ item: UserType | null }>(MY_PROFILE);
+
   useEffect(() => {
     if (!publicPages.includes(router.pathname)) {
-      if (error) {
+      if (error || data?.item === null) {
         router.replace("/sign-in");
       }
     }
