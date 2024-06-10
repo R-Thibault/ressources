@@ -20,11 +20,6 @@ export class Member extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @ManyToOne(() => Group, (group) => group.members)
-  @JoinColumn({ name: "group_id" })
-  @Field(() => Group)
-  group!: Group;
-
   @Column({ type: "timestamp" })
   @Field()
   last_visit!: Date;
@@ -41,6 +36,11 @@ export class Member extends BaseEntity {
   updateDate() {
     this.created_at = new Date();
   }
+
+  @ManyToOne(() => Group, (group) => group.members)
+  @JoinColumn({ name: "group_id" })
+  @Field(() => Group)
+  group!: Group | null;
 
   @ManyToOne(() => User, (user) => user.members)
   @JoinColumn({ name: "user_id" })

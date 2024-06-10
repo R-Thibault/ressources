@@ -9,6 +9,8 @@ import { GET_ONE_GROUP } from "@/requests/group";
 import { RessourceType } from "@/types/ressources.types";
 import { Spinner } from "react-bootstrap";
 import { InView } from "react-intersection-observer";
+import SharingGroupForm from "@/components/organisms/sharingGroupForm";
+import ModalComponent from "@/components/organisms//modal";
 
 export type GroupProps = {
   group: GroupType;
@@ -21,6 +23,11 @@ export type RessourceProps = {
 export default function GroupDashboard(): React.ReactNode {
   const router = useRouter();
   const groupId = Number(router.query.id);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  function handleModalVisible(value: boolean) {
+    setModalVisible(value);
+  }
   const [, setSkip] = useState<number>(0);
   const [take] = useState<number>(10);
 
@@ -76,6 +83,12 @@ export default function GroupDashboard(): React.ReactNode {
   return (
     <Layout title={"Dashboard Groupe"}>
       <div className="ressources_main_container">
+      <button
+          className="btn_primary menu_button_add_group"        
+          onClick={() => handleModalVisible(true)}>
+          <i className="bi bi-plus-circle" />
+          <span>Partager</span>
+        </button>
         {dataGroup ? (
           <>
             <h2>{dataGroup.item.name}</h2>
@@ -113,6 +126,9 @@ export default function GroupDashboard(): React.ReactNode {
             </div>
           </div>
         </div>
+        <ModalComponent opened={modalVisible} openModal={handleModalVisible}>
+          <SharingGroupForm groupId={groupId} onClose={handleModalVisible} />
+        </ModalComponent>
       </div>
     </Layout>
   );

@@ -9,8 +9,11 @@ import {
 } from "type-graphql";
 import { Group, GroupInput } from "../entities/Group";
 import { Member } from "../entities/Member";
+import { User } from "../entities/User";
 import { validate } from "class-validator";
 import { ContextType } from "../middlewares/auth";
+import { DummyGroups } from "../dummyDatas";
+import { sendGroupInvitation } from "../utils/sendemail";
 
 @Resolver(Group)
 export class GroupResolver {
@@ -115,5 +118,57 @@ export class GroupResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
+  }
+
+  @Mutation(() => Boolean)
+  async inviteGroupMembers(
+    @Arg("groupId", () => ID) groupId: number,
+    @Arg("email") email: string
+  ): Promise<boolean> {
+    try {
+      const user = await User.findOne({ where: { email: email } });
+
+      if (!user) {
+        throw new Error(`No user found with email: ${email}`);
+        // au lieu de throw une erreur, générer un mail d'invitation, mais retourner la page d'inscsription + l'id du groupe
+      }
+      const newMember = new Member();
+      newMember.user = user;
+      newMember.group = await Group.findOne({ where: { id: groupId } });
+      newMember.last_visit = new Date();
+
+      await newMember.save();
+
+      await sendGroupInvitation(email, String(groupId));
+      return true;
+    } catch (error) {
+      console.log(error);
+      throw new Error(`Failed to send group invitation`);
+    }
+  }
+
+  @Mutation(() => [Group])
+  async populateGroupTable(): Promise<Group[] | null> {
+    for (let i = 0; i < DummyGroups.length; i++) {
+      try {
+        const newGroup = new Group();
+        newGroup.name = DummyGroups[i].name;
+        newGroup.description = DummyGroups[i].description;
+        newGroup.token = DummyGroups[i].token;
+        newGroup.created_by_user = DummyGroups[i].created_by_user;
+        newGroup.created_at = DummyGroups[i].created_at;
+
+        const error = await validate(newGroup);
+
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          await newGroup.save();
+        }
+      } catch (error) {
+        throw new Error(`error occured ${JSON.stringify(error)}`);
+      }
+    }
+    return await this.getAllGroups();
   }
 }
