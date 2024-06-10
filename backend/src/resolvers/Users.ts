@@ -235,15 +235,15 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => User, { nullable: true })
-  async signOut(@Ctx() context: ContextType): Promise<User | null> {
+  @Mutation(() => Boolean)
+  async signOut(@Ctx() context: ContextType): Promise<Boolean> {
     const cookies = new Cookies(context.req, context.res);
     cookies.set("token", "", {
       httpOnly: true,
       maxAge: 0,
     });
 
-    return null;
+    return true;
   }
 
   @Query(() => User, { nullable: true })

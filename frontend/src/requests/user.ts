@@ -20,10 +20,7 @@ export const SIGN_IN = gql`
 
 export const SIGN_OUT = gql`
   mutation SignOut {
-    item: signOut {
-      id
-      email
-    }
+    signOut
   }
 `;
 
