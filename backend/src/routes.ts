@@ -68,7 +68,7 @@ export function initializeRoutes(app: Express) {
             .toFile(`/app/upload/avatar/${fileName}`);
           const image = new Image();
           image.name = fileName;
-          image.path = `/app/upload/avatar/${fileName}`;
+          image.path = `/avatar/${fileName}`;
           image.created_by_user = req.body.userId;
           const result = await image.save();
           user.avatar = result;

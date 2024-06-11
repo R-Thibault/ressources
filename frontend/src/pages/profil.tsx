@@ -77,7 +77,16 @@ export default function profile() {
     if (dataUser && dataUser.item) {
       setProfileDatas(dataUser.item);
       if (dataUser.item.avatar) {
-        setAvatarSrc(dataUser.item.avatar.path);
+        if (dataUser.item.avatar.path.includes("://")) {
+          setAvatarSrc(dataUser.item.avatar.path);
+        } else {
+          setAvatarSrc(
+            `http://localhost:4000/files/${dataUser.item.avatar.path.replace(
+              "/app/upload/",
+              ""
+            )}`
+          );
+        }
       }
     }
   }, [dataUser]);

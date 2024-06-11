@@ -7,7 +7,7 @@ export type RessourceType = {
   id: number;
   title: string;
   description: string;
-  imageId: ImageType | null;
+  image_id: ImageType | null;
   file: RessourceFileType | null;
   link: RessourceLinkType | null;
   isFavorite: boolean;

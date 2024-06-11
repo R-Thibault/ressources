@@ -12,11 +12,15 @@ import { validate } from "class-validator";
 import {
   Ressource,
   RessourceCreateInput,
+  RessourcesOrderByInput,
+  RessourcesWhereGroupInput,
+  RessourcesWhereInput,
   RessourceUpdateInput,
 } from "../entities/Ressource";
 import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
+import { Like } from "typeorm";
 
 @Resolver(Ressource)
 export class RessourceResolver {
@@ -46,6 +50,10 @@ export class RessourceResolver {
   @Query(() => [Ressource])
   async getRessourcesByUser(
     @Ctx() context: ContextType,
+    @Arg("orderBy", () => RessourcesOrderByInput, { nullable: true })
+    orderBy?: RessourcesOrderByInput,
+    @Arg("where", () => RessourcesWhereInput, { nullable: true })
+    where?: RessourcesWhereInput,
     @Arg("skip", () => Int, { nullable: true }) skip?: number,
     @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
@@ -53,22 +61,37 @@ export class RessourceResolver {
       if (!context.user) {
         throw new Error(`error`);
       } else {
-        const ressource = await Ressource.find({
-          where: { created_by_user: { id: context.user.id } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const queryOrderBy: any = {};
+        if (
+          orderBy?.created_at &&
+          ["ASC", "DESC"].includes(orderBy?.created_at)
+        ) {
+          queryOrderBy.created_at = orderBy?.created_at;
+        }
+        if (orderBy?.title && ["ASC", "DESC"].includes(orderBy?.title)) {
+          queryOrderBy.title = orderBy?.title;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const queryWhere: any = [];
+        queryWhere.created_by_user = context.user;
+        if (where?.title && where?.title.length > 0) {
+          queryWhere.title = Like(`%${where.title}%`);
+        }
+        const ressources = await Ressource.find({
+          where: queryWhere,
           relations: {
             image_id: true,
             created_by_user: { avatar: true },
             file_id: true,
             link_id: true,
           },
-          order: {
-            title: "ASC",
-            created_at: "ASC",
-          },
+          order: queryOrderBy,
           skip: skip,
           take: take,
         });
-        return ressource;
+        return ressources;
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
@@ -77,13 +100,37 @@ export class RessourceResolver {
 
   @Query(() => [Ressource])
   async getRessourcesByGroupId(
-    @Arg("groupId", () => ID) groupId: number,
+    @Arg("whereGroup", () => RessourcesWhereGroupInput, { nullable: true })
+    whereGroup?: RessourcesWhereGroupInput,
+    @Arg("orderBy", () => RessourcesOrderByInput, { nullable: true })
+    orderBy?: RessourcesOrderByInput,
     @Arg("skip", () => Int, { nullable: true }) skip?: number,
     @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryOrderBy: any = {};
+      if (
+        orderBy?.created_at &&
+        ["ASC", "DESC"].includes(orderBy?.created_at)
+      ) {
+        queryOrderBy.created_at = orderBy?.created_at;
+      }
+      if (orderBy?.title && ["ASC", "DESC"].includes(orderBy?.title)) {
+        queryOrderBy.title = orderBy?.title;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryWhereGroup: any = [];
+      if (whereGroup?.group_id) {
+        queryWhereGroup.group_id = { id: whereGroup.group_id };
+      }
+      if (whereGroup?.title && whereGroup?.title.length > 0) {
+        queryWhereGroup.title = Like(`%${whereGroup.title}%`);
+      }
+
       const ressources = await Ressource.find({
-        where: { group_id: { id: groupId } },
+        where: queryWhereGroup,
         relations: {
           image_id: true,
           created_by_user: { avatar: true },
@@ -91,10 +138,7 @@ export class RessourceResolver {
           link_id: true,
           group_id: true,
         },
-        order: {
-          title: "ASC",
-          created_at: "ASC",
-        },
+        order: queryOrderBy,
         skip: skip,
         take: take,
       });

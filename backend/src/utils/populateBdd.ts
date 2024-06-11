@@ -55,24 +55,46 @@ export async function populateBdd() {
   // Obligation de crée les utilisateurs en 1er pour pouvoir faire la relation "created_by_user" avec les autres tables
   for (let i = 0; i < numberOfUsers; i++) {
     try {
-      const newUser = new User();
-      newUser.email = faker.internet.email();
-      newUser.hashed_password = await argon2.hash("superPassword1");
-      newUser.lastname = faker.person.lastName();
-      newUser.firstname = faker.person.firstName();
-      newUser.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
-      });
-      newUser.is_account_validated = true;
-      //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
-      const error = await validate(newUser);
+      if (i === 0) {
+        const newUser = new User();
+        newUser.email = "dev@gmail.com";
+        newUser.hashed_password = await argon2.hash("superPassword1");
+        newUser.lastname = faker.person.lastName();
+        newUser.firstname = faker.person.firstName();
+        newUser.created_at = faker.date.between({
+          from: "2024-01-01T00:00:00.000Z",
+          to: Date.now(),
+        });
+        newUser.is_account_validated = true;
+        //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
+        const error = await validate(newUser);
 
-      if (error.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          await newUser.save();
+          createdUsers.push(newUser);
+        }
       } else {
-        await newUser.save();
-        createdUsers.push(newUser);
+        const newUser = new User();
+        newUser.email = faker.internet.email();
+        newUser.hashed_password = await argon2.hash("superPassword1");
+        newUser.lastname = faker.person.lastName();
+        newUser.firstname = faker.person.firstName();
+        newUser.created_at = faker.date.between({
+          from: "2024-01-01T00:00:00.000Z",
+          to: Date.now(),
+        });
+        newUser.is_account_validated = true;
+        //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
+        const error = await validate(newUser);
+
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          await newUser.save();
+          createdUsers.push(newUser);
+        }
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
@@ -86,9 +108,9 @@ export async function populateBdd() {
       newImage.path = faker.image.url();
       newImage.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)]; // Randomly select a user
-      newImage.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newImage.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newImage);
@@ -111,9 +133,9 @@ export async function populateBdd() {
       newAvatar.path = faker.image.avatar();
       newAvatar.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)]; // Randomly select a user
-      newAvatar.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newAvatar.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newAvatar);
@@ -157,9 +179,9 @@ export async function populateBdd() {
       newGroup.token = faker.string.uuid();
       newGroup.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      newGroup.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newGroup.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newGroup);
@@ -211,15 +233,15 @@ export async function populateBdd() {
       const newMember = new Member();
       newMember.group =
         createdGroups[Math.floor(Math.random() * createdGroups.length)];
-      newMember.last_visit = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newMember.last_visit = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
       newMember.user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      newMember.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newMember.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newMember);
@@ -243,9 +265,9 @@ export async function populateBdd() {
         createdGroups[Math.floor(Math.random() * createdGroups.length)];
       newMessage.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      newMessage.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newMessage.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
       const error = await validate(newMessage);
 
@@ -269,7 +291,7 @@ export async function populateBdd() {
   //       createdUsers[Math.floor(Math.random() * createdUsers.length)];
   //     newFile.created_at = faker.date.recent({
   //       days: 100,
-  //       refDate: Date.now(),
+  //
   //     });
 
   //     const error = await validate(newFile);
@@ -289,9 +311,9 @@ export async function populateBdd() {
       newLink.url = faker.internet.url();
       newLink.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      newLink.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newLink.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newLink);
@@ -319,9 +341,9 @@ export async function populateBdd() {
         createdGroups[Math.floor(Math.random() * createdGroups.length)];
       newRessource.created_by_user =
         createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      newRessource.created_at = faker.date.recent({
-        days: 100,
-        refDate: Date.now(),
+      newRessource.created_at = faker.date.between({
+        from: "2024-01-01T00:00:00.000Z",
+        to: Date.now(),
       });
 
       const error = await validate(newRessource);

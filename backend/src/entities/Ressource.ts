@@ -44,7 +44,9 @@ export class Ressource extends BaseEntity {
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = new Date();
+    if (!this.created_at) {
+      this.created_at = new Date();
+    }
   }
 
   @ManyToOne(() => User, (user) => user.ressources_creation)
@@ -92,4 +94,27 @@ export class RessourceCreateInput {
 export class RessourceUpdateInput {
   @Field()
   title!: string;
+}
+
+@InputType()
+export class RessourcesWhereInput {
+  @Field(() => ID, { nullable: true })
+  created_by_user!: number;
+  @Field({ nullable: true })
+  title!: string;
+}
+
+@InputType()
+export class RessourcesWhereGroupInput {
+  @Field(() => ID)
+  group_id!: number;
+  @Field({ nullable: true })
+  title?: string;
+}
+@InputType()
+export class RessourcesOrderByInput {
+  @Field({ nullable: true })
+  created_at?: "ASC" | "DESC";
+  @Field({ nullable: true })
+  title?: "ASC" | "DESC";
 }

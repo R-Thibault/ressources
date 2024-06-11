@@ -11,8 +11,18 @@ export const CREATE_RESSOURCE = gql`
 `;
 
 export const GET_RESSOURCES_BY_GROUP_ID = gql`
-  query GetRessourcesByGroupId($groupId: ID!, $take: Int, $skip: Int) {
-    items: getRessourcesByGroupId(groupId: $groupId, take: $take, skip: $skip) {
+  query GetRessourcesByGroupId(
+    $take: Int
+    $skip: Int
+    $orderBy: RessourcesOrderByInput
+    $whereGroup: RessourcesWhereGroupInput
+  ) {
+    items: getRessourcesByGroupId(
+      take: $take
+      skip: $skip
+      orderBy: $orderBy
+      whereGroup: $whereGroup
+    ) {
       id
       title
       description
@@ -35,13 +45,24 @@ export const GET_RESSOURCES_BY_GROUP_ID = gql`
       group_id {
         id
       }
+      created_at
     }
   }
 `;
 
 export const GET_ALL_RESSOURCES_FROM_ONE_USER = gql`
-  query getRessourcesByUser($skip: Int, $take: Int) {
-    items: getRessourcesByUser(skip: $skip, take: $take) {
+  query getRessourcesByUser(
+    $skip: Int
+    $take: Int
+    $orderBy: RessourcesOrderByInput
+    $where: RessourcesWhereInput
+  ) {
+    items: getRessourcesByUser(
+      skip: $skip
+      take: $take
+      orderBy: $orderBy
+      where: $where
+    ) {
       id
       title
       description
@@ -69,6 +90,10 @@ export const GET_ALL_RESSOURCES_FROM_ONE_USER = gql`
           name
           path
         }
+      }
+      image_id {
+        name
+        path
       }
       created_at
     }

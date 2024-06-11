@@ -12,9 +12,18 @@ export default function avatarProfil(props: avatarProfilType) {
   const [imageError, setImageError] = useState<string | null>(null);
   useEffect(() => {
     if (props.avatarSrc) {
-      setAvatarSrc(props.avatarSrc);
+      if (props.avatarSrc.includes("://")) {
+        setAvatarSrc(props.avatarSrc);
+      } else {
+        setAvatarSrc(
+          `http://localhost:4000/files/${props.avatarSrc.replace(
+            "/app/upload/",
+            ""
+          )}`
+        );
+      }
     }
-  }, [props]);
+  }, []);
   return (
     <>
       {avatarSrc ? (
@@ -41,6 +50,7 @@ export default function avatarProfil(props: avatarProfilType) {
                 props.firstname.substring(0, 1).toUpperCase() +
                   props.lastname.substring(0, 1).toUpperCase()}
             </span>
+            <span>{avatarSrc}</span>
           </div>
           {imageError && <span className="image_error">{imageError}</span>}
         </>
