@@ -68,9 +68,11 @@ export default function RessourcesFormStep1(props: {
           "Content-Type": "multipart/form-data",
         },
         onUploadProgress(progressEvent: AxiosProgressEvent) {
-          setProgress(
-            Math.round((100 * progressEvent.loaded) / progressEvent.total)
-          );
+          if (progressEvent.total) {
+            setProgress(
+              Math.round((100 * progressEvent.loaded) / progressEvent.total)
+            );
+          }
         },
       });
       if (result.status === 200) {
