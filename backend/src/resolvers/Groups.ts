@@ -17,11 +17,14 @@ import { sendGroupInvitation } from "../utils/sendemail";
 
 @Resolver(Group)
 export class GroupResolver {
+  
+  @Authorized()
   @Query(() => [Group])
   async getAllGroups(): Promise<Group[]> {
     return await Group.find();
   }
 
+  @Authorized()
   @Query(() => Group)
   async getOneGroup(@Arg("id", () => ID) id: number): Promise<Group | null> {
     try {
@@ -120,6 +123,7 @@ export class GroupResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Boolean)
   async inviteGroupMembers(
     @Arg("groupId", () => ID) groupId: number,

@@ -25,11 +25,13 @@ import {Group} from "../entities/Group";
 
 @Resolver(Ressource)
 export class RessourceResolver {
+  @Authorized()
   @Query(() => [Ressource])
   async getAllRessources(): Promise<Ressource[]> {
     return await Ressource.find();
   }
 
+  @Authorized()
   @Query(() => Ressource)
   async getOneRessource(
     @Arg("id", () => ID) id: number
@@ -99,6 +101,7 @@ export class RessourceResolver {
     }
   }
 
+  @Authorized()
   @Query(() => [Ressource])
   async getRessourcesByGroupId(
     @Arg("whereGroup", () => RessourcesWhereGroupInput, { nullable: true })
@@ -202,6 +205,7 @@ export class RessourceResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Ressource, { nullable: true })
   async updateRessource(
     @Arg("id", () => ID) id: number,
@@ -220,6 +224,7 @@ export class RessourceResolver {
     return ressource;
   }
 
+  @Authorized()
   @Mutation(() => Ressource, { nullable: true })
   async deleteRessource(
     @Arg("id", () => ID) id: number

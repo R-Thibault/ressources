@@ -55,3 +55,19 @@
   font-size: 0.75em;
   color: $primary-color11;
 }
+
+.avatar_message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  width: 3rem;
+  height: 2.75rem;
+  color: white;
+}
+
+.avatar_message_text_size {
+  padding: 0;
+  margin: auto;
+  font-size: 4em;
+}

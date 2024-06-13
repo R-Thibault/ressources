@@ -15,7 +15,7 @@ export async function populateBdd() {
   // used to set the number of data you want to generate
   const numberOfUsers = 5;
   const numberOfImages = 75;
-  const numberOfAvatar = numberOfUsers;
+  const numberOfAvatar = numberOfUsers + 2;
   const numberOfTags = 20;
   const numberOfGroups = 5;
   const numberOfMembers = 20;

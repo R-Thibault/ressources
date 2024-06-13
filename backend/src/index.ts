@@ -11,6 +11,8 @@ import { populateBdd } from "./utils/populateBdd";
 import { getSchema } from "./schema";
 import { User } from "./entities/User";
 import { initializeRoutes } from "./routes";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 
 const start = async () => {
   const schema = await getSchema();
@@ -18,9 +20,39 @@ const start = async () => {
   const app = express();
   const httpServer = http.createServer(app);
 
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    //path: "/subscriptions",
+  });
+
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: (connection) => {
+        return {
+          req: connection.extra.request,
+          res: null,
+        };
+      },
+    },
+    wsServer
+  );
+
   const server = new ApolloServer<ContextType>({
     schema,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      // permet de couper proprement le serveur websocket quand j'arrête mon serveur apollo
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   });
   await server.start();
 
@@ -32,7 +64,7 @@ const start = async () => {
   );
 
   initializeRoutes(app);
-  
+
   app.use(
     "/",
     express.json({ limit: "50mb" }),

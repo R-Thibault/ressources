@@ -8,6 +8,7 @@ import {
   ApolloProvider,
   createHttpLink,
   useQuery,
+  split,
 } from "@apollo/client";
 import { API_URL } from "@/config/config";
 import { useRouter } from "next/router";
@@ -15,11 +16,32 @@ import { useEffect } from "react";
 import { MY_PROFILE } from "@/requests/user";
 import { offsetLimitPagination } from "@apollo/client/utilities";
 import { UserType } from "@/types/user.types";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 
 const link = createHttpLink({
   uri: API_URL,
   credentials: "include",
 });
+
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: API_URL,
+  })
+);
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  link
+);
 
 new InMemoryCache({
   typePolicies: {
@@ -33,10 +55,18 @@ new InMemoryCache({
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link,
+  link: splitLink,
 });
 
-const publicPages = ["/sign-in", "/sign-up"];
+const publicPages = [
+  "/sign-in",
+  "/sign-up",
+  "/",
+  "/request-reset-password",
+  "/reset-password",
+  "/validation",
+  "/token-expired",
+];
 
 function Auth(props: { children: React.ReactNode }) {
   const router = useRouter();

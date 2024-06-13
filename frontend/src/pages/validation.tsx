@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { VALIDATE_ACCOUNT } from "../requests/user";
 import Logo from "@/components/atoms/logo";
+import Image from "next/image";
 
 export default function ValidateAccountPage() {
   const router = useRouter();
@@ -42,6 +43,12 @@ export default function ValidateAccountPage() {
     <div className="container_signin">
       <Logo className={"menu_white_logo"} link="/sign-up" />
       <div className="signin_wrapper">
+        <Image
+          src="/assets/rainbow_gnome.png"
+          alt="rainbow"
+          width={200}
+          height={200}
+        ></Image>
         {loading && <span>Validation en cours...</span>}
         {error && (
           <span>Erreur lors de la validation du compte: {error.message}</span>

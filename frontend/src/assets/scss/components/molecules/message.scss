@@ -1,0 +1,22 @@
+.message-container {
+  width: 100%;
+  background-color: $primary-color14;
+  p {
+    font-size: 0.875em;
+  }
+  border-top-left-radius: 0;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+
+  .text-container {
+    overflow-wrap: break-word;
+  }
+}
+
+.user-message {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 30px;
+  background-color: $primary-color15;
+}
+

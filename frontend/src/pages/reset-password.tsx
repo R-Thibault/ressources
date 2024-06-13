@@ -5,6 +5,7 @@ import { RESET_PASSWORD } from "../requests/user";
 import { checkPasswords } from "@/utils/checkInput";
 import { Alert } from "react-bootstrap";
 import Logo from "@/components/atoms/logo";
+import Image from "next/image";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -54,6 +55,12 @@ export default function ResetPasswordPage() {
     <div className="container_signin">
       <Logo className={"menu_white_logo"} link="/sign-up" />
       <div className="signin_wrapper">
+      <Image
+          src="/assets/rainbow_gnome.png"
+          alt="rainbow"
+          width={200}
+          height={200}
+        ></Image>
         <span>Réinitialisation de votre mot de passe</span>
         <p className="title">Renseignez votre nouveau mot de passe</p>
         <form onSubmit={handleSubmit}>

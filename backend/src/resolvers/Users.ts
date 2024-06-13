@@ -1,6 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
-import { Resolver, Query, Arg, Mutation, Ctx, ID } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  Ctx,
+  ID,
+  Authorized,
+} from "type-graphql";
 import {
   User,
   UserCreateInput,
@@ -22,11 +30,14 @@ import { checkEmail, checkPasswords } from "../utils/checkInput";
 
 @Resolver(User)
 export class UserResolver {
+
+  @Authorized()
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     return await User.find({});
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
   async getOneUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     try {
@@ -40,6 +51,7 @@ export class UserResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
@@ -58,6 +70,7 @@ export class UserResolver {
     return user;
   }
 
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async deleteUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     try {
@@ -246,6 +259,7 @@ export class UserResolver {
     return true;
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
   async myProfile(@Ctx() context: ContextType): Promise<User | null> {
     const user = await getUser(context.req, context.res);

@@ -13,11 +13,14 @@ import { ContextType } from "../middlewares/auth";
 
 @Resolver(Link)
 export class LinkResolver {
+
+  @Authorized()
   @Query(() => [Link])
   async getAllLinks(): Promise<Link[]> {
     return await Link.find();
   }
 
+  @Authorized()
   @Query(() => Link)
   async getOneLink(@Arg("id", () => ID) id: number): Promise<Link | null> {
     try {
@@ -72,6 +75,7 @@ export class LinkResolver {
   //   return link;
   // }
 
+  @Authorized()
   @Mutation(() => Link, { nullable: true })
   async deleteLink(@Arg("id", () => ID) id: number): Promise<Link | null> {
     try {

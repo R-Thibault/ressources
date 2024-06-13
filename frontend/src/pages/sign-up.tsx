@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
 import { checkPasswords, checkEmail } from "@/utils/checkInput";
+import Image from "next/image";
 
 export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
@@ -61,6 +62,12 @@ export default function SignUp(): React.ReactNode {
         {!data ? (
           <>
             <span>Inscription</span>
+            <Image
+          src="/assets/rainbow_gnome.png"
+          alt="rainbow"
+          width={130}
+          height={130}
+        ></Image>
             <p className="title">
               Inscrivez-vous dès maintenant en remplissant le formulaire
               ci-dessous

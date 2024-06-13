@@ -60,6 +60,19 @@
   background: $primary-color2;
 }
 
+.btn_add_message {
+  height: 50px;
+  width: 60px;
+  transition: all 0.3s ease 0s;
+  background: $primary-color1;
+  border-radius: 50%;
+}
+
+.btn_add_message:hover {
+  background: $primary-color2;
+}
+
+
 .log_out_btn {
   display: flex;
   align-items: center;
@@ -136,4 +149,9 @@
   position: absolute;
   top: 10%;
   right: 0;
+}
+
+.message_btn {
+  position: sticky;
+  top: 0px;
 }

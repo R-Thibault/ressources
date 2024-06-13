@@ -14,11 +14,14 @@ import { User } from "../entities/User";
 
 @Resolver(Image)
 export class ImageResolver {
+
+  @Authorized()
   @Query(() => [Image])
   async getAllImages(): Promise<Image[]> {
     return await Image.find();
   }
 
+  @Authorized()
   @Query(() => Image)
   async getOneImage(@Arg("id", () => ID) id: number): Promise<Image | null> {
     try {
@@ -29,6 +32,7 @@ export class ImageResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Image)
   async createImage(
     @Arg("data", () => ImageCreateInput) data: ImageCreateInput
@@ -51,6 +55,7 @@ export class ImageResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Image, { nullable: true })
   async updateImage(
     @Arg("id", () => ID) id: number,
@@ -69,6 +74,7 @@ export class ImageResolver {
     return image;
   }
 
+  @Authorized()
   @Mutation(() => Image, { nullable: true })
   async deleteImage(@Arg("id", () => ID) id: number): Promise<Image | null> {
     try {

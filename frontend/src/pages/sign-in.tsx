@@ -4,6 +4,7 @@ import { SIGN_IN, MY_PROFILE } from "@/requests/user";
 import { useRouter } from "next/router";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
+import Image from "next/image";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ export default function SignIn() {
   const [signIn, { loading }] = useMutation(SIGN_IN, {
     variables: { data: { email, password, isTest: false } },
     refetchQueries: [MY_PROFILE],
-    onCompleted: () => router.replace("/"),
+    onCompleted: () => router.replace("/dashboard"),
     onError: (error) => {
       if (error.message.includes("user not found")) {
         setErrorMessage("Utilisateur introuvable.");
@@ -46,7 +47,13 @@ export default function SignIn() {
       <Logo className={"menu_white_logo"} link="/sign-in" />
       <div className="signin_wrapper">
         <span>Connexion</span>
-        <p className="title">Content de vous revoir</p>
+        <p className="title">Content de vous revoir !</p>
+        <Image
+          src="/assets/rainbow_gnome.png"
+          alt="rainbow"
+          width={130}
+          height={130}
+        ></Image>
         <form className="form" onSubmit={submitForm}>
           <input
             className="input"

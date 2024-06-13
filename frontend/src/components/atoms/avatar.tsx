@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { UserType } from "@/types/user.types";
 import { DateTime } from "luxon";
 
 export default function avatar(props: { date: Date; user: UserType }) {
-  const [avatarSrc, setAvatarSrc] = useState<string>(
-    "/assets/avatars/jake-nackos.jpg"
-  );
+  let avatarImage = props.user.avatar?.path.includes("://")
+    ? props.user.avatar.path
+    : `http://localhost:4000/files/${props.user.avatar?.path.replace(
+        "/app/upload/",
+        ""
+      )}`;
 
-  useEffect(() => {
-    if (props.user.avatar && props.user.avatar.path.includes("://")) {
-      setAvatarSrc(props.user.avatar.path);
-    } else if (props.user.avatar) {
-      setAvatarSrc(
-        `http://localhost:4000/files/${props.user.avatar.path.replace(
-          "/app/upload/",
-          ""
-        )}`
-      );
-    }
-  }, [props]);
   return (
     <div className="d-flex aligns-items-center py-2 ">
       <div className="d-flex flex-row align-items-center py-2">
@@ -28,18 +19,21 @@ export default function avatar(props: { date: Date; user: UserType }) {
             unoptimized
             width={46}
             height={46}
-            src={avatarSrc}
+            src={avatarImage}
             alt="jake nackos"
             className="mr-3 rounded-circle"
+            onErrorCapture={() => {
+              avatarImage = "/assets/avatars/no-image.png";
+            }}
           />
         ) : (
-          <Image
-            width={46}
-            height={46}
-            src={"/assets/avatars/jake-nackos.jpg"}
-            alt="jake nackos"
-            className="mr-3 rounded-circle"
-          />
+          <div className="rounded-circle avatar_message">
+            <span className="avatar_default_text_size">
+              {props &&
+                props.user.firstname.substring(0, 1).toUpperCase() +
+                  props.user.lastname.substring(0, 1).toUpperCase()}
+            </span>
+          </div>
         )}
         <div className="d-flex flex-column align-items-start ms-2">
           <span className="avatar_username">

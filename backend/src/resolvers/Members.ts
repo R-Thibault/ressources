@@ -1,4 +1,4 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, ID, Mutation, Query, Resolver } from "type-graphql";
 import {
   MemberCreateInput,
   Member,
@@ -8,11 +8,13 @@ import { validate } from "class-validator";
 
 @Resolver(Member)
 export class MemberResolver {
+  @Authorized()
   @Query(() => [Member])
   async getAllMembers(): Promise<Member[]> {
     return await Member.find();
   }
 
+  @Authorized()
   @Query(() => Member)
   async getOneMember(@Arg("id", () => ID) id: number): Promise<Member | null> {
     try {
@@ -23,6 +25,7 @@ export class MemberResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Member)
   async createMember(
     @Arg("data", () => MemberCreateInput) data: MemberCreateInput
@@ -42,6 +45,7 @@ export class MemberResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Member, { nullable: true })
   async updateMember(
     @Arg("id", () => ID) id: number,
@@ -60,6 +64,7 @@ export class MemberResolver {
     return member;
   }
 
+  @Authorized()
   @Mutation(() => Member, { nullable: true })
   async deleteMember(@Arg("id", () => ID) id: number): Promise<Member | null> {
     try {

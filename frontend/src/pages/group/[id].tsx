@@ -15,6 +15,7 @@ import CreateRessourcesForm from "@/components/organisms/createRessourcesForm";
 import { GET_ALL_TAGS_FROM_ONE_USER } from "@/requests/tags";
 import TagsDisplay from "@/components/organisms/tagsDisplay";
 import { TagType } from "@/types/extra.types";
+import ChatDisplay from "@/components/organisms/chatDisplay";
 
 export type GroupProps = {
   group: GroupType;
@@ -31,14 +32,7 @@ export default function GroupDashboard(): React.ReactNode {
     useState<boolean>(false);
   const [modalRessourceVisible, setmodalRessourceVisible] =
     useState<boolean>(false);
-
-  function handleInviteMemberModal(value: boolean) {
-    setModalInviteMemberVisible(value);
-  }
-
-  function handleResourceModal(value: boolean) {
-    setmodalRessourceVisible(value);
-  }
+  const [chatVisible, setChatVisible] = useState<boolean>(false);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [, setSkip] = useState<number>(0);
   const [take] = useState<number>(10);
@@ -48,6 +42,18 @@ export default function GroupDashboard(): React.ReactNode {
     useState<string>("bi bi-sort-down");
   const [dateSortClass, setDateSortClass] = useState<string>("bi bi-sort-down");
   const [searchTitle, setSearchTitle] = useState<string>("");
+
+  function handleInviteMemberModal(value: boolean) {
+    setModalInviteMemberVisible(value);
+  }
+
+  function handleChatVisible(value: boolean) {
+    setChatVisible(value);
+  }
+
+  function handleResourceModal(value: boolean) {
+    setmodalRessourceVisible(value);
+  }
 
   const { data: dataGroup } = useQuery<{ item: GroupType }>(GET_ONE_GROUP, {
     variables: {
@@ -149,6 +155,13 @@ export default function GroupDashboard(): React.ReactNode {
                 onChange={(e) => setSearchTitle(e.target.value)}
               />
             </div>
+            <button
+              className="btn_primary mx-4 message_btn"
+              onClick={() => handleChatVisible(true)}
+            >
+              <i className="bi bi-plus-circle" />
+              <span>Messages</span>
+            </button>
           </div>
         ) : (
           <>
@@ -237,6 +250,11 @@ export default function GroupDashboard(): React.ReactNode {
             onClose={handleInviteMemberModal}
           />
         </ModalComponent>
+        <ChatDisplay
+          groupId={groupId}
+          opened={chatVisible}
+          handleChatDisplay={handleChatVisible}
+        />
       </div>
     </Layout>
   );

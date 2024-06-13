@@ -10,6 +10,7 @@ import { ImageResolver } from "./resolvers/Images";
 import { GroupResolver } from "./resolvers/Groups";
 import { FileResolver } from "./resolvers/Files";
 import { customAuthChecker } from "./middlewares/auth";
+import { pubSub } from "./pubsub";
 
 export async function getSchema() {
   return await buildSchema({
@@ -26,5 +27,7 @@ export async function getSchema() {
       FileResolver,
     ],
     authChecker: customAuthChecker,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    pubSub: pubSub as any,
   });
 }

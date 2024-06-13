@@ -91,6 +91,7 @@ export default function Dashboard(): React.ReactNode {
       setDateSortClass("bi bi-dash");
     }
   }, [dateSort]);
+
   useEffect(() => {
     if (titleSort === "ASC" || titleSort === "DESC") {
       setDateSort("");
@@ -101,6 +102,7 @@ export default function Dashboard(): React.ReactNode {
       setTitleSortClass("bi bi-dash");
     }
   }, [titleSort]);
+  
   return (
     <Layout title={"Dashboard"}>
       <div className="ressources_main_container">

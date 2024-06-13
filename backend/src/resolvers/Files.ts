@@ -1,14 +1,17 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, ID, Mutation, Query, Resolver } from "type-graphql";
 import { File, FileCreateInput, FileUpdateInput } from "../entities/File";
 import { validate } from "class-validator";
 
 @Resolver(File)
 export class FileResolver {
+  
+  @Authorized()
   @Query(() => [File])
   async getAllFiles(): Promise<File[]> {
     return await File.find();
   }
 
+  @Authorized()
   @Query(() => File)
   async getOneFile(@Arg("id", () => ID) id: number): Promise<File | null> {
     try {
@@ -19,6 +22,7 @@ export class FileResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => File)
   async createFile(
     @Arg("data", () => FileCreateInput) data: FileCreateInput
@@ -39,6 +43,7 @@ export class FileResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => File, { nullable: true })
   async updateFile(
     @Arg("id", () => ID) id: number,
@@ -57,6 +62,7 @@ export class FileResolver {
     return file;
   }
 
+  @Authorized()
   @Mutation(() => File, { nullable: true })
   async deleteFile(@Arg("id", () => ID) id: number): Promise<File | null> {
     try {
