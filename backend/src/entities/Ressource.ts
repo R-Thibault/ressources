@@ -88,6 +88,8 @@ export class RessourceCreateInput {
   entityId!: number;
   @Field({ nullable: true }) // enlever nullable:true
   type!: string;
+  @Field({ nullable: true })
+  groupId!: number;
 }
 
 @InputType()

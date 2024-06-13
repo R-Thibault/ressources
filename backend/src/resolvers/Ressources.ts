@@ -21,6 +21,7 @@ import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
 import { Like } from "typeorm";
+import {Group} from "../entities/Group";
 
 @Resolver(Ressource)
 export class RessourceResolver {
@@ -179,6 +180,14 @@ export class RessourceResolver {
 
       if (context.user) {
         newRessource.created_by_user = context.user;
+        if (data.groupId !== null) {
+          const group = await Group.findOneBy({
+            id: data.groupId,
+          });
+          if (group) {
+            newRessource.group_id = group;
+          }
+        }
       }
 
       const error = await validate(newRessource);

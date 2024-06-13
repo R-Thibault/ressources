@@ -4,13 +4,14 @@ import { FormEvent, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 import { FileType } from "@/types/file.types";
-import { CREATE_RESSOURCE } from "@/requests/ressources";
+import {CREATE_RESSOURCE, GET_ALL_RESSOURCES_FROM_ONE_USER, GET_RESSOURCES_BY_GROUP_ID} from "@/requests/ressources";
 import { LinkType } from "@/types/link.types";
 
 export default function RessourcesFormStep2(props: {
   handleSubmit(value: boolean): void;
   type: string;
   entity: FileType | null | LinkType;
+  groupId?: number;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -25,7 +26,9 @@ export default function RessourcesFormStep2(props: {
         description: description,
         entityId: Number(props.entity?.id),
         type: props.type,
+        groupId: props.groupId ? props.groupId : null,
       },
+      refetchQueries:[props.groupId ? GET_RESSOURCES_BY_GROUP_ID : GET_ALL_RESSOURCES_FROM_ONE_USER ]
     },
   });
 

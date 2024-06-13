@@ -225,7 +225,8 @@ export default function GroupDashboard(): React.ReactNode {
           opened={modalRessourceVisible}
           openModal={handleResourceModal}
         >
-          <CreateRessourcesForm onClose={handleResourceModal} />
+          <CreateRessourcesForm onClose={handleResourceModal} groupId={groupId}
+          />
         </ModalComponent>
         <ModalComponent
           opened={modalInviteMemberVisible}

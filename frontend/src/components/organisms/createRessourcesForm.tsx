@@ -9,6 +9,7 @@ import { LinkType } from "@/types/link.types";
 
 export default function CreateRessourcesForm(props: {
   onClose(value: boolean): void;
+  groupId?: number;
 }) {
   const [step, setStep] = useState<number>(1);
   const [type, setType] = useState<string>("link");
@@ -45,6 +46,7 @@ export default function CreateRessourcesForm(props: {
           type={type}
           entity={entity}
           handleSubmit={handleSubmit}
+          groupId={props.groupId}
         />
       )}
     </>
