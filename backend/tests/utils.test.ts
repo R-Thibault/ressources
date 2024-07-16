@@ -1,17 +1,38 @@
-import { timestampToDate } from "../src/utils/timestampToDate";
+import { checkPasswords } from "../src/utils/checkInput";
 
-describe("tests utils timestampToDate functions", () => {
-  it("should returns an instance of date within a given timestamp", () => {
-    const date = timestampToDate(Date.now());
-    expect(date).toBeInstanceOf(Date);
+describe("check if userPassword matches all requirement", () => {
+  it("should return an error message if password doesn't have at least 9 characters", () => {
+    const testPassword = checkPasswords('azerty', 'azerty')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !")
   });
-  it("should returns a specific date with format YYYY-MM-DD within a given timestamp", () => {
-    const date = timestampToDate(1707299096);
-    expect(date.toISOString()).toBe("2024-02-07T09:44:56.000Z");
+  it("should return an error message if password doesn't have at least one uppercase letter", () => {
+    const testPassword = checkPasswords('azerty123', 'azerty123')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !")
   });
-  it("should returns true if the given timestamp > 2012-01-01", () => {
-    const date = timestampToDate(1707299096);
-    const result = date > new Date(2012, 0, 1);
-    expect(result).toBeTruthy();
+  it("should return an error message if password doesn't have at least one lowercase letter", () => {
+    const testPassword = checkPasswords('AZERTY123', 'AZERTY123')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !")
   });
-});
+  it("should return an error message if password doesn't have at least one number", () => {
+    const testPassword = checkPasswords('Azertytest', 'Azertytest')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !")
+  });
+  it("should return an error message if password doesn't have at least one special character", () => {
+    const testPassword = checkPasswords('Azertytes1', 'Azertytes1')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !")
+  });
+  it("should return an error message if password and confirmPassword don't match", () => {
+    const testPassword = checkPasswords('AZerty12tes!', 'Azertytest!')
+    expect(testPassword.result).toBeFalsy()
+    expect(testPassword.errorMessage).toContain("Le mot de passe et la confirmation ne correspondent pas !")
+  });
+  it("shouldn't return any error if password and confirmPassword matches and have all requirement", () => {
+    const testPassword = checkPasswords('AZerty12!', 'AZerty12!')
+    expect(testPassword).toBeUndefined
+  });
+})

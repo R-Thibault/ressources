@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -33,13 +34,6 @@ export default function SignIn() {
     e.preventDefault();
     setErrorMessage(""); // Réinitialiser le message d'erreur
     signIn();
-  };
-
-  const handleForgotPasswordClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
-    router.push("/request-reset-password");
   };
 
   return (
@@ -79,14 +73,14 @@ export default function SignIn() {
           <button className="btn_primary" type="submit" disabled={loading}>
             Se connecter
           </button>
-          <a onClick={handleForgotPasswordClick} className="forgot_Password">
+          <Link href="/request-reset-password" className="forgot_Password">
             Mot de passe oublié
-          </a>
+          </Link>
           <p className="signup_link">
             Vous n'avez pas encore de compte ?{" "}
-            <a href="/sign-up" className="forgot_Password">
+            <Link href="/sign-up" className="forgot_Password">
               Créez en un dès maintenant !
-            </a>
+            </Link>
           </p>
         </form>
       </div>

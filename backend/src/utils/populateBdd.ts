@@ -37,7 +37,7 @@ export async function populateBdd() {
   try {
     const adminUser = new User();
     adminUser.email = "admin@ressources.com";
-    adminUser.hashed_password = await argon2.hash("DummyPassword");
+    adminUser.hashed_password = await argon2.hash("DummyPassword12!");
     adminUser.firstname = "Admin";
     adminUser.lastname = "Admin";
     adminUser.created_at = new Date();
@@ -58,7 +58,7 @@ export async function populateBdd() {
       if (i === 0) {
         const newUser = new User();
         newUser.email = "dev@gmail.com";
-        newUser.hashed_password = await argon2.hash("superPassword1");
+        newUser.hashed_password = await argon2.hash("superPassword1!");
         newUser.lastname = faker.person.lastName();
         newUser.firstname = faker.person.firstName();
         newUser.created_at = faker.date.between({
@@ -78,7 +78,7 @@ export async function populateBdd() {
       } else {
         const newUser = new User();
         newUser.email = faker.internet.email();
-        newUser.hashed_password = await argon2.hash("superPassword1");
+        newUser.hashed_password = await argon2.hash("superPassword1!");
         newUser.lastname = faker.person.lastName();
         newUser.firstname = faker.person.firstName();
         newUser.created_at = faker.date.between({

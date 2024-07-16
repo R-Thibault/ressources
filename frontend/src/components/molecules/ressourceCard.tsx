@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CardTag from "../atoms/cardTag";
 import Image from "next/image";
 import LikeBtn from "../atoms/likeBtn";
 import FavoriteBtn from "../atoms/favoriteBtn";
@@ -57,9 +56,6 @@ export default function RessourceCard(
         </div>
         <div className="card-body pb-5">
           <div className="d-flex gap-1">
-         {/*    <CardTag name={"randonée"} />
-            <CardTag name={"montagne"} />
-            <CardTag name={"paysage"} /> */}
           </div>
           <h5 className="card-title pt-2 title">{ressource.title}</h5>
           <p className="card-text description">{ressource.description}</p>

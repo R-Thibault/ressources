@@ -5,6 +5,7 @@ import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
 import { checkPasswords, checkEmail } from "@/utils/checkInput";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
@@ -35,7 +36,6 @@ export default function SignUp(): React.ReactNode {
     e.preventDefault();
     try {
       setErrorMessage("");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
       const validPassword = checkPasswords(password, confirmPassword);
       const validEmail = checkEmail(email);
@@ -63,11 +63,11 @@ export default function SignUp(): React.ReactNode {
           <>
             <span>Inscription</span>
             <Image
-          src="/assets/rainbow_gnome.png"
-          alt="rainbow"
-          width={130}
-          height={130}
-        ></Image>
+              src="/assets/rainbow_gnome.png"
+              alt="rainbow"
+              width={130}
+              height={130}
+            ></Image>
             <p className="title">
               Inscrivez-vous dès maintenant en remplissant le formulaire
               ci-dessous
@@ -126,9 +126,9 @@ export default function SignUp(): React.ReactNode {
               </button>
               <p className="signup_link">
                 Vous avez déjà un compte ?{" "}
-                <a href="/sign-in" className="forgot_Password">
+                <Link href="/sign-in" className="forgot_Password">
                   Connectez-vous dès maintenant !
-                </a>
+                </Link>
               </p>
             </form>
           </>
