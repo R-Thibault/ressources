@@ -2,4 +2,8 @@
 .env
 node_modules
 /upload/
+<<<<<<< Updated upstream
 nginx.conf
+=======
+logs
+>>>>>>> Stashed changes
