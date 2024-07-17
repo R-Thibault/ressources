@@ -10,7 +10,7 @@ services:
       - ./upload/avatar:/app/upload/avatar
       - ./upload/ressources:/app/upload/ressources
     env_file:
-      - ./.env
+      - .env
   # front:
   #   build: ./frontend
   #   ports:
@@ -24,7 +24,7 @@ services:
     volumes:
       - /var/lib/postgresql/data
     env_file:
-      - ./.env
+      - .env
   adminer:
     image: adminer
     ports:
