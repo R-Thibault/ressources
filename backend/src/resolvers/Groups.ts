@@ -125,7 +125,6 @@ export class GroupResolver {
         const groupMembers = await Member.findAndCount({
           where: { group: { id: data.group_id } },
         });
-        console.log("TAAAAAAAAAAAAAAAAAA", group.created_by_user.id, user.id);
         if (group.created_by_user.id !== user.id) {
           throw new Error(`Vous n'êtes pas le créateur du groupe.`);
         }
@@ -140,7 +139,6 @@ export class GroupResolver {
       }
       return null;
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
