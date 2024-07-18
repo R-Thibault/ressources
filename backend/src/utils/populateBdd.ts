@@ -354,7 +354,6 @@ export async function populateBdd() {
       const newRessource = new Ressource();
       newRessource.title = faker.lorem.words(2);
       newRessource.description = faker.lorem.sentence();
-      newRessource.is_favorite = faker.datatype.boolean();
       newRessource.image_id = createdImages[i + 1];
       newRessource.link_id = createdLinks[i + 1];
       newRessource.group_id =

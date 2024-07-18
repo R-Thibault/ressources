@@ -22,7 +22,9 @@ export class Message extends BaseEntity {
   @Field()
   message!: string;
 
-  @ManyToOne(() => Group, (group) => group.messages)
+  @ManyToOne(() => Group, (group) => group.messages, {
+    onDelete: "CASCADE",
+  })
   @Field(() => Group)
   group!: Group;
 
