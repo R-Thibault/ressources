@@ -54,6 +54,11 @@ export const GET_ONE_GROUP = gql`
       name
       description
       created_at
+      created_by_user {
+        id
+        firstname
+        lastname
+      }
     }
   }
 `;

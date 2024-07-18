@@ -1,6 +1,8 @@
+import { UserType } from "./user.types";
+
 export type ExtraTypes = {
   created_at?: Date;
-  created_by_id?: number | null;
+  created_by_user?: UserType | null;
   updated_at?: Date;
   update_by_id?: number;
 };

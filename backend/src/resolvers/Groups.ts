@@ -25,7 +25,10 @@ export class GroupResolver {
   @Query(() => Group)
   async getOneGroup(@Arg("id", () => ID) id: number): Promise<Group | null> {
     try {
-      const group = await Group.findOne({ where: { id: id } });
+      const group = await Group.findOne({
+        where: { id: id },
+        relations: { created_by_user: true },
+      });
       return group;
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
@@ -110,36 +113,32 @@ export class GroupResolver {
   async deleteGroup(
     @Ctx() context: ContextType,
     @Arg("data", () => DeleteGroupInput) data: DeleteGroupInput
-  ): Promise<Group | null> {
-    try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
-        throw new Error(`No user found `);
-      }
+  ): Promise<Group | undefined> {
+    const user = await getUser(context.req, context.res);
+    if (user) {
       const group = await Group.findOne({
         where: { id: data.group_id },
         relations: { created_by_user: true, members: true, ressources: true },
       });
-
       if (group) {
         const groupMembers = await Member.findAndCount({
           where: { group: { id: data.group_id } },
         });
         if (group.created_by_user.id !== user.id) {
           throw new Error(`Vous n'êtes pas le créateur du groupe.`);
-        }
-        if (groupMembers[1] === 1 && group.created_by_user.id === user.id) {
-          await group.remove();
-          group.id = data.group_id;
-
-          return group;
         } else {
-          throw new Error(`Vous n'êtes pas seul dans le groupe.`);
+          if (groupMembers[1] === 1 && group.created_by_user.id === user.id) {
+            await group.remove();
+            group.id = data.group_id;
+
+            return group;
+          } else {
+            throw new Error("Vous n'êtes pas seul dans le groupe.");
+          }
         }
       }
-      return null;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
+    } else {
+      throw new Error(`No user found `);
     }
   }
 

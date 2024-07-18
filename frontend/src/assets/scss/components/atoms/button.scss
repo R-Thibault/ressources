@@ -56,6 +56,13 @@
   border-radius: 30px;
 }
 
+.btn_quit_group {
+  height: 40px;
+  transition: all 0.3s ease 0s;
+  background: $primary-color10;
+  border-radius: 30px;
+}
+
 .btn_add_ressources:hover {
   background: $primary-color2;
 }
@@ -71,7 +78,6 @@
 .btn_add_message:hover {
   background: $primary-color2;
 }
-
 
 .log_out_btn {
   display: flex;
