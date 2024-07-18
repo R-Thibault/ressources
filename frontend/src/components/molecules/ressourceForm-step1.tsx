@@ -63,7 +63,7 @@ export default function RessourcesFormStep1(props: {
         formData.append("userId", `${props.userId}`);
       }
 
-      const result = await axios.post(`${API_URL}api/upload/file`, formData, {
+      const result = await axios.post(`${API_URL}/upload/file`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

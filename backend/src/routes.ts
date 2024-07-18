@@ -88,7 +88,7 @@ export function initializeRoutes(app: Express) {
   );
 
   app.post(
-    "/api/upload/file",
+    "/upload/file",
     uploadRessourcesDirectory.single("file"),
     async (req, res) => {
       try {
