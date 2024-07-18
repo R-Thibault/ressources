@@ -26,7 +26,6 @@ export const GET_RESSOURCES_BY_GROUP_ID = gql`
       id
       title
       description
-      is_favorite
       image_id {
         id
         path

@@ -70,12 +70,9 @@ export class MemberResolver {
     @Ctx() context: ContextType,
     @Arg("data", () => MemberLeavingGroupInput)
     whereMember: MemberLeavingGroupInput
-  ): Promise<Member | null> {
-    try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
-        throw new Error(`No user found `);
-      }
+  ): Promise<Member> {
+    const user = await getUser(context.req, context.res);
+    if (user) {
       const group = await Group.findOne({
         where: { id: whereMember.group_id },
         relations: { created_by_user: true },
@@ -105,8 +102,8 @@ export class MemberResolver {
       await member.remove();
       member.id = id;
       return member;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
+    } else {
+      throw new Error(`No user found `);
     }
   }
 }
