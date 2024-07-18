@@ -19,7 +19,7 @@ export default function Dashboard(): React.ReactNode {
   const [titleSortClass, setTitleSortClass] =
     useState<string>("bi bi-sort-down");
   const [dateSortClass, setDateSortClass] = useState<string>("bi bi-sort-down");
-  const [dateSort, setDateSort] = useState<string>("ASC");
+  const [dateSort, setDateSort] = useState<string>("DESC");
   const [searchTitle, setSearchTitle] = useState<string>("");
   const [, setSkip] = useState<number>(0);
   const [take] = useState<number>(10);

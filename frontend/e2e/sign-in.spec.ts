@@ -5,6 +5,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe("test sign-in interactions", () => {
+  test("email and password input should be required", async ({ page }) => {
+    const emailInput = page.getByPlaceholder("Email");
+    const passwordInput = page.getByPlaceholder("Mot de passe");
+
+    await expect(emailInput).toHaveAttribute("required");
+    await expect(passwordInput).toHaveAttribute("required");
+  });
+
   test("should display message if the user doesn't exist", async ({ page }) => {
     const emailInput = page.getByPlaceholder("Email");
     const passwordInput = page.getByPlaceholder("Mot de passe");
