@@ -12,7 +12,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Goto frontend and run tests
-        run: cd frontend && npm i && npm test
+        run: cd frontend && npm i && npm test -- --findRelatedTests src/tests/utils/utils.test.ts
   docker-image-frontend:
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest

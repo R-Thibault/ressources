@@ -1,64 +1,14 @@
-import { GraphQLSchema, graphql, print } from "graphql";
-import { DataSource } from "typeorm";
-import { getSchema } from "../../src/schema";
-import { dataSourceOptions } from "../../src/datasource";
-import * as userMutations from "./mutations";
-import { serialize, parse } from "cookie";
+import { graphql, print } from "graphql";
+import { schema, mockContext } from "../jest.setup";
+import * as userRequest from "./request";
 
-let schema: GraphQLSchema;
-let dataSource: DataSource;
 let token: string | undefined;
 
-function mockContext(token?: string) {
-  const value: { context: any; token?: string } = {
-    token,
-    context: {
-      req: {
-        headers: {
-          cookie: token ? serialize("token", token) : undefined,
-        },
-        connection: { encrypted: false },
-      },
-      res: {
-        getHeader: () => "",
-        setHeader: (key: string, cookieValue: string | string[]) => {
-          if (key === "Set-Cookie") {
-            const parsedValue = parse(
-              Array.isArray(cookieValue) ? cookieValue[0] : cookieValue
-            );
-            if (parsedValue.token) {
-              value.token = parsedValue.token;
-            }
-          }
-        },
-        headers: {},
-      },
-    },
-  };
-  return value;
-}
-
-beforeAll(async () => {
-  schema = await getSchema();
-
-  dataSource = new DataSource({
-    ...dataSourceOptions,
-    dropSchema: true,
-    logging: false,
-  });
-
-  await dataSource.initialize();
-});
-
-afterAll(() => {
-  dataSource.destroy();
-});
-
-describe("tests user resolver", () => {
+export const userResolverTests = () => {
   it("creates a new user", async () => {
     const result = (await graphql({
       schema,
-      source: print(userMutations.SIGN_UP),
+      source: print(userRequest.SIGN_UP),
       variableValues: {
         data: {
           email: "test@gmail.com",
@@ -75,7 +25,7 @@ describe("tests user resolver", () => {
   it("cannot create the same user", async () => {
     const result = (await graphql({
       schema,
-      source: print(userMutations.SIGN_UP),
+      source: print(userRequest.SIGN_UP),
       variableValues: {
         data: {
           email: "test@gmail.com",
@@ -93,7 +43,7 @@ describe("tests user resolver", () => {
     const mock = mockContext();
     const result = (await graphql({
       schema,
-      source: print(userMutations.SIGN_IN),
+      source: print(userRequest.SIGN_IN),
       variableValues: {
         data: {
           email: "test@gmail.com",
@@ -111,7 +61,7 @@ describe("tests user resolver", () => {
     const mock = mockContext();
     const result = (await graphql({
       schema,
-      source: print(userMutations.MY_PROFILE),
+      source: print(userRequest.MY_PROFILE),
       contextValue: mock.context,
     })) as any;
     expect(result?.data?.item).toBeNull();
@@ -120,10 +70,12 @@ describe("tests user resolver", () => {
     const mock = mockContext(token);
     const result = (await graphql({
       schema,
-      source: print(userMutations.MY_PROFILE),
+      source: print(userRequest.MY_PROFILE),
       contextValue: mock.context,
     })) as any;
     expect(result?.data?.item.id).toBeTruthy();
     expect(result?.data?.item.email).toBeTruthy();
   });
-});
+};
+
+export { token };

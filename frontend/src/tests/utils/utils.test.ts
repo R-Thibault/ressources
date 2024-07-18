@@ -1,4 +1,4 @@
-import { checkPasswords } from "../src/utils/checkInput";
+import { checkPasswords } from "@/utils/checkInput";
 
 describe("check if userPassword matches all requirement", () => {
   it("should return an error message if password doesn't have at least 9 characters", () => {

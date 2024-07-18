@@ -66,7 +66,7 @@ export default function SignIn() {
             required
           />
           {errorMessage && (
-            <Alert className="full_width" variant={"danger"}>
+            <Alert id="alert" className="full_width" variant={"danger"}>
               {errorMessage}
             </Alert>
           )}

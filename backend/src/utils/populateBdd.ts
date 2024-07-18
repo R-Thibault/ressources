@@ -75,6 +75,26 @@ export async function populateBdd() {
           await newUser.save();
           createdUsers.push(newUser);
         }
+      } else if (i === 1) {
+        const newUser = new User();
+        newUser.email = "disabled@gmail.com";
+        newUser.hashed_password = await argon2.hash("aZertY2024!");
+        newUser.lastname = faker.person.lastName();
+        newUser.firstname = faker.person.firstName();
+        newUser.created_at = faker.date.between({
+          from: "2024-01-01T00:00:00.000Z",
+          to: Date.now(),
+        });
+        newUser.is_account_validated = false;
+        //ajout relation avatar a la fin de la population de données, car les images ne sont pas encore crées ici.
+        const error = await validate(newUser);
+
+        if (error.length > 0) {
+          throw new Error(`error occured ${JSON.stringify(error)}`);
+        } else {
+          await newUser.save();
+          createdUsers.push(newUser);
+        }
       } else {
         const newUser = new User();
         newUser.email = faker.internet.email();

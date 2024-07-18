@@ -12,6 +12,13 @@ if [ -d "$FRONTEND_DIR" ]; then
 
     if (cd "$FRONTEND_DIR" && npm run nextLint); then
         echo "Frontend ESLint passed"
+            # Run frontend tests
+        if (cd "$FRONTEND_DIR" && npm test -- --findRelatedTests src/tests/utils/utils.test.ts); then
+            echo "Frontend tests passed"
+        else
+            echo "Frontend tests failed"
+            exit 1 # Abort the commit if Frontend tests return errors
+        fi
     else
         echo "Frontend ESLint failed"
         exit 1 # Abort the commit if frontend ESLint returns errors
@@ -42,4 +49,3 @@ else
     echo "Backend directory not found"
     exit 1 # Abort the commit if backend directory is not found
 fi
-

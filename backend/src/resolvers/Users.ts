@@ -223,7 +223,7 @@ export class UserResolver {
       if (await argon2.verify(existingUser.hashed_password, data.password)) {
         const token = jwt.sign(
           {
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
             id: existingUser.id,
           },
           `${process.env.JWT_SECRET_KEY}`
