@@ -7,17 +7,14 @@ import {
   Resolver,
   Ctx,
 } from "type-graphql";
-import { Group, GroupInput } from "../entities/Group";
+import { DeleteGroupInput, Group, GroupInput } from "../entities/Group";
 import { Member } from "../entities/Member";
-import { User } from "../entities/User";
 import { validate } from "class-validator";
-import { ContextType } from "../middlewares/auth";
+import { ContextType, getUser } from "../middlewares/auth";
 import { DummyGroups } from "../dummyDatas";
-import { sendGroupInvitation } from "../utils/sendemail";
 
 @Resolver(Group)
 export class GroupResolver {
-  
   @Authorized()
   @Query(() => [Group])
   async getAllGroups(): Promise<Group[]> {
@@ -110,43 +107,41 @@ export class GroupResolver {
 
   @Authorized()
   @Mutation(() => Group, { nullable: true })
-  async deleteGroup(@Arg("id", () => ID) id: number): Promise<Group | null> {
+  async deleteGroup(
+    @Ctx() context: ContextType,
+    @Arg("data", () => DeleteGroupInput) data: DeleteGroupInput
+  ): Promise<Group | null> {
     try {
-      const group = await Group.findOne({ where: { id: id } });
-      if (group) {
-        await group.remove();
-        group.id = id;
-      }
-      return group;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-
-  @Authorized()
-  @Mutation(() => Boolean)
-  async inviteGroupMembers(
-    @Arg("groupId", () => ID) groupId: number,
-    @Arg("email") email: string
-  ): Promise<boolean> {
-    try {
-      const user = await User.findOne({ where: { email: email } });
-
+      const user = await getUser(context.req, context.res);
       if (!user) {
-        throw new Error(`No user found with email: ${email}`);
-        // au lieu de throw une erreur, genérer un mail d'invitation, mais retourner la page d'inscsription + l'id du groupe
+        throw new Error(`No user found `);
       }
-      const newMember = new Member();
-      newMember.user = user;
-      newMember.group = await Group.findOne({ where: { id: groupId } });
-      newMember.last_visit = new Date();
+      const group = await Group.findOne({
+        where: { id: data.group_id },
+        relations: { created_by_user: true, members: true, ressources: true },
+      });
 
-      await newMember.save();
+      if (group) {
+        const groupMembers = await Member.findAndCount({
+          where: { group: { id: data.group_id } },
+        });
+        console.log("TAAAAAAAAAAAAAAAAAA", group.created_by_user.id, user.id);
+        if (group.created_by_user.id !== user.id) {
+          throw new Error(`Vous n'êtes pas le créateur du groupe.`);
+        }
+        if (groupMembers[1] === 1 && group.created_by_user.id === user.id) {
+          await group.remove();
+          group.id = data.group_id;
 
-      await sendGroupInvitation(email, String(groupId));
-      return true;
+          return group;
+        } else {
+          throw new Error(`Vous n'êtes pas seul dans le groupe.`);
+        }
+      }
+      return null;
     } catch (error) {
-      throw new Error(`Failed to send group invitation`);
+      console.log(error);
+      throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 

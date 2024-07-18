@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -25,6 +26,7 @@ export class Member extends BaseEntity {
   last_visit!: Date;
 
   @ManyToMany(() => Right, (rights) => rights.members)
+  @JoinTable()
   @Field(() => [Right])
   rights!: Right[];
 
@@ -37,13 +39,15 @@ export class Member extends BaseEntity {
     this.created_at = new Date();
   }
 
-  @ManyToOne(() => Group, (group) => group.members)
-  @JoinColumn({ name: "group_id" })
+  @ManyToOne(() => Group, (group) => group.members, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn()
   @Field(() => Group)
-  group!: Group | null;
+  group!: Group;
 
   @ManyToOne(() => User, (user) => user.members)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn()
   @Field(() => User)
   user!: User;
 
@@ -62,4 +66,10 @@ export class MemberCreateInput {
 export class MemberUpdateInput {
   @Field({ nullable: true })
   last_visit!: Date;
+}
+
+@InputType()
+export class MemberLeavingGroupInput {
+  @Field(() => ID)
+  group_id!: number;
 }

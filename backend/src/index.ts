@@ -84,7 +84,7 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:4000/`);
 
   await dataSource.initialize();
-  const user = await User.findOneBy({ email: "admin@ressources.com" });
+  const user = await User.findOneBy({ email: "dev@gmail.com" });
   if (!user) {
     await populateBdd();
   }

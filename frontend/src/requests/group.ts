@@ -9,6 +9,21 @@ export const CREATE_GROUP = gql`
     }
   }
 `;
+export const DELETE_GROUP = gql`
+  mutation DeleteGroup($data: DeleteGroupInput!) {
+    item: deleteGroup(data: $data) {
+      id
+    }
+  }
+`;
+
+export const DELETE_MEMBER = gql`
+  mutation Mutation($data: MemberLeavingGroupInput!) {
+    item: deleteMember(data: $data) {
+      id
+    }
+  }
+`;
 
 export const SEND_GROUP_INVITATION = gql`
   mutation InviteGroupMembers($email: String!, $groupId: ID!) {
