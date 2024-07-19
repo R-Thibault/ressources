@@ -2,10 +2,9 @@ import { FormEvent, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { UserType } from "@/types/user.types";
 import { MY_PROFILE } from "@/requests/user";
-import axios from "axios";
-import { API_URL } from "@/config/config";
 import router from "next/router";
 import Image from "next/image";
+import axiosInstance from "@/lib/axiosInstance";
 
 export default function CreateAvatarForm() {
   const [imageError, setImageError] = useState<string | null>(null);
@@ -33,7 +32,7 @@ export default function CreateAvatarForm() {
           "Une erreur est survenue pendant le chargement de votre image, veuillez contactez un administrateur"
         );
       }
-      const result = await axios.post(`${API_URL}/upload/avatar`, formData, {
+      const result = await axiosInstance.post('/upload/avatar', formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
