@@ -31,6 +31,15 @@ export const GET_RESSOURCES_BY_GROUP_ID = gql`
         path
         name
       }
+      file_id {
+        id
+        name
+        path
+      }
+      link_id {
+        id
+        url
+      }
       created_by_user {
         id
         lastname
