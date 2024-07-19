@@ -30,7 +30,6 @@ import { checkEmail, checkPasswords } from "../utils/checkInput";
 
 @Resolver(User)
 export class UserResolver {
-
   @Authorized()
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
@@ -249,7 +248,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async signOut(@Ctx() context: ContextType): Promise<Boolean> {
+  async signOut(@Ctx() context: ContextType): Promise<boolean> {
     const cookies = new Cookies(context.req, context.res);
     cookies.set("token", "", {
       httpOnly: true,

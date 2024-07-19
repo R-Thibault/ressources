@@ -3,9 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CardsDisplay from "@/components/organisms/cardsDisplay";
 import { GET_RESSOURCES_BY_GROUP_ID } from "@/requests/ressources";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GroupType } from "@/types/group.types";
-import { GET_ONE_GROUP } from "@/requests/group";
+import {
+  DELETE_GROUP,
+  DELETE_MEMBER,
+  GET_MY_GROUPS,
+  GET_ONE_GROUP,
+} from "@/requests/group";
 import { RessourceType } from "@/types/ressources.types";
 import { Spinner } from "react-bootstrap";
 import { InView } from "react-intersection-observer";
@@ -16,6 +21,8 @@ import { GET_ALL_TAGS_FROM_ONE_USER } from "@/requests/tags";
 import TagsDisplay from "@/components/organisms/tagsDisplay";
 import { TagType } from "@/types/extra.types";
 import ChatDisplay from "@/components/organisms/chatDisplay";
+import { MY_PROFILE } from "@/requests/user";
+import { UserType } from "@/types/user.types";
 
 export type GroupProps = {
   group: GroupType;
@@ -42,6 +49,7 @@ export default function GroupDashboard(): React.ReactNode {
     useState<string>("bi bi-sort-down");
   const [dateSortClass, setDateSortClass] = useState<string>("bi bi-sort-down");
   const [searchTitle, setSearchTitle] = useState<string>("");
+  const [deleteGroupError, setDeleteGroupError] = useState<string>("");
 
   function handleInviteMemberModal(value: boolean) {
     setModalInviteMemberVisible(value);
@@ -54,7 +62,7 @@ export default function GroupDashboard(): React.ReactNode {
   function handleResourceModal(value: boolean) {
     setmodalRessourceVisible(value);
   }
-
+  const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
   const { data: dataGroup } = useQuery<{ item: GroupType }>(GET_ONE_GROUP, {
     variables: {
       id: groupId,
@@ -103,13 +111,68 @@ export default function GroupDashboard(): React.ReactNode {
       }
     }
   };
-
+  const [groupDelete] = useMutation<{
+    item: GroupType;
+  }>(DELETE_GROUP, {
+    variables: {
+      data: {
+        group_id: dataGroup?.item.id,
+      },
+    },
+    onCompleted: () => router.replace("/dashboard"),
+    onError: (error) => {
+      if (error.message.includes("Vous n'êtes pas seul dans le groupe.")) {
+        setDeleteGroupError(error.message);
+      } else if (
+        error.message.includes("Vous n'êtes pas le créateur du groupe.")
+      ) {
+        setDeleteGroupError(error.message);
+      } else {
+        setDeleteGroupError(
+          "Une erreur est survenue, veuillez contacter l'administrateur du site."
+        );
+      }
+    },
+    refetchQueries: [GET_MY_GROUPS],
+  });
+  const [memberDelete] = useMutation<{
+    item: GroupType;
+  }>(DELETE_MEMBER, {
+    variables: {
+      data: {
+        group_id: dataGroup?.item.id,
+      },
+    },
+    onCompleted: () => router.replace("/dashboard"),
+    onError: (error) => {
+      if (
+        error.message.includes(
+          "Vous êtes le créateur du groupe, action non autorisé"
+        )
+      ) {
+        setDeleteGroupError(error.message);
+      } else {
+        setDeleteGroupError(
+          "Une erreur est survenue, veuillez contacter l'administrateur du site."
+        );
+      }
+    },
+    refetchQueries: [GET_MY_GROUPS],
+  });
   function handleSelectTag(tag: TagType) {
     if (selectedTags.find((item) => item === tag)) {
       const newTagArray = selectedTags.filter((item) => item !== tag);
       setSelectedTags(newTagArray);
     } else {
       setSelectedTags([...selectedTags, tag]);
+    }
+  }
+
+  async function handleGroupQuit(isCreator: boolean) {
+    if (isCreator) {
+      await groupDelete();
+    } else {
+      await memberDelete();
     }
   }
   useEffect(() => {
@@ -168,15 +231,37 @@ export default function GroupDashboard(): React.ReactNode {
             <h2>Group Not Found</h2>
           </>
         )}
-
-        <div className="add_ressources_button">
-          <h2>Ressources</h2>
-          <button
-            className="btn_rounded btn_add_ressources"
-            onClick={() => handleResourceModal(true)}
-          >
-            <i className="bi bi-plus-circle" />
-          </button>
+        <div
+          className={`d-flex flex-row justify-content-between align-items-center mt-2 w-100`}
+        >
+          <div className="add_ressources_button">
+            <h2>Ressources</h2>
+            <button
+              className="btn_rounded btn_add_ressources"
+              onClick={() => handleResourceModal(true)}
+            >
+              <i className="bi bi-plus-circle" />
+            </button>
+          </div>
+          <div>
+            <button
+              className="btn_rounded btn_quit_group"
+              onClick={() =>
+                handleGroupQuit(
+                  dataUser?.item?.id === dataGroup?.item?.created_by_user?.id
+                )
+              }
+            >
+              <span>
+                {dataUser?.item?.id === dataGroup?.item?.created_by_user?.id
+                  ? `Supprimer le groupe`
+                  : `Quitter le groupe`}
+              </span>
+            </button>
+            {deleteGroupError && (
+              <span className="text-danger">{deleteGroupError}</span>
+            )}
+          </div>
         </div>
         <div
           className={`d-flex flex-row align-items-center mt-2 w-100 ${
@@ -238,7 +323,9 @@ export default function GroupDashboard(): React.ReactNode {
           opened={modalRessourceVisible}
           openModal={handleResourceModal}
         >
-          <CreateRessourcesForm onClose={handleResourceModal} groupId={groupId}
+          <CreateRessourcesForm
+            onClose={handleResourceModal}
+            groupId={groupId}
           />
         </ModalComponent>
         <ModalComponent

@@ -109,3 +109,9 @@ export class GroupsMembers {
   @Field(() => User)
   updated_by_user!: User;
 }
+
+@InputType()
+export class DeleteGroupInput {
+  @Field(() => ID)
+  group_id!: number;
+}

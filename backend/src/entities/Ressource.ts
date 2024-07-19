@@ -29,10 +29,6 @@ export class Ressource extends BaseEntity {
   @Field()
   description!: string;
 
-  @Column({ type: "boolean", default: 0 })
-  @Field()
-  is_favorite!: boolean;
-
   @OneToOne(() => Image)
   @JoinColumn()
   @Field(() => Image, { nullable: true })
@@ -73,7 +69,9 @@ export class Ressource extends BaseEntity {
   @Field(() => Link, { nullable: true })
   link_id!: Link;
 
-  @ManyToOne(() => Group, (group) => group.ressources)
+  @ManyToOne(() => Group, (group) => group.ressources, {
+    onDelete: "SET NULL",
+  })
   @Field(() => Group, { nullable: true })
   group_id!: Group;
 }
