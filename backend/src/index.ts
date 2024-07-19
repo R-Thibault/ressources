@@ -22,7 +22,7 @@ const start = async () => {
 
   const wsServer = new WebSocketServer({
     server: httpServer,
-    //path: "/subscriptions",
+    path: "/api",
   });
 
   const serverCleanup = useServer(
@@ -63,10 +63,11 @@ const start = async () => {
     })
   );
 
-  initializeRoutes(app);
-
+  const router = express.Router();
+  initializeRoutes(router);
+  app.use("/api", router);
   app.use(
-    "/",
+    "/api",
     express.json({ limit: "50mb" }),
     expressMiddleware(server, {
       context: async (arg) => {
@@ -84,7 +85,7 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:4000/`);
 
   await dataSource.initialize();
-  const user = await User.findOneBy({ email: "admin@ressources.com" });
+  const user = await User.findOneBy({ email: "dev@gmail.com" });
   if (!user) {
     await populateBdd();
   }

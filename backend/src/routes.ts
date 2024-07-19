@@ -1,5 +1,5 @@
 import multer from "multer";
-import express, { Express } from "express";
+import express, { Router } from "express";
 import { Image } from "./entities/Image";
 import { User } from "./entities/User";
 import sharp from "sharp";
@@ -7,10 +7,22 @@ import mime from "mime-types";
 import { File } from "./entities/File";
 import path from "path";
 
-export function initializeRoutes(app: Express) {
+export function initializeRoutes(app: Router) {
   app.use("/files", express.static(path.join(__dirname, "../upload")));
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
-  const acceptedFileMimeType = ["image/jpg", "image/png", "image/jpeg", "application/pdf", "application/zip", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"];
+  const acceptedFileMimeType = [
+    "image/jpg",
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+    "application/zip",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ];
 
   const avatarStorage = multer.memoryStorage();
 
@@ -88,7 +100,7 @@ export function initializeRoutes(app: Express) {
   );
 
   app.post(
-    "/api/upload/file",
+    "/upload/file",
     uploadRessourcesDirectory.single("file"),
     async (req, res) => {
       try {
