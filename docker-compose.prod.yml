@@ -1,11 +1,14 @@
 services:
   server:
-    image: thibaultr0/wildshare-backend:latest
+    image: wildshare-backend:latest
     platform: linux/amd64
+    volumes:
+      - ./upload:/app/upload
     env_file:
-      - ./.env
+      - .env
+
   front:
-    image: thibaultr0/wildshare-frontend:latest
+    image: wildshare-frontend:latest
     platform: linux/amd64
   db:
     image: postgres
@@ -13,10 +16,12 @@ services:
     volumes:
       - /var/lib/postgresql/data
     env_file:
-      - ./.env
+      - .env
+
   adminer:
     image: adminer
     platform: linux/amd64
+
   nginx:
     image: nginx:1.21.3
     platform: linux/amd64

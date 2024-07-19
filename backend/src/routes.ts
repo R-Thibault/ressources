@@ -1,5 +1,5 @@
 import multer from "multer";
-import express, { Express } from "express";
+import express, { Router } from "express";
 import { Image } from "./entities/Image";
 import { User } from "./entities/User";
 import sharp from "sharp";
@@ -8,7 +8,7 @@ import { File } from "./entities/File";
 import path from "path";
 import { customRESTAuthChecker } from "./middlewares/auth";
 
-export function initializeRoutes(app: Express) {
+export function initializeRoutes(app: Router) {
   app.use("/files", express.static(path.join(__dirname, "../upload")));
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
   const acceptedFileMimeType = [
