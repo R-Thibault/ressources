@@ -28,6 +28,7 @@ export default function RessourceCard(
         )}`
   );
 
+
   return (
     <>
       <div className="card card-custom mb-3" style={{ borderRadius: 30 }}>
@@ -58,6 +59,21 @@ export default function RessourceCard(
           <div className="d-flex gap-1">
           </div>
           <h5 className="card-title pt-2 title">{ressource.title}</h5>
+          {ressource.link_id && (
+            <a href={ressource.link_id.url} target="_blank" rel="noopener noreferrer">
+              <i className="bi bi-link"></i>
+            </a>
+          )}
+        {ressource.file_id && (
+            <a
+              href={`http://localhost:4000/download/${ressource.file_id.path.replace("/app/upload/ressources/", "")}`}
+              download={ressource.file_id.title}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="bi bi-file-earmark-arrow-down"></i> {ressource.file_id.title}
+            </a>
+          )}
           <p className="card-text description">{ressource.description}</p>
         </div>
         <div className="d-flex gap-2 card_bottom_buttons_container">

@@ -8,8 +8,8 @@ export type RessourceType = {
   title: string;
   description: string;
   image_id: ImageType | null;
-  file: RessourceFileType | null;
-  link: RessourceLinkType | null;
+  file_id: RessourceFileType | null;
+  link_id: RessourceLinkType | null;
   isFavorite: boolean;
   created_by_user: UserType;
 } & ExtraTypes;

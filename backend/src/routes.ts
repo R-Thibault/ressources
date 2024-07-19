@@ -118,4 +118,14 @@ export function initializeRoutes(app: Express) {
       }
     }
   );
+  app.get('/download/:filename', (req, res) => {
+    const file = path.join(__dirname, '../upload/ressources', req.params.filename);
+    res.download(file, (err) => {
+      if (err) {
+        res.status(500).send({
+          message: "Could not download the file. " + err,
+        });
+      }
+    });
+  });
 }
