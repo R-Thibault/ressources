@@ -252,7 +252,6 @@ export default function GroupDashboard(): React.ReactNode {
                 )
               }
             >
-              <i className="bi bi-plus-circle" />
               <span>
                 {dataUser?.item?.id === dataGroup?.item?.created_by_user?.id
                   ? `Supprimer le groupe`
