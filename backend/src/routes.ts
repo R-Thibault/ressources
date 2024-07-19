@@ -6,11 +6,24 @@ import sharp from "sharp";
 import mime from "mime-types";
 import { File } from "./entities/File";
 import path from "path";
+import { customRESTAuthChecker } from "./middlewares/auth";
 
 export function initializeRoutes(app: Express) {
   app.use("/files", express.static(path.join(__dirname, "../upload")));
   const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
-  const acceptedFileMimeType = ["image/jpg", "image/png", "image/jpeg", "application/pdf", "application/zip", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"];
+  const acceptedFileMimeType = [
+    "image/jpg",
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+    "application/zip",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ];
 
   const avatarStorage = multer.memoryStorage();
 
@@ -53,6 +66,7 @@ export function initializeRoutes(app: Express) {
 
   app.post(
     "/upload/avatar",
+    customRESTAuthChecker,
     uploadAvatarDirectory.single("file"),
     async (req, res) => {
       try {
@@ -89,6 +103,7 @@ export function initializeRoutes(app: Express) {
 
   app.post(
     "/upload/file",
+    customRESTAuthChecker,
     uploadRessourcesDirectory.single("file"),
     async (req, res) => {
       try {
@@ -118,8 +133,12 @@ export function initializeRoutes(app: Express) {
       }
     }
   );
-  app.get('/download/:filename', (req, res) => {
-    const file = path.join(__dirname, '../upload/ressources', req.params.filename);
+  app.get("/download/:filename", customRESTAuthChecker, (req, res) => {
+    const file = path.join(
+      __dirname,
+      "../upload/ressources",
+      req.params.filename
+    );
     res.download(file, (err) => {
       if (err) {
         res.status(500).send({

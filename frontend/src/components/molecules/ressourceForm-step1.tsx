@@ -3,8 +3,8 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FormEvent, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
-import axios, { AxiosProgressEvent } from "axios";
-import { API_URL } from "@/config/config";
+import { AxiosProgressEvent } from "axios";
+import axiosInstance from "@/lib/axiosInstance";
 import { FileType } from "@/types/file.types";
 import { useMutation } from "@apollo/client";
 import { CREATE_LINK_MUTATION } from "@/requests/link";
@@ -63,7 +63,7 @@ export default function RessourcesFormStep1(props: {
         formData.append("userId", `${props.userId}`);
       }
 
-      const result = await axios.post(`${API_URL}/upload/file`, formData, {
+      const result = await axiosInstance.post("/upload/file", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
