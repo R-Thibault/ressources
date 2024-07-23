@@ -138,6 +138,29 @@
       color: $primary-color5;
     }
   }
+
+  .btn_delete {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    i {
+      border-radius: 50%;
+      color: $primary-color10;
+    }
+  }
+  .btn_edit {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    i {
+      border-radius: 50%;
+      color: $primary-color3;
+    }
+  }
 }
 
 .btn_sort {

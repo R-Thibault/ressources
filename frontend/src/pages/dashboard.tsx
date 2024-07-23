@@ -71,7 +71,6 @@ export default function Dashboard(): React.ReactNode {
   const { data: dataTags } = useQuery<{ items: TagType[] }>(
     GET_ALL_TAGS_FROM_ONE_USER
   );
-
   function handleSelectTag(tag: TagType) {
     if (selectedTags.find((item) => item === tag)) {
       const newTagArray = selectedTags.filter((item) => item !== tag);
@@ -102,7 +101,7 @@ export default function Dashboard(): React.ReactNode {
       setTitleSortClass("bi bi-dash");
     }
   }, [titleSort]);
-  
+
   return (
     <Layout title={"Dashboard"}>
       <div className="ressources_main_container">
@@ -170,7 +169,7 @@ export default function Dashboard(): React.ReactNode {
           </Spinner>
         )}
         {errorRessources && <p>{errorRessources.message}</p>}
-        {dataRessources && <CardsDisplay ressources={dataRessources?.items} />}
+        {dataRessources && <CardsDisplay ressources={dataRessources?.items}/>}
         <InView onChange={handleFetchMore} threshold={0.5}>
           <div className="spinner"></div>
         </InView>

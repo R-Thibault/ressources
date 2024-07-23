@@ -29,6 +29,11 @@ export class Ressource extends BaseEntity {
   @Field()
   description!: string;
 
+  @Column({ type: "boolean", default: 0 })
+  @Field()
+  is_favorite!: boolean;
+
+  @OneToOne(() => Image, { onDelete: "CASCADE" })
   @OneToOne(() => Image)
   @JoinColumn()
   @Field(() => Image, { nullable: true })
@@ -57,14 +62,14 @@ export class Ressource extends BaseEntity {
   @ManyToOne(() => User, (user) => user.ressources_update)
   @JoinColumn({ name: "updated_by" })
   @Field(() => User)
-  updated_by_user!: User;
+  updated_by_user!: User | undefined;
 
-  @OneToOne(() => File)
+  @OneToOne(() => File, { onDelete: "CASCADE" })
   @JoinColumn()
   @Field(() => File, { nullable: true })
   file_id!: File;
 
-  @OneToOne(() => Link)
+  @OneToOne(() => Link, { onDelete: "CASCADE" })
   @JoinColumn()
   @Field(() => Link, { nullable: true })
   link_id!: Link;
@@ -94,6 +99,8 @@ export class RessourceCreateInput {
 export class RessourceUpdateInput {
   @Field()
   title!: string;
+  @Field()
+  description!: string;
 }
 
 @InputType()

@@ -107,3 +107,23 @@ export const GET_ALL_RESSOURCES_FROM_ONE_USER = gql`
     }
   }
 `;
+
+export const UPDATE_RESSOURCE = gql`
+  mutation UpdateRessource($id: ID!, $data: RessourceUpdateInput!) {
+    updateRessource(id: $id, data: $data) {
+      id
+      title
+      description
+      image_id {
+        id
+        path
+      }
+    }
+  }
+`;
+
+export const DELETE_RESSOURCE = gql`
+  mutation DeleteRessource($id: ID!) {
+    deleteRessource(id: $id)
+  }
+`;

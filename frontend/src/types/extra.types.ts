@@ -1,4 +1,4 @@
-import { UserType } from "./user.types";
+import {UserType} from "@/types/user.types";
 
 export type ExtraTypes = {
   created_at?: Date;
@@ -12,7 +12,11 @@ export type LogoType = {
   link: string;
 };
 
-export type LikeType = {
+export type EditType = {
+  className: string;
+};
+
+export type DeleteType = {
   className: string;
 };
 

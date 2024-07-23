@@ -209,35 +209,52 @@ export class RessourceResolver {
   @Mutation(() => Ressource, { nullable: true })
   async updateRessource(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => RessourceUpdateInput) data: RessourceUpdateInput
+    @Arg("data", () => RessourceUpdateInput) data: RessourceUpdateInput,
+    @Ctx() context: ContextType
   ): Promise<Ressource | null> {
-    const ressource = await Ressource.findOne({ where: { id: id } });
-    if (ressource) {
-      Object.assign(ressource, data);
-      const errors = await validate(ressource);
-      if (errors.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(errors)}`);
-      } else {
-        await ressource.save();
-      }
+    if (!context.user) {
+      throw new Error(`error`);
     }
-    return ressource;
+    const ressource = await Ressource.findOne({ where: { id: id }, relations: ["created_by_user"] });
+    console.log(ressource, id);
+    if (!ressource) {
+      throw new Error("Resource not found");
+    }
+    if (ressource.created_by_user.id !== context.user.id) {
+      throw new Error("error occured");
+    }
+
+    Object.assign(ressource, data);
+    ressource.updated_at = new Date();
+    ressource.updated_by_user = context.user;
+
+    const errors = await validate(ressource);
+    if (errors.length > 0) {
+      throw new Error(`error occured`);
+    } else {
+      await ressource.save();
+      return ressource;
+    }
   }
 
   @Authorized()
-  @Mutation(() => Ressource, { nullable: true })
+  @Mutation(() =>Boolean)
   async deleteRessource(
-    @Arg("id", () => ID) id: number
-  ): Promise<Ressource | null> {
-    try {
-      const ressource = await Ressource.findOne({ where: { id: id } });
-      if (ressource) {
-        await ressource.remove();
-        ressource.id = id;
-      }
-      return ressource;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
+    @Arg("id", () => ID) id: number,
+    @Ctx() context: ContextType
+  ): Promise<boolean> {
+    if (!context.user) {
+      throw new Error(`error`);
     }
+    const ressource = await Ressource.findOne({ where: { id }, relations: ["created_by_user"] });
+    if (!ressource) {
+      throw new Error("Resource not found");
+    }
+    if (ressource.created_by_user.id !== context.user.id) {
+      throw new Error("error occured");
+    }
+
+    await ressource.remove();
+    return true;
   }
 }
