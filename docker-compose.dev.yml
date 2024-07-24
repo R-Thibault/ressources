@@ -29,3 +29,11 @@ services:
     image: adminer
     ports:
       - 8000:8080
+
+  mongo:
+    image: mongo
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 27017:27017

@@ -34,13 +34,13 @@ if [ -d "$BACKEND_DIR" ]; then
     if (cd "$BACKEND_DIR" && npm run eslint); then
         echo "Backend ESLint passed";
 
-         # Run backend tests
-        # if (cd "$BACKEND_DIR" && npm test); then
-        #     echo "Backend tests passed"
-        # else
-        #     echo "Backend tests failed"
-        #     exit 1 # Abort the commit if backend tests return errors
-        # fi
+         #Run backend tests
+        if (cd "$BACKEND_DIR" && npm test); then
+            echo "Backend tests passed"
+        else
+            echo "Backend tests failed"
+            exit 1 # Abort the commit if backend tests return errors
+        fi
     else
         echo "Backend ESLint failed"
         exit 1 # Abort the commit if backend ESLint returns errors

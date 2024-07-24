@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { dataSource } from "./datasource";
-import { ContextType, customRESTAuthChecker } from "./middlewares/auth";
+import { ContextType } from "./middlewares/auth";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import express from "express";
@@ -13,6 +13,9 @@ import { User } from "./entities/User";
 import { initializeRoutes } from "./routes";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
+import { connectMongoDB } from "./mongo";
+import logger from "./middlewares/logRest";
+import apolloLogPlugin from "./plugins/apolloLogPlugin";
 
 const start = async () => {
   const schema = await getSchema();
@@ -52,6 +55,7 @@ const start = async () => {
           };
         },
       },
+      apolloLogPlugin,
     ],
   });
   await server.start();
@@ -62,7 +66,8 @@ const start = async () => {
       origin: "http://localhost:3000",
     })
   );
-
+  app.use(express.json());
+  app.use(logger);
   const router = express.Router();
   initializeRoutes(router);
   app.use("/api", router);
@@ -85,6 +90,7 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:4000/`);
 
   await dataSource.initialize();
+  await connectMongoDB();
   const user = await User.findOneBy({ email: "dev@gmail.com" });
   if (!user) {
     await populateBdd();

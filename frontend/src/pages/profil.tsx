@@ -81,7 +81,7 @@ export default function profile() {
           setAvatarSrc(dataUser.item.avatar.path);
         } else {
           setAvatarSrc(
-            `http://localhost:4000/files/${dataUser.item.avatar.path.replace(
+            `http://localhost:4000/api/files${dataUser.item.avatar.path.replace(
               "/app/upload/",
               ""
             )}`
