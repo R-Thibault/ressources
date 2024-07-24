@@ -28,8 +28,8 @@ export default function RessourcesFormStep2(props: {
         type: props.type,
         groupId: props.groupId ? props.groupId : null,
       },
-      refetchQueries:[props.groupId ? GET_RESSOURCES_BY_GROUP_ID : GET_ALL_RESSOURCES_FROM_ONE_USER ]
     },
+    refetchQueries:[props.groupId ? GET_RESSOURCES_BY_GROUP_ID : GET_ALL_RESSOURCES_FROM_ONE_USER ]
   });
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {

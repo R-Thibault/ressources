@@ -196,12 +196,6 @@ export default function GroupDashboard(): React.ReactNode {
     }
   }, [titleSort]);
 
-  function handleUpdateRessource() {
-  }
-
-  const handleDeleteRessource = async () => {
-  };
-
   return (
       <Layout title={"Dashboard Groupe"}>
         <div className="ressources_main_container">
@@ -318,7 +312,7 @@ export default function GroupDashboard(): React.ReactNode {
                 )}
                 {errorRessources && <p>{errorRessources.message}</p>}
                 {dataRessources && (
-                    <CardsDisplay ressources={dataRessources?.items}  onDelete={handleDeleteRessource}  onUpdate={handleUpdateRessource}/>
+                    <CardsDisplay ressources={dataRessources?.items} />
                 )}
                 <InView onChange={handleFetchMore} threshold={0.5}>
                   <div className="spinner"></div>

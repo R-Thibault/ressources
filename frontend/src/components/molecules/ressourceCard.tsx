@@ -99,7 +99,7 @@ export default function RessourceCard(
             </a>
           )}<p className="card-text description">{ressource.description}</p>
           </div>
-          { dataUser?.item?.id === ressource.created_by_user.id && (
+          { dataUser?.item?.id === ressource?.created_by_user.id && (
           <div className="d-flex gap-2 card_bottom_buttons_container">
             <EditBtn onClick={() => handleModalVisible(true)} />
             <DeleteBtn onClick={handleDelete} />
