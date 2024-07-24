@@ -1,6 +1,9 @@
 .card-custom {
   width: clamp(15em, 25vw, 20em);
   box-sizing: border-box;
+  .link_icon {
+    font-size: 1.5em;
+  }
   .card_header_btn {
     background-color: transparent;
     outline: none;

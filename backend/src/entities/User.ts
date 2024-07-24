@@ -10,7 +10,6 @@ import {
 } from "typeorm";
 import { IsEmail, Matches } from "class-validator";
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
-import { Tag } from "./Tag";
 import { Member } from "./Member";
 import { Message } from "./Message";
 import { Ressource } from "./Ressource";
@@ -78,14 +77,6 @@ export class User extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   @Field()
   updated_at!: Date;
-
-  @OneToMany(() => Tag, (tag) => tag.created_by_user)
-  @Field(() => [Tag])
-  tags_creation!: Tag[];
-
-  @OneToMany(() => Tag, (tag) => tag.updated_by_user)
-  @Field(() => [Tag])
-  tags_update!: Tag[];
 
   @OneToMany(() => Member, (member) => member.user)
   @Field(() => [Member])

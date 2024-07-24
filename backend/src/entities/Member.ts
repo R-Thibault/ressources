@@ -5,14 +5,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Group } from "./Group";
-import { Right } from "./Right";
 
 @Entity()
 @ObjectType()
@@ -24,11 +21,6 @@ export class Member extends BaseEntity {
   @Column({ type: "timestamp" })
   @Field()
   last_visit!: Date;
-
-  @ManyToMany(() => Right, (rights) => rights.members)
-  @JoinTable()
-  @Field(() => [Right])
-  rights!: Right[];
 
   @Column({ type: "timestamp", nullable: true })
   @Field()

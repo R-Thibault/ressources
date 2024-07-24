@@ -1,9 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 import { DataSource } from "typeorm";
-import { Tag } from "./entities/Tag";
 import { User } from "./entities/User";
-import { Right } from "./entities/Right";
 import { Ressource } from "./entities/Ressource";
 import { Message } from "./entities/Message";
 import { Member } from "./entities/Member";
@@ -16,9 +14,7 @@ import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConne
 export const dataSourceOptions: PostgresConnectionOptions = {
   type: "postgres",
   entities: [
-    Tag,
     User,
-    Right,
     Ressource,
     Message,
     Member,

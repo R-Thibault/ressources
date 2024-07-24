@@ -22,11 +22,11 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
         {props.children ? (
           props.children
         ) : (
-          <i
+          <i onClick={() => props.openMenu && props.openMenu(true)}
             className={props.focused ? props.focusedClassName : props.className}
           />
         )}
-        {props.menuOpened && <a href={props.link}>{props.title}</a>}
+        {props.menuOpened && <span>{props.title}</span>}
         {props.menuOpened && props.hasSubItems && (
           <i
             className={chevronClassName}
@@ -42,7 +42,19 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
                 href={"name" in item ? `/group/${item.id}` : item.link}
                 key={"name" in item ? item.name : item.title}
               >
-                <li>{"name" in item ? item.name : item.title}</li>
+                <li>
+                  {"name" in item && (
+                    <i
+                      className={
+                        "created_by_user" in item &&
+                        item.created_by_user?.id === props.userId
+                          ? "bi bi-key-fill"
+                          : "bi bi-envelope-open-fill"
+                      }
+                    ></i>
+                  )}
+                  {"name" in item ? item.name : item.title}
+                </li>
               </a>
             ))}
           </ul>

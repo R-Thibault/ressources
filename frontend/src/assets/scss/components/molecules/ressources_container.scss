@@ -1,3 +1,20 @@
+.loader_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .spinner_purple {
+    color: $primary-color1;
+  }
+  .spinner_blue {
+    color: $primary-color17;
+    margin: 0 10px;
+  }
+  .spinner_red {
+    color: $primary-color16;
+  }
+}
+
 .ressources_main_container {
   display: flex;
   flex-direction: column;
@@ -34,15 +51,8 @@
   gap: 16px;
   justify-content: flex-start;
   margin-top: 3em;
-  justify-content: space-evenly;
   padding: 16px;
   width: 90vw;
   margin: 0 auto;
 }
 
-.spinner {
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  margin: 5px 0;
-}

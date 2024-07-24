@@ -13,6 +13,7 @@
   box-shadow: 0px 8px 15px $black-shadow;
   cursor: pointer;
   transition: all 0.3s ease 0s;
+  padding: 0 10px;
   span {
     display: block;
     font-family: poppinsRegular;
@@ -48,7 +49,7 @@
   }
 }
 
-.btn_add_ressources {
+.btn_rounded_add_ressource {
   height: 40px;
   width: 40px;
   transition: all 0.3s ease 0s;
@@ -56,15 +57,29 @@
   border-radius: 30px;
 }
 
-.btn_quit_group {
-  height: 40px;
+.btn_rounded_actions {
+  height: 50px;
+  width: 50px;
   transition: all 0.3s ease 0s;
-  background: $primary-color10;
+  background: $primary-color1;
   border-radius: 30px;
+  margin-left: 10px;
 }
 
-.btn_add_ressources:hover {
+.btn_quit_group {
+  background-color: $primary-color16;
+}
+
+.btn_rounded_actions:hover {
   background: $primary-color2;
+}
+
+.btn_rounded_add_ressource:hover {
+  background: $primary-color2;
+}
+
+.btn_quit_group:hover {
+  background-color: #d63031;
 }
 
 .btn_add_message {
@@ -97,7 +112,7 @@
   }
   span {
     margin-left: 15px;
-    font-size: 1.35em;
+    font-size: 1.125em;
     color: white;
     font-family: poppinsLight;
     width: 70%;
@@ -163,11 +178,27 @@
   }
 }
 
+.btn_message {
+  background-color: $primary-color17;
+}
+
+.btn_message:hover {
+  background-color: #0984e3;
+}
+
+.btn_message {
+  background-color: $primary-color17;
+}
+
+.btn_message:hover {
+  background-color: #0984e3;
+}
+
 .btn_sort {
   background-color: transparent;
   outline: none;
   border: none;
-  font-size: 1.25em;
+  font-size: 1em;
   color: black;
 }
 .btn_sort:hover {

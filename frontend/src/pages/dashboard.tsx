@@ -7,14 +7,10 @@ import { RessourceType } from "@/types/ressources.types";
 import { GET_ALL_RESSOURCES_FROM_ONE_USER } from "@/requests/ressources";
 import CardsDisplay from "@/components/organisms/cardsDisplay";
 import { Spinner } from "react-bootstrap";
-import { TagType } from "@/types/tag.types";
-import { GET_ALL_TAGS_FROM_ONE_USER } from "@/requests/tags";
-import TagsDisplay from "@/components/organisms/tagsDisplay";
 import { InView } from "react-intersection-observer";
 
 export default function Dashboard(): React.ReactNode {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [titleSort, setTitleSort] = useState<string>("");
   const [titleSortClass, setTitleSortClass] =
     useState<string>("bi bi-sort-down");
@@ -68,18 +64,6 @@ export default function Dashboard(): React.ReactNode {
     }
   };
 
-  const { data: dataTags } = useQuery<{ items: TagType[] }>(
-    GET_ALL_TAGS_FROM_ONE_USER
-  );
-  function handleSelectTag(tag: TagType) {
-    if (selectedTags.find((item) => item === tag)) {
-      const newTagArray = selectedTags.filter((item) => item !== tag);
-      setSelectedTags(newTagArray);
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  }
-
   useEffect(() => {
     if (dateSort === "ASC" || dateSort === "DESC") {
       setTitleSort("");
@@ -116,27 +100,18 @@ export default function Dashboard(): React.ReactNode {
             />
           </div>
         </div>
-        <div className="add_ressources_button">
-          <h2>Mes ressources</h2>
-          <button
-            className="btn_rounded btn_add_ressources"
-            onClick={() => handleModalVisible(true)}
-          >
-            <i className="bi bi-plus-lg" />
-          </button>
-        </div>
         <div
-          className={`d-flex flex-row align-items-center mt-2 w-100 ${
-            dataTags?.items ? "justify-content-between" : "justify-content-end"
-          }`}
+          className={`d-flex flex-row justify-content-between align-items-center mt-2 w-100`}
         >
-          {dataTags?.items && (
-            <TagsDisplay
-              tags={dataTags?.items}
-              selectedTags={selectedTags}
-              onSelectTag={(tag: TagType) => handleSelectTag(tag)}
-            />
-          )}
+          <div className="add_ressources_button">
+            <button
+              className="btn_primary message_btn"
+              onClick={() => handleModalVisible(true)}
+            >
+              <i className="bi bi-plus-circle" />
+              <span>Ajouter une ressource</span>
+            </button>
+          </div>
           <div className="d-flex flex-row align-items-center justify-content-center gap-2 sort_buttons_container ">
             <span>Trier par:</span>
             <button
@@ -164,9 +139,13 @@ export default function Dashboard(): React.ReactNode {
           </div>
         </div>
         {loadingRessources && (
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
+          <div className="loader_container">
+            <div className="d-inline-flex">
+              <Spinner className="spinner_purple" animation="grow" />
+              <Spinner className="spinner_blue" animation="grow" />
+              <Spinner className="spinner_red" animation="grow" />
+            </div>
+          </div>
         )}
         {errorRessources && <p>{errorRessources.message}</p>}
         {dataRessources && <CardsDisplay ressources={dataRessources?.items}/>}

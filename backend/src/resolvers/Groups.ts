@@ -11,7 +11,6 @@ import { DeleteGroupInput, Group, GroupInput } from "../entities/Group";
 import { Member } from "../entities/Member";
 import { validate } from "class-validator";
 import { ContextType, getUser } from "../middlewares/auth";
-import { DummyGroups } from "../dummyDatas";
 
 @Resolver(Group)
 export class GroupResolver {
@@ -142,28 +141,4 @@ export class GroupResolver {
     }
   }
 
-  @Mutation(() => [Group])
-  async populateGroupTable(): Promise<Group[] | null> {
-    for (let i = 0; i < DummyGroups.length; i++) {
-      try {
-        const newGroup = new Group();
-        newGroup.name = DummyGroups[i].name;
-        newGroup.description = DummyGroups[i].description;
-        newGroup.token = DummyGroups[i].token;
-        newGroup.created_by_user = DummyGroups[i].created_by_user;
-        newGroup.created_at = DummyGroups[i].created_at;
-
-        const error = await validate(newGroup);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newGroup.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllGroups();
-  }
 }

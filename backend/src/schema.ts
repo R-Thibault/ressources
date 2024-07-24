@@ -1,7 +1,5 @@
 import { buildSchema } from "type-graphql";
-import { TagResolver } from "./resolvers/Tags";
 import { UserResolver } from "./resolvers/Users";
-import { RightResolver } from "./resolvers/Right";
 import { RessourceResolver } from "./resolvers/Ressources";
 import { MessageResolver } from "./resolvers/Messages";
 import { MemberResolver } from "./resolvers/Members";
@@ -15,9 +13,7 @@ import { pubSub } from "./pubsub";
 export async function getSchema() {
   return await buildSchema({
     resolvers: [
-      TagResolver,
       UserResolver,
-      RightResolver,
       RessourceResolver,
       MessageResolver,
       MemberResolver,

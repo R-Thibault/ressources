@@ -2,13 +2,11 @@ import * as argon2 from "argon2";
 import { Image } from "../entities/Image";
 import { validate } from "class-validator";
 import { User } from "../entities/User";
-import { Tag } from "../entities/Tag";
 import { Group } from "../entities/Group";
 import { Message } from "../entities/Message";
 import { Member } from "../entities/Member";
 import { Link } from "../entities/Link";
 import { Ressource } from "../entities/Ressource";
-import { Right } from "../entities/Right";
 import { faker } from "@faker-js/faker";
 
 export async function populateBdd() {
@@ -16,7 +14,6 @@ export async function populateBdd() {
   const numberOfUsers = 5;
   const numberOfImages = 75;
   const numberOfAvatar = numberOfUsers + 2;
-  const numberOfTags = 20;
   const numberOfGroups = 5;
   const numberOfMembers = 20;
   const numberOfRessources = 75;
@@ -27,7 +24,6 @@ export async function populateBdd() {
   //used to store the generated Datas for future relations
   const createdUsers = [];
   const createdImages = [];
-  const createdTags = [];
   const createdGroups = [];
   const createdMembers = [];
   const createdLinks = [];
@@ -171,26 +167,6 @@ export async function populateBdd() {
     }
   }
 
-  for (let i = 0; i < numberOfTags; i++) {
-    try {
-      const newTag = new Tag();
-      newTag.name = faker.word.adjective();
-      newTag.created_by_user =
-        createdUsers[Math.floor(Math.random() * createdUsers.length)];
-
-      const error = await validate(newTag);
-
-      if (error.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      } else {
-        await newTag.save();
-        createdTags.push(newTag);
-      }
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-
   for (let i = 0; i < numberOfGroups; i++) {
     try {
       const newGroup = new Group();
@@ -211,37 +187,6 @@ export async function populateBdd() {
       } else {
         await newGroup.save();
         createdGroups.push(newGroup);
-      }
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
-    }
-  }
-
-  const DummyRights: {
-    name: string;
-  }[] = [
-    {
-      name: "GROUP_ADMIN",
-    },
-    {
-      name: "USER",
-    },
-    {
-      name: "ADMIN",
-    },
-  ];
-
-  for (let i = 0; i < DummyRights.length; i++) {
-    try {
-      const newRight = new Right();
-      newRight.name = DummyRights[i].name;
-
-      const error = await validate(newRight);
-
-      if (error.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      } else {
-        await newRight.save();
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);

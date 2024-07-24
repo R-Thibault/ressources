@@ -13,7 +13,7 @@ export type RessourceType = {
 
 export type RessourceFileType = {
   id: number;
-  title: string;
+  name: string;
   type: string;
   path: string;
 } & ExtraTypes;

@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MessageType } from "@/types/message.types";
 import { UserType } from "@/types/user.types";
 import { MY_PROFILE } from "@/requests/user";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
 export default function ChatDisplay(props: {
   opened: boolean;
@@ -65,44 +66,41 @@ export default function ChatDisplay(props: {
   }
 
   return (
-    <div
-      className={
-        props.opened
-          ? "chat_container d-flex flex-column chat_container--opened"
-          : "chat_container d-flex flex-column chat_container--closed"
-      }
+    <Offcanvas
+      show={props.opened}
+      onHide={() => props.handleChatDisplay(false)}
+      backdrop="static"
+      placement="end"
     >
-      <div className="d-flex justify-content-between align-items-center w-100 px-3 py-2 bottom-divider">
-        <span>Messages du groupe</span>
-        <i
-          className="bi bi-x-circle"
-          onClick={() => props.handleChatDisplay(false)}
-        />
-      </div>
-      <div className="d-flex justify-content-between flex-column align-items-between h-100">
-        <div ref={myRef} className="px-2 py-2 overflow-auto container">
-          {dataMessages?.items.map((item: MessageType) => (
-            <Message
-              user={dataUser?.item !== undefined ? dataUser?.item : null}
-              key={item.id}
-              item={item}
-            />
-          ))}
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title>Messages du groupe</Offcanvas.Title>
+      </Offcanvas.Header>
+      <Offcanvas.Body>
+        <div className="d-flex justify-content-between flex-column align-items-between h-100">
+          <div ref={myRef} className="px-2 py-2 overflow-auto container">
+            {dataMessages?.items.map((item: MessageType) => (
+              <Message
+                user={dataUser?.item !== undefined ? dataUser?.item : null}
+                key={item.id}
+                item={item}
+              />
+            ))}
+          </div>
         </div>
-        <form
-          onSubmit={(e) => createMessage(e)}
-          className="textInput-container d-flex justify-content-between align-items-center px-2 gap-2"
-        >
-          <textarea
-            placeholder="Votre message"
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
-          ></textarea>
-          <button type="submit" className="btn_rounded btn_add_message">
-            <i className="bi bi-send"></i>
-          </button>
-        </form>
-      </div>
-    </div>
+      </Offcanvas.Body>
+      <form
+        onSubmit={(e) => createMessage(e)}
+        className="textInput-container d-flex justify-content-between align-items-center px-2 gap-2"
+      >
+        <textarea
+          placeholder="Votre message"
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+        ></textarea>
+        <button type="submit" className="btn_rounded btn_add_message">
+          <i className="bi bi-send"></i>
+        </button>
+      </form>
+    </Offcanvas>
   );
 }
