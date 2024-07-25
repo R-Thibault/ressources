@@ -40,7 +40,7 @@ export default function RessourceCard(
     ressource?.image_id?.path.includes("://")
       ? ressource.image_id.path
       : `${API_URL}/files${ressource?.image_id?.path.replace(
-          "/app/upload/",
+          "/app/upload",
           ""
         )}`
   );
@@ -65,7 +65,7 @@ export default function RessourceCard(
         ressource?.image_id?.path.includes("://")
           ? ressource.image_id.path
           : `${API_URL}/files${ressource?.image_id?.path.replace(
-              "/app/upload/",
+              "/app/upload",
               ""
             )}`
       );

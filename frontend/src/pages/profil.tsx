@@ -84,8 +84,8 @@ export default function profile() {
           setAvatarSrc(dataUser.item.avatar.path);
         } else {
           setAvatarSrc(
-            `${API_URL}/files/${dataUser.item.avatar.path.replace(
-              "/app/upload/",
+            `${API_URL}/files${dataUser.item.avatar.path.replace(
+              "/app/upload",
               ""
             )}`
           );
@@ -209,10 +209,7 @@ export default function profile() {
                   />
                 </div>
                 <div className="mt-5 text-center">
-                  <button
-                    className="btn_primary"
-                    type="submit"
-                  >
+                  <button className="btn_primary" type="submit">
                     Sauvegarde
                   </button>
                 </div>

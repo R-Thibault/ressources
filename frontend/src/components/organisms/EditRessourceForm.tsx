@@ -40,7 +40,7 @@ export default function EditRessourceForm({
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
   const ressourceImage = ressource.image_id?.path.includes("://")
     ? ressource.image_id?.path
-    : `${API_URL}/files${ressource.image_id?.path.replace("/app/upload/", "")}`;
+    : `${API_URL}/files${ressource.image_id?.path.replace("/app/upload", "")}`;
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

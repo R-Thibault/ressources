@@ -7,7 +7,7 @@ import { API_URL } from "@/config/config";
 export default function avatar(props: { date: Date | string; user: UserType }) {
   let avatarImage = props.user.avatar?.path.includes("://")
     ? props.user.avatar.path
-    : `${API_URL}/files/${props.user.avatar?.path.replace("/app/upload/", "")}`;
+    : `${API_URL}/files${props.user.avatar?.path.replace("/app/upload", "")}`;
 
   return (
     <div className="d-flex aligns-items-center py-2 ">

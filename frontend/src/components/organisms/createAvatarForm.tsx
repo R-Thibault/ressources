@@ -78,7 +78,7 @@ export default function CreateAvatarForm() {
             }}
           />
           {imageError && <span className="image_error">{imageError}</span>}
-          <button className="btn btn-primary mx-auto my-3 ">Valider</button>
+          <button className="btn_primary mx-auto my-3 ">Valider</button>
         </form>
       </div>
     </>

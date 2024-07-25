@@ -49,30 +49,34 @@ export default function SharingGroupForm(props: {
     <>
       <div className="d-flex flex-column w-100 justify-content-center align-items-center">
         <i className="bi bi-person-fill-add modal_icon"></i>
-      </div>
-      <div className="title">
-        <span>Inviter des membres</span>
-      </div>
-      <p>Partager le groupe avec vos amis!</p>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Adresse mail</Form.Label>
-          <Form.Control
-            required
-            type="email"
-            placeholder="Entrez l'adresse mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <div className="button_container">
-          <button className="btn_primary" type="submit">
-            <i className="bi bi-plus-circle" />
-            <span>Partager</span>
-          </button>
+
+        <div className="title">
+          <span>Inviter des membres</span>
         </div>
-        {errorMessage && <Alert variant={"danger"}>{errorMessage}</Alert>}
-      </Form>
+        <p>Partager le groupe avec vos amis!</p>
+        <Form
+          onSubmit={handleSubmit}
+          className="d-flex flex-column w-100 justify-content-center align-items-center"
+        >
+          <Form.Group className="mb-3 w-75">
+            <Form.Label>Adresse mail</Form.Label>
+            <Form.Control
+              required
+              type="email"
+              placeholder="Entrez l'adresse mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <div className="button_container">
+            <button className="btn_primary" type="submit">
+              <i className="bi bi-plus-circle" />
+              <span>Partager</span>
+            </button>
+          </div>
+          {errorMessage && <Alert variant={"danger"}>{errorMessage}</Alert>}
+        </Form>
+      </div>
     </>
   );
 }

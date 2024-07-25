@@ -44,8 +44,8 @@ export default function MobileHeader(props: {
           width={40}
           alt={`${dataUser.item.firstname} ${dataUser.item.lastname} `}
           priority
-          src={`${API_URL}/files/${dataUser.item.avatar.path.replace(
-            "/app/upload/",
+          src={`${API_URL}/files${dataUser.item.avatar.path.replace(
+            "/app/upload",
             ""
           )}`}
         />
