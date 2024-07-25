@@ -1,13 +1,22 @@
 header {
   position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   top: 0;
   left: 0;
   right: 0;
   padding: 10px;
-  height: 80px;
-  background-color: white;
+  height: 60px;
+  background-color: $primary-color3;
   box-shadow: $black-shadow 0px 6px 10px;
-  z-index: 9999;
+  z-index: 100;
+  .mobile_menu_icon {
+    color: white;
+    font-size: 2em;
+  }
+
   nav {
     display: flex;
     justify-content: space-between;
@@ -57,6 +66,11 @@ header {
       }
     }
   }
+}
+
+.mobile_canvas_menu {
+  padding: 0 !important;
+  background-color: $primary-color3;
 }
 
 .drop_down_content_legal_document {

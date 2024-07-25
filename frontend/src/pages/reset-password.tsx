@@ -55,15 +55,18 @@ export default function ResetPasswordPage() {
     <div className="container_signin">
       <Logo className={"menu_white_logo"} link="/sign-up" />
       <div className="signin_wrapper">
-      <Image
-          src="/assets/rainbow_gnome.png"
-          alt="rainbow"
-          width={200}
-          height={200}
+        <Image
+          src="/assets/sharing.svg"
+          alt="sharing"
+          width={130}
+          height={130}
         ></Image>
-        <span>Réinitialisation de votre mot de passe</span>
+        <span className="mt-3">Réinitialisation de votre mot de passe</span>
         <p className="title">Renseignez votre nouveau mot de passe</p>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          className="w-100 d-flex flex-column justify-content-center align-items-center"
+        >
           <input
             className="input"
             type="password"

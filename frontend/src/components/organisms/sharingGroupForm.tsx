@@ -47,6 +47,9 @@ export default function SharingGroupForm(props: {
   };
   return (
     <>
+      <div className="d-flex flex-column w-100 justify-content-center align-items-center">
+        <i className="bi bi-person-fill-add modal_icon"></i>
+      </div>
       <div className="title">
         <span>Inviter des membres</span>
       </div>

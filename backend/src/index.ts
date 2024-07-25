@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("dotenv").config();
+
 import "reflect-metadata";
 import { ApolloServer } from "@apollo/server";
 import { dataSource } from "./datasource";
@@ -91,9 +94,11 @@ const start = async () => {
 
   await dataSource.initialize();
   await connectMongoDB();
-  const user = await User.findOneBy({ email: "dev@gmail.com" });
-  if (!user) {
-    await populateBdd();
+  if (process.env.TS_NODE_DEV === "true") {
+    const user = await User.findOneBy({ email: "dev@gmail.com" });
+    if (!user) {
+      await populateBdd();
+    }
   }
 };
 start();

@@ -1,10 +1,16 @@
 input {
+  @media (max-width: 575px) {
+    font-size: 0.875em;
+  }
   font-size: 1em;
   color: black;
   font-family: poppinsRegular;
 }
 
 label {
+  @media (max-width: 575px) {
+    font-size: 0.875em;
+  }
   font-size: 1em;
   color: black;
   font-family: poppinsRegular;

@@ -63,12 +63,12 @@ export default function SignUp(): React.ReactNode {
           <>
             <span>Inscription</span>
             <Image
-              src="/assets/rainbow_gnome.png"
-              alt="rainbow"
+              src="/assets/sharing.svg"
+              alt="sharing"
               width={130}
               height={130}
             ></Image>
-            <p className="title">
+            <p className="title mt-3">
               Inscrivez-vous dès maintenant en remplissant le formulaire
               ci-dessous
             </p>
@@ -134,7 +134,13 @@ export default function SignUp(): React.ReactNode {
           </>
         ) : (
           <>
-            <span>Vérifiez votre boite mail !</span>
+            <Image
+              src="/assets/mail_sent.svg"
+              alt="mail-sent"
+              width={130}
+              height={130}
+            ></Image>
+            <span className="mt-3">Vérifiez votre boite mail !</span>
             <p className="title">
               Un mail de validation de compte a été envoyé sur votre adresse
               mail. Verifiez vos courriers indésirables.

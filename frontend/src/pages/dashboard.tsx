@@ -89,7 +89,7 @@ export default function Dashboard(): React.ReactNode {
   return (
     <Layout title={"Dashboard"}>
       <div className="ressources_main_container">
-        <div className="d-flex justify-content-between align-items-center w-100">
+        <div className="d-flex justify-content-between align-items-center w-100 head_wrapper">
           <h1>Mon Dashboard</h1>
           <div className="d-flex justify-content-start align-items-center search_input_container">
             <i className="bi bi-search"></i>
@@ -100,9 +100,7 @@ export default function Dashboard(): React.ReactNode {
             />
           </div>
         </div>
-        <div
-          className={`d-flex flex-row justify-content-between align-items-center mt-2 w-100`}
-        >
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-2 w-100">
           <div className="add_ressources_button">
             <button
               className="btn_primary message_btn"
@@ -148,7 +146,7 @@ export default function Dashboard(): React.ReactNode {
           </div>
         )}
         {errorRessources && <p>{errorRessources.message}</p>}
-        {dataRessources && <CardsDisplay ressources={dataRessources?.items}/>}
+        {dataRessources && <CardsDisplay ressources={dataRessources?.items} />}
         <InView onChange={handleFetchMore} threshold={0.5}>
           <div className="spinner"></div>
         </InView>

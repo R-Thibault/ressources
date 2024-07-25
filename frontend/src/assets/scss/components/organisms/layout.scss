@@ -1,4 +1,7 @@
 .layout_container {
+  @media (max-width: 575px) {
+    padding-top: 60px;
+  }
   flex-direction: row;
   height: 100svh;
   overflow: scroll;

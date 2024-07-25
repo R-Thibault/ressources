@@ -2,10 +2,12 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export default function ButtonWithToolTip(props: {
   id: string;
   title: string;
-  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  children: any;
 }) {
   return (
     <OverlayTrigger

@@ -3,15 +3,15 @@ import { AuthChecker } from "type-graphql";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { User } from "../entities/User";
-import { NextFunction } from "express";
+import { NextFunction, Response, Request } from "express";
 
 export type ContextType = {
-  req: any;
-  res: any;
+  req: Request;
+  res: Response;
   user?: User;
 };
 
-export async function getUser(req: any, res: any): Promise<User | null> {
+export async function getUser(req: Request, res: Response): Promise<User | null> {
   const cookies = new Cookies(req, res);
   const token = cookies.get("token");
   if (!token) {
@@ -53,8 +53,8 @@ export const customAuthChecker: AuthChecker<ContextType> = async (
 };
 
 export const customRESTAuthChecker = async (
-  req: any,
-  res: any,
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   const connectedUser = await getUser(req, res);

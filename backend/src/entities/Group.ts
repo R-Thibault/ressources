@@ -22,7 +22,7 @@ export class Group extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   name!: string;
 
@@ -30,7 +30,7 @@ export class Group extends BaseEntity {
   @Field()
   description!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   token!: string;
 
@@ -39,7 +39,7 @@ export class Group extends BaseEntity {
     this.token! = uuidv4();
   }
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 

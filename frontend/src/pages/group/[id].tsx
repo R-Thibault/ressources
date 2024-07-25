@@ -194,51 +194,53 @@ export default function GroupDashboard(): React.ReactNode {
     <Layout title={"Dashboard Groupe"}>
       <div className="ressources_main_container">
         {dataGroup ? (
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <div className="d-flex">
+          <div className="d-flex justify-content-between align-items-center head_wrapper w-100">
+            <div className="d-flex actions_wrapper">
               <h1>{dataGroup.item.name}</h1>
-              <ButtonWithToolTip
-                id={"button-invite"}
-                title="Inviter des utilisateurs"
-              >
-                <button
-                  className="btn_rounded btn_rounded_actions"
-                  onClick={() => handleInviteMemberModal(true)}
+              <div className="d-flex ">
+                <ButtonWithToolTip
+                  id={"button-invite"}
+                  title="Inviter des utilisateurs"
                 >
-                  <i className="bi bi-envelope-arrow-up" />
-                </button>
-              </ButtonWithToolTip>
-              <ButtonWithToolTip
-                id={"button-chat"}
-                title="Discuter avec les membres du groupe"
-              >
-                <button
-                  className="btn_rounded btn_rounded_actions btn_message"
-                  onClick={() => handleChatVisible(true)}
+                  <button
+                    className="btn_rounded btn_rounded_actions"
+                    onClick={() => handleInviteMemberModal(true)}
+                  >
+                    <i className="bi bi-person-fill-add" />
+                  </button>
+                </ButtonWithToolTip>
+                <ButtonWithToolTip
+                  id={"button-chat"}
+                  title="Discuter avec les membres du groupe"
                 >
-                  <i className="bi bi-chat" />
-                </button>
-              </ButtonWithToolTip>
-              <ButtonWithToolTip
-                id={"button-chat"}
-                title={
-                  dataUser?.item?.id === dataGroup?.item?.created_by_user?.id
-                    ? "Supprimer le groupe"
-                    : "Quitter le groupe"
-                }
-              >
-                <button
-                  className="btn_rounded btn_rounded_actions btn_quit_group "
-                  onClick={() =>
-                    handleGroupQuit(
-                      dataUser?.item?.id ===
-                        dataGroup?.item?.created_by_user?.id
-                    )
+                  <button
+                    className="btn_rounded btn_rounded_actions btn_message"
+                    onClick={() => handleChatVisible(true)}
+                  >
+                    <i className="bi bi-chat" />
+                  </button>
+                </ButtonWithToolTip>
+                <ButtonWithToolTip
+                  id={"button-chat"}
+                  title={
+                    dataUser?.item?.id === dataGroup?.item?.created_by_user?.id
+                      ? "Supprimer le groupe"
+                      : "Quitter le groupe"
                   }
                 >
-                  <i className="bi bi-x-lg" />
-                </button>
-              </ButtonWithToolTip>
+                  <button
+                    className="btn_rounded btn_rounded_actions btn_quit_group "
+                    onClick={() =>
+                      handleGroupQuit(
+                        dataUser?.item?.id ===
+                          dataGroup?.item?.created_by_user?.id
+                      )
+                    }
+                  >
+                    <i className="bi bi-x-lg" />
+                  </button>
+                </ButtonWithToolTip>
+              </div>
               {deleteGroupError && (
                 <span className="text-danger">{deleteGroupError}</span>
               )}
@@ -257,9 +259,7 @@ export default function GroupDashboard(): React.ReactNode {
             <h2>Group Not Found</h2>
           </>
         )}
-        <div
-          className={`d-flex flex-row justify-content-between align-items-center mt-2 w-100`}
-        >
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-2 w-100">
           <div className="add_ressources_button">
             <button
               className="btn_primary message_btn"

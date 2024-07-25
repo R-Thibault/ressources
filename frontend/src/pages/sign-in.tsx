@@ -48,8 +48,8 @@ export default function SignIn() {
         <span>Connexion</span>
         <p className="title">Content de vous revoir !</p>
         <Image
-          src="/assets/rainbow_gnome.png"
-          alt="rainbow"
+          src="/assets/sharing.svg"
+          alt="sharing"
           width={130}
           height={130}
         ></Image>

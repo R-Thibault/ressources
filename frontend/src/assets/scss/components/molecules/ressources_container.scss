@@ -22,8 +22,27 @@
   align-items: flex-start;
   width: 100%;
   padding: 2%;
+  @media (max-width: 575px) {
+    padding: 5%;
+  }
   h1 {
+    @media (max-width: 575px) {
+      font-size: 1.5em;
+    }
     font-size: 2em;
+  }
+  .head_wrapper {
+    @media (max-width: 575px) {
+      flex-direction: column;
+      row-gap: 20px;
+    }
+    .actions_wrapper {
+      @media (max-width: 575px) {
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+    }
   }
   .add_ressources_button {
     display: flex;
@@ -46,6 +65,9 @@
 }
 
 .cards-container {
+  @media (max-width: 575px) {
+    width: 100%;
+  }
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -56,3 +78,8 @@
   margin: 0 auto;
 }
 
+.no_ressources_text {
+  font-size: 1.25em;
+  font-family: poppinsMedium;
+  text-align: center;
+}

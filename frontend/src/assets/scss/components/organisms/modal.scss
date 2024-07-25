@@ -9,6 +9,12 @@
   }
   .content {
     margin-inline: 1em;
+    .modal_icon {
+      @media (max-width: 575px) {
+        font-size: 2em;
+      }
+      font-size: 3.5em;
+    }
     .title {
       width: 100%;
       display: flex;
@@ -19,6 +25,18 @@
         color: black;
         font-family: poppinsRegular;
         margin-bottom: 1em;
+      }
+    }
+    .stepper_line {
+      width: 100px;
+      min-height: 1px;
+      margin: 0 20px;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+    .stepper_icon {
+      i {
+        color: $primary-color2;
+        font-size: 1.5em;
       }
     }
     .button_container {

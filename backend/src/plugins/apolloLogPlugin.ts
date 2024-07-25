@@ -4,7 +4,7 @@ const apolloLogPlugin = {
   async requestDidStart() {
     return {
       async willSendResponse(requestContext: any) {
-        if (requestContext.operation.operation !== "query") {
+        if (requestContext?.operation?.operation !== "query") {
           let user = "";
           switch (requestContext.operationName) {
             case "ValidateAccount":
@@ -23,7 +23,7 @@ const apolloLogPlugin = {
               break;
           }
           const log = new Log({
-            message: `Request  ${requestContext.operation.operation} ${requestContext.operationName}`,
+            message: `Request  ${requestContext?.operation?.operation} ${requestContext?.operationName}`,
             user: user,
           });
           await log.save();

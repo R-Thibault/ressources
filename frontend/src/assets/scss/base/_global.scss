@@ -7,7 +7,9 @@ body {
 }
 
 .main {
-  padding-left: 65px;
+  @media (min-width: 576px) {
+    padding-left: 65px;
+  }
   display: flex;
 }
 

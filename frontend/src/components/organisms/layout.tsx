@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Menu from "./menu";
+import MobileHeader from "./mobileHeader";
+import GetWindowDimensions from "@/utils/getWindowDimensions";
 
 export type LayoutProps = {
   title: string;
@@ -7,6 +9,8 @@ export type LayoutProps = {
 };
 
 export default function Layout(props: LayoutProps): React.ReactNode {
+  const windowDimensions = GetWindowDimensions();
+
   return (
     <>
       <Head>
@@ -15,7 +19,11 @@ export default function Layout(props: LayoutProps): React.ReactNode {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Menu />
+      {windowDimensions.width && windowDimensions.width > 575 ? (
+        <Menu width={windowDimensions.width} />
+      ) : (
+        <MobileHeader width={windowDimensions.width as number} />
+      )}
       <main className="full_width main layout_container">{props.children}</main>
     </>
   );

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { MenuItemType } from "@/types/menu.types";
+import Image from "next/image";
+import Crown from "@/assets/images/crown.svg";
 
 export default function MenuItem(props: MenuItemType): React.ReactNode {
   const [subMenuExpanded, setSubMenuExpanded] = useState<boolean>(false);
@@ -22,7 +24,8 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
         {props.children ? (
           props.children
         ) : (
-          <i onClick={() => props.openMenu && props.openMenu(true)}
+          <i
+            onClick={() => props.openMenu && props.openMenu(true)}
             className={props.focused ? props.focusedClassName : props.className}
           />
         )}
@@ -43,16 +46,20 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
                 key={"name" in item ? item.name : item.title}
               >
                 <li>
-                  {"name" in item && (
-                    <i
-                      className={
-                        "created_by_user" in item &&
-                        item.created_by_user?.id === props.userId
-                          ? "bi bi-key-fill"
-                          : "bi bi-envelope-open-fill"
-                      }
-                    ></i>
-                  )}
+                  {"name" in item &&
+                    "created_by_user" in item &&
+                    (item.created_by_user?.id === props.userId ? (
+                      <Image
+                        unoptimized
+                        src={Crown}
+                        alt="creator"
+                        width={30}
+                        height={30}
+                        className="group_icon"
+                      ></Image>
+                    ) : (
+                      <i className="bi bi-person-fill" />
+                    ))}
                   {"name" in item ? item.name : item.title}
                 </li>
               </a>

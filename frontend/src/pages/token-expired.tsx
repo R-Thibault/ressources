@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { RESEND_VALIDATION_EMAIL } from "../requests/user";
-import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
+import { Alert } from "react-bootstrap";
 
 export default function ResendValidationEmailPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +11,6 @@ export default function ResendValidationEmailPage() {
   const [resendValidationEmail, { loading }] = useMutation(
     RESEND_VALIDATION_EMAIL
   );
-  const router = useRouter();
 
   const handleResendEmailClick = async () => {
     try {
@@ -24,35 +25,48 @@ export default function ResendValidationEmailPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push("/sign-up");
-  };
-
   return (
     <div className="container_signin">
-      <p>Votre lien de validation a expiré</p>
+      <div className="signin_wrapper">
+        <span className="title">Oups! </span>
+        <Image
+          src="/assets/access_denied.svg"
+          alt="sharing"
+          width={150}
+          height={150}
+          className="mt-2 mb-2"
+        ></Image>
+        <p className="mt-2 mb-4">
+          Votre lien de validation a expiré. Merci de saisir votre email pour
+          vous renvoyer un lien !
+        </p>
 
-      <input
-        className="input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Entrez votre adresse email"
-      />
-      <button
-        className="btn_primary menu_button_add_group"
-        onClick={handleResendEmailClick}
-        disabled={loading}
-      >
-        Renvoyer l'email de validation
-      </button>
-      {message && <p>{message}</p>}
-      <button
-        className="btn_primary menu_button_add_group"
-        onClick={handleBack}
-      >
-        Retour page d'acceuil
-      </button>
+        <input
+          className="input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Entrez votre adresse email"
+        />
+        <button
+          className="btn_primary menu_button_add_group"
+          onClick={handleResendEmailClick}
+          disabled={loading}
+        >
+          Renvoyer l'email de validation
+        </button>
+        {message && (
+          <Alert
+            className="full_width"
+            variant={message.includes("Erreur") ? "danger" : "success"}
+          >
+            {message}.
+          </Alert>
+        )}
+        <Link href="/sign-in" className="forgot_Password">
+          Retour à la page d'accueil
+        </Link>
+      </div>
     </div>
   );
 }

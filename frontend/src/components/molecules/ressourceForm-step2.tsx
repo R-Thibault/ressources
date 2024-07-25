@@ -15,6 +15,7 @@ import { UserType } from "@/types/user.types";
 import { MY_PROFILE } from "@/requests/user";
 import Image from "next/image";
 import Avatar from "../atoms/avatar";
+import GetWindowDimensions from "@/utils/getWindowDimensions";
 
 export default function RessourcesFormStep2(props: {
   handleSubmit(value: boolean): void;
@@ -40,11 +41,15 @@ export default function RessourcesFormStep2(props: {
         : GET_ALL_RESSOURCES_FROM_ONE_USER,
     ],
   });
+
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     }
   };
+
+  const windowDimension = GetWindowDimensions();
+
   const createRessource = async () => {
     try {
       await createNewRessource({
@@ -155,8 +160,7 @@ export default function RessourcesFormStep2(props: {
           {imageError && <span className="image_error">{imageError}</span>}
           <div className="button_container ">
             <button className="btn_primary" type="submit">
-              <i className="bi bi-plus-circle" />
-              <span>Créer une nouvelle ressource</span>
+              <span>Valider</span>
             </button>
           </div>
           {error && (
@@ -165,38 +169,39 @@ export default function RessourcesFormStep2(props: {
             </Alert>
           )}
         </Form>
+        {windowDimension.width && windowDimension.width > 575 && (
+          <div
+            className="card card_custom_display mb-3"
+            style={{ borderRadius: 30 }}
+          >
+            <div className="d-flex flex-row justify-content-between align-items-center px-4">
+              <Avatar
+                user={dataUser?.item as UserType}
+                date={new Date().toISOString()}
+              />
+            </div>
+            <div>
+              <Image
+                unoptimized
+                className="img-fluid shadow-sm"
+                width={275}
+                height={100}
+                alt={title}
+                priority
+                src={image || "/assets/avatars/no-image.png"} // Provide a default value for the image variable
+                onErrorCapture={() => {
+                  setImage("/assets/avatars/no-image.png");
+                }}
+              />
+            </div>
+            <div className="card-body pb-5">
+              <div className="d-flex gap-1"></div>
+              <h5 className="card-title pt-2 title">{title}</h5>
 
-        <div
-          className="card card_custom_display mb-3"
-          style={{ borderRadius: 30 }}
-        >
-          <div className="d-flex flex-row justify-content-between align-items-center px-4">
-            <Avatar
-              user={dataUser?.item as UserType}
-              date={new Date().toISOString()}
-            />
+              <p className="card-text description">{description}</p>
+            </div>
           </div>
-          <div>
-            <Image
-              unoptimized
-              className="img-fluid shadow-sm"
-              width={275}
-              height={100}
-              alt={title}
-              priority
-              src={image || "/assets/avatars/no-image.png"} // Provide a default value for the image variable
-              onErrorCapture={() => {
-                setImage("/assets/avatars/no-image.png");
-              }}
-            />
-          </div>
-          <div className="card-body pb-5">
-            <div className="d-flex gap-1"></div>
-            <h5 className="card-title pt-2 title">{title}</h5>
-
-            <p className="card-text description">{description}</p>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

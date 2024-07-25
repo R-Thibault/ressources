@@ -37,6 +37,9 @@ export default function CreateGroupForm(props: {
 
   return (
     <>
+      <div className="d-flex flex-column w-100 justify-content-center align-items-center">
+        <i className="bi bi-people-fill modal_icon"></i>
+      </div>
       <div className="title">
         <span>Créer un nouveau groupe</span>
       </div>
@@ -62,11 +65,12 @@ export default function CreateGroupForm(props: {
             value={description}
           />
         </Form.Group>
-        <div className="button_container">
-          <button className="btn_primary" type="submit">
-            <i className="bi bi-plus-circle" />
-            <span>Créer un nouveau groupe</span>
-          </button>
+        <div className="w-100 d-flex justify-content-center align-items-center">
+          <div className="button_container">
+            <button className="btn_primary" type="submit">
+              <span>Créer</span>
+            </button>
+          </div>
         </div>
         {error && (
           <Alert variant={"danger"}>

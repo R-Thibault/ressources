@@ -1,11 +1,27 @@
 .menu_white_logo {
-  position: relative;
-  margin-bottom: 30px;
+  @media (min-width: 576px) {
+    position: relative;
+    margin-bottom: 30px;
+  }
   a {
     img {
       width: 100%;
       height: 100%;
       content: url("../../../images/logo_full_white.svg");
+    }
+  }
+}
+
+.menu_black_logo {
+  @media (min-width: 576px) {
+    position: relative;
+    margin-bottom: 30px;
+  }
+  a {
+    img {
+      width: 100%;
+      height: 100%;
+      content: url("../../../images/logo_full_black.svg");
     }
   }
 }
@@ -27,3 +43,4 @@
     }
   }
 }
+

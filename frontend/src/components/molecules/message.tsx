@@ -2,6 +2,7 @@ import { MessageType } from "@/types/message.types";
 import { UserType } from "@/types/user.types";
 import Image from "next/image";
 import { DateTime } from "luxon";
+import { API_URL } from "@/config/config";
 
 export default function Message(props: {
   item: MessageType;
@@ -9,7 +10,7 @@ export default function Message(props: {
 }) {
   let avatarImage = props.item.created_by_user.avatar?.path.includes("://")
     ? props.item.created_by_user.avatar?.path
-    : `http://localhost:4000/files/${props.item.created_by_user.avatar?.path.replace(
+    : `${API_URL}/files/${props.item.created_by_user.avatar?.path.replace(
         "/app/upload/",
         ""
       )}`;

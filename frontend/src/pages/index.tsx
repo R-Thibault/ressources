@@ -8,12 +8,12 @@ export default function Home(): React.ReactNode {
       <Logo className={"menu_white_logo"} link="/" />
       <div className="signin_wrapper">
         <Image
-          src="/assets/rainbow_gnome.png"
-          alt="rainbow"
-          width={200}
-          height={200}
+          src="/assets/sharing.svg"
+          alt="sharing"
+          width={130}
+          height={130}
         ></Image>
-        <h1 className="mb-4">Rejoins une aventure merveilleuse !</h1>
+        <h1 className="mb-4 mt-2">Rejoins une aventure merveilleuse !</h1>
         <Link className="btn_primary mb-2" href={"/sign-in"}>
           Se Connecter
         </Link>

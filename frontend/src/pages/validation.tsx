@@ -44,16 +44,22 @@ export default function ValidateAccountPage() {
       <Logo className={"menu_white_logo"} link="/sign-up" />
       <div className="signin_wrapper">
         <Image
-          src="/assets/rainbow_gnome.png"
-          alt="rainbow"
-          width={200}
-          height={200}
+          src="/assets/check.svg"
+          alt="check"
+          width={175}
+          height={175}
+          className="mb-3"
         ></Image>
         {loading && <span>Validation en cours...</span>}
         {error && (
           <span>Erreur lors de la validation du compte: {error.message}</span>
         )}
-        {data && <span>Votre compte a été validé avec succès!</span>}
+        {data && (
+          <div>
+            <span>Votre compte a été validé avec succès !</span>
+            <p>Vous allez être redirigé dans quelques secondes...</p>
+          </div>
+        )}
       </div>
     </div>
   );

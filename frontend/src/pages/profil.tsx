@@ -210,7 +210,7 @@ export default function profile() {
                 </div>
                 <div className="mt-5 text-center">
                   <button
-                    className="btn btn-primary profile-button"
+                    className="btn_primary"
                     type="submit"
                   >
                     Sauvegarde
