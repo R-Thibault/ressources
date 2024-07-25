@@ -22,7 +22,7 @@ export class Member extends BaseEntity {
   @Field()
   last_visit!: Date;
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamp" })
   @Field()
   created_at!: Date;
 

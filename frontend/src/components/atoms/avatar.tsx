@@ -2,14 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { UserType } from "@/types/user.types";
 import { DateTime } from "luxon";
+import { API_URL } from "@/config/config";
 
-export default function avatar(props: { date: Date; user: UserType }) {
+export default function avatar(props: { date: Date | string; user: UserType }) {
   let avatarImage = props.user.avatar?.path.includes("://")
     ? props.user.avatar.path
-    : `http://localhost:4000/files/${props.user.avatar?.path.replace(
-        "/app/upload/",
-        ""
-      )}`;
+    : `${API_URL}/files/${props.user.avatar?.path.replace("/app/upload/", "")}`;
 
   return (
     <div className="d-flex aligns-items-center py-2 ">
@@ -20,7 +18,7 @@ export default function avatar(props: { date: Date; user: UserType }) {
             width={46}
             height={46}
             src={avatarImage}
-            alt="jake nackos"
+            alt={props.user.avatar.name}
             className="mr-3 rounded-circle"
             onErrorCapture={() => {
               avatarImage = "/assets/avatars/no-image.png";

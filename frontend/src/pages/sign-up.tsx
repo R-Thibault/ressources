@@ -139,9 +139,9 @@ export default function SignUp(): React.ReactNode {
               Un mail de validation de compte a été envoyé sur votre adresse
               mail. Verifiez vos courriers indésirables.
             </p>
-            <a href="/sign-in" className="forgot_Password">
+            <Link href="/sign-in" className="forgot_Password">
               Retour à la page d'accueil
-            </a>
+            </Link>
           </>
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Avatar from "../atoms/avatar";
 import { RessourceType } from "@/types/ressources.types";
@@ -40,7 +40,7 @@ export default function RessourceCard(
   const [ressourceImageSrc, setRessourceImageSrc] = useState<string>(
     ressource?.image_id?.path.includes("://")
       ? ressource.image_id.path
-      : `http://localhost:4000/files/${ressource?.image_id?.path.replace(
+      : `${API_URL}/files${ressource?.image_id?.path.replace(
           "/app/upload/",
           ""
         )}`
@@ -60,6 +60,18 @@ export default function RessourceCard(
       console.error("Erreur lors de la suppression", error);
     }
   };
+  useEffect(() => {
+    if (ressource.image_id?.path) {
+      setRessourceImageSrc(
+        ressource?.image_id?.path.includes("://")
+          ? ressource.image_id.path
+          : `${API_URL}/files${ressource?.image_id?.path.replace(
+              "/app/upload/",
+              ""
+            )}`
+      );
+    }
+  }, [ressource]);
 
   return (
     <>
@@ -99,10 +111,14 @@ export default function RessourceCard(
         <div>
           <Image
             unoptimized
-            className="img-fluid shadow-sm"
-            width={450}
-            height={450}
-            alt="jaky nackos"
+            className="img-fluid shadow-sm object-fit-cover"
+            width={350}
+            height={350}
+            alt={
+              ressource.image_id?.name
+                ? ressource.image_id?.name
+                : ressource.title
+            }
             priority
             src={ressourceImageSrc}
             onErrorCapture={() => {
@@ -113,6 +129,29 @@ export default function RessourceCard(
         <div className="card-body pb-5">
           <div className="d-flex gap-1"></div>
           <h5 className="card-title pt-2 title">{ressource.title}</h5>
+          {ressource.link_id && (
+            <a
+              href={ressource.link_id.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="bi bi-link"></i>
+            </a>
+          )}
+          {ressource.file_id && (
+            <a
+              href={`http://localhost:4000/download/${ressource.file_id.path.replace(
+                "/app/upload/ressources/",
+                ""
+              )}`}
+              download={ressource.file_id.name}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="bi bi-file-earmark-arrow-down"></i>{" "}
+              {ressource.file_id.name}
+            </a>
+          )}
           <p className="card-text description">{ressource.description}</p>
         </div>
         {dataUser?.item?.id === ressource?.created_by_user?.id && (

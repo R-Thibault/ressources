@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { API_URL } from "@/config/config";
 
 type avatarProfilType = {
   avatarSrc: string;
@@ -16,10 +17,7 @@ export default function avatarProfil(props: avatarProfilType) {
         setAvatarSrc(props.avatarSrc);
       } else {
         setAvatarSrc(
-          `http://localhost:4000/files/${props.avatarSrc.replace(
-            "/app/upload/",
-            ""
-          )}`
+          `${API_URL}/files/${props.avatarSrc.replace("/app/upload/", "")}`
         );
       }
     }
@@ -32,7 +30,7 @@ export default function avatarProfil(props: avatarProfilType) {
           className="rounded-circle mt-2"
           height={150}
           width={150}
-          alt="jaky nackos"
+          alt={`${props.lastname}${props.firstname}`}
           priority
           src={avatarSrc}
           onErrorCapture={() => {

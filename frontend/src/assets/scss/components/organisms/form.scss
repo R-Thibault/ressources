@@ -1,0 +1,15 @@
+.custom_form {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  gap: 3vw;
+}
+@media screen and (max-width: 700px) {
+  .custom_form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80vw;
+    gap: 1vw;
+  }
+}

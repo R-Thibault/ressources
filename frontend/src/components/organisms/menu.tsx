@@ -15,7 +15,7 @@ export default function Menu(): React.ReactNode {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
   const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
 
-  const [signOut] = useMutation<null>(SIGN_OUT, {
+  const [signOut] = useMutation(SIGN_OUT, {
     refetchQueries: [MY_PROFILE],
   });
 

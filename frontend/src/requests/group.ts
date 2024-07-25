@@ -18,7 +18,7 @@ export const DELETE_GROUP = gql`
 `;
 
 export const DELETE_MEMBER = gql`
-  mutation Mutation($data: MemberLeavingGroupInput!) {
+  mutation DeleteMember($data: MemberLeavingGroupInput!) {
     item: deleteMember(data: $data) {
       id
     }

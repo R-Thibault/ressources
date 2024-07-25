@@ -100,7 +100,7 @@ export class GroupsMembers {
   @Field()
   created_at!: Date;
 
-  @Field(() => User, { nullable: true })
+  @Field(() => User)
   created_by_user?: User;
 
   @Field({ nullable: true })

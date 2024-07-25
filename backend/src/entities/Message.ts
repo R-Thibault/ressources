@@ -18,7 +18,7 @@ export class Message extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "text", nullable: true }) // to false for prod
+  @Column({ type: "text", nullable: false })
   @Field()
   message!: string;
 
@@ -28,7 +28,7 @@ export class Message extends BaseEntity {
   @Field(() => Group)
   group!: Group;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 

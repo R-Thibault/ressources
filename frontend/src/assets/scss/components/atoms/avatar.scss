@@ -66,6 +66,16 @@
   color: white;
 }
 
+.avatar_message_display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: white;
+}
+
 .avatar_message_text_size {
   padding: 0;
   margin: auto;

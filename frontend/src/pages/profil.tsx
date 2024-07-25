@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import ModalComponent from "@/components/organisms/modal";
 import CreateAvatarForm from "@/components/organisms/createAvatarForm";
 import { DELETE_AVATAR } from "@/requests/image";
+import { API_URL } from "@/config/config";
 
 export default function profile() {
   const router = useRouter();
@@ -76,12 +77,14 @@ export default function profile() {
   useEffect(() => {
     if (dataUser && dataUser.item) {
       setProfileDatas(dataUser.item);
+      setLastname(dataUser.item.lastname);
+      setFirstname(dataUser.item.firstname);
       if (dataUser.item.avatar) {
         if (dataUser.item.avatar.path.includes("://")) {
           setAvatarSrc(dataUser.item.avatar.path);
         } else {
           setAvatarSrc(
-            `http://localhost:4000/api/files${dataUser.item.avatar.path.replace(
+            `${API_URL}/files/${dataUser.item.avatar.path.replace(
               "/app/upload/",
               ""
             )}`
@@ -116,7 +119,7 @@ export default function profile() {
                       className="rounded-circle mt-3"
                       height={150}
                       width={150}
-                      alt="jaky nackos"
+                      alt={`${dataUser?.item?.lastname}${dataUser?.item?.firstname}`}
                       priority
                       src={avatarSrc}
                       onErrorCapture={() => {
@@ -191,7 +194,7 @@ export default function profile() {
                     type="text"
                     className="form-control"
                     placeholder="Prénom"
-                    value={profileDatas ? profileDatas.firstname : ""}
+                    value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
                   />
                 </div>
@@ -200,7 +203,7 @@ export default function profile() {
                   <input
                     type="text"
                     className="form-control"
-                    value={profileDatas ? profileDatas.lastname : ""}
+                    value={lastname}
                     placeholder="Nom de famille"
                     onChange={(e) => setLastname(e.target.value)}
                   />

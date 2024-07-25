@@ -21,11 +21,11 @@ export class Ressource extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   title!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   description!: string;
 
@@ -34,12 +34,11 @@ export class Ressource extends BaseEntity {
   is_favorite!: boolean;
 
   @OneToOne(() => Image, { onDelete: "CASCADE" })
-  @OneToOne(() => Image)
   @JoinColumn()
   @Field(() => Image, { nullable: true })
-  image_id!: Image;
+  image_id!: Image | null;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 
@@ -93,6 +92,8 @@ export class RessourceCreateInput {
   type!: string;
   @Field({ nullable: true })
   groupId!: number;
+  @Field({ nullable: true })
+  imageId!: number;
 }
 
 @InputType()
@@ -101,6 +102,8 @@ export class RessourceUpdateInput {
   title!: string;
   @Field()
   description!: string;
+  @Field({ nullable: true })
+  imageId!: number;
 }
 
 @InputType()

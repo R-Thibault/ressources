@@ -21,8 +21,8 @@ import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
 import { Like } from "typeorm";
-import {Group} from "../entities/Group";
-
+import { Group } from "../entities/Group";
+import { Image } from "../entities/Image";
 @Resolver(Ressource)
 export class RessourceResolver {
   @Authorized()
@@ -165,6 +165,15 @@ export class RessourceResolver {
       const newRessource = new Ressource();
       newRessource.title = data.title;
       newRessource.description = data.description;
+
+      if (data.imageId) {
+        const image = await Image.findOne({ where: { id: data.imageId } });
+
+        if (image) {
+          newRessource.image_id = image;
+        }
+      }
+
       if (data.type === "link" && data.entityId) {
         const link = await Link.findOneBy({
           id: data.entityId,
@@ -215,16 +224,25 @@ export class RessourceResolver {
     if (!context.user) {
       throw new Error(`error`);
     }
-    const ressource = await Ressource.findOne({ where: { id: id }, relations: ["created_by_user"] });
-    console.log(ressource, id);
+
+    const ressource = await Ressource.findOne({
+      where: { id: id },
+      relations: { created_by_user: true, image_id: true },
+    });
     if (!ressource) {
       throw new Error("Resource not found");
     }
     if (ressource.created_by_user.id !== context.user.id) {
       throw new Error("error occured");
     }
-
     Object.assign(ressource, data);
+    if (data.imageId) {
+      const image = await Image.findOne({ where: { id: data.imageId } });
+
+      if (image) {
+        ressource.image_id = image;
+      }
+    }
     ressource.updated_at = new Date();
     ressource.updated_by_user = context.user;
 
@@ -238,7 +256,7 @@ export class RessourceResolver {
   }
 
   @Authorized()
-  @Mutation(() =>Boolean)
+  @Mutation(() => Boolean)
   async deleteRessource(
     @Arg("id", () => ID) id: number,
     @Ctx() context: ContextType
@@ -246,7 +264,10 @@ export class RessourceResolver {
     if (!context.user) {
       throw new Error(`error`);
     }
-    const ressource = await Ressource.findOne({ where: { id }, relations: ["created_by_user"] });
+    const ressource = await Ressource.findOne({
+      where: { id },
+      relations: ["created_by_user"],
+    });
     if (!ressource) {
       throw new Error("Resource not found");
     }

@@ -20,7 +20,7 @@ export const GET_ALL_MESSAGES_BY_GROUP = gql`
 `;
 
 export const CREATE_MESSAGE = gql`
-  mutation Mutation($data: MessageCreateInput!) {
+  mutation CreateMessage($data: MessageCreateInput!) {
     item: createMessage(data: $data) {
       id
       message

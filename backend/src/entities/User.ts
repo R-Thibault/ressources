@@ -25,18 +25,17 @@ export class User extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false, unique: true }) // to false for prod
-  @Field()
+  @Column({ type: "varchar", length: 255, nullable: false, unique: true })
   email!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   hashed_password!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   lastname!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   firstname!: string;
 
@@ -65,7 +64,7 @@ export class User extends BaseEntity {
   @Field(() => Int)
   reset_password_token_expires!: Date | null;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp" })
   @Field()
   created_at!: Date;
 
