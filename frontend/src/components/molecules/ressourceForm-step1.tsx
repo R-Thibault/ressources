@@ -142,7 +142,10 @@ export default function RessourcesFormStep1(props: {
           />
         </div>
       ) : (
-        <Form.Control type="file" size="sm" onChange={selectFile} />
+        <div className="w-100 d-flex flex-column justify-content-center align-items-center">
+          <Form.Control type="file" size="sm" onChange={selectFile} />
+          <span className="info_upload mt-2">Taille maximale de l'image 5 Mo</span>
+        </div>
       )}
       {!isUploading && (
         <div className="button_container">

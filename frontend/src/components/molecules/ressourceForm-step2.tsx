@@ -125,7 +125,7 @@ export default function RessourcesFormStep2(props: {
           onSubmit={(e) => onSubmit(e)}
         >
           <>
-            <Form.Group className="mb-3 w-100">
+            <Form.Group className="w-100">
               <Form.Label>Image de votre ressource</Form.Label>
               <input
                 type="file"
@@ -135,6 +135,7 @@ export default function RessourcesFormStep2(props: {
                 onChange={onImageChange}
               />
             </Form.Group>
+            <span className="info_upload mt-1 mb-2">Taille maximale de l'image 5 Mo</span>
             <Form.Group className="mb-3 w-100">
               <Form.Label>Titre de votre ressource</Form.Label>
               <Form.Control

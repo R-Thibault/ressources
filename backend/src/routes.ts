@@ -13,16 +13,23 @@ import { validate } from "class-validator";
 
 export function initializeRoutes(app: Router) {
   app.use("/files", express.static(path.join(__dirname, "../upload")));
-  const acceptedAvatarMimeType = ["image/jpg", "image/png", "image/jpeg"];
+  const acceptedAvatarMimeType = [
+    "image/jpg",
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+  ];
   const acceptedRessourcesImageMimeType = [
     "image/jpg",
     "image/png",
     "image/jpeg",
+    "image/webp",
   ];
   const acceptedFileMimeType = [
     "image/jpg",
     "image/png",
     "image/jpeg",
+    "image/webp",
     "application/pdf",
     "application/zip",
     "application/vnd.ms-excel",
@@ -74,7 +81,7 @@ export function initializeRoutes(app: Router) {
   const uploadRessourcesDirectory = multer({
     storage: ressourcesStorage,
     limits: {
-      fileSize: 1048576 * 5,
+      fileSize: 1048576 * 10,
     },
     fileFilter: (req, file, cb) => {
       if (acceptedFileMimeType.includes(file.mimetype)) {

@@ -24,6 +24,8 @@ export default function Message(props: {
     >
       {props.item.created_by_user.avatar ? (
         <Image
+          unoptimized
+          priority
           width={40}
           height={40}
           src={avatarImage}

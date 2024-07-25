@@ -72,11 +72,13 @@ export default function CreateAvatarForm() {
             width={150}
             alt={`${dataUser?.item?.lastname}${dataUser?.item?.firstname}`}
             priority
+            unoptimized
             src={image || "/assets/avatars/no-image.png"} // Provide a default value for the image variable
             onErrorCapture={() => {
               setImage("/assets/avatars/no-image.png");
             }}
           />
+          <span className="info_upload">Taille maximale de l'image 5 Mo</span>
           {imageError && <span className="image_error">{imageError}</span>}
           <button className="btn_primary mx-auto my-3 ">Valider</button>
         </form>

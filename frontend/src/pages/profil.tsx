@@ -114,22 +114,21 @@ export default function profile() {
                   <CreateAvatarForm />
                 </ModalComponent>
                 {avatarSrc ? (
-                  <>
-                    <Image
-                      className="rounded-circle mt-3"
-                      height={150}
-                      width={150}
-                      alt={`${dataUser?.item?.lastname}${dataUser?.item?.firstname}`}
-                      priority
-                      src={avatarSrc}
-                      onErrorCapture={() => {
-                        setAvatarSrc("/assets/avatars/no-image.png");
-                        setImageError(
-                          "Une erreur est survenue pendant le chargement de votre image, veuillez contactez un administrateur"
-                        );
-                      }}
-                    />
-                  </>
+                  <Image
+                    unoptimized
+                    className="rounded-circle mt-3"
+                    height={150}
+                    width={150}
+                    alt={`${dataUser?.item?.lastname}${dataUser?.item?.firstname}`}
+                    priority
+                    src={avatarSrc}
+                    onErrorCapture={() => {
+                      setAvatarSrc("/assets/avatars/no-image.png");
+                      setImageError(
+                        "Une erreur est survenue pendant le chargement de votre image, veuillez contactez un administrateur"
+                      );
+                    }}
+                  />
                 ) : (
                   <>
                     <div className="rounded-circle mt-3 avatar_default">
