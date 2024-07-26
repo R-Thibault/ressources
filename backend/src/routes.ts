@@ -18,6 +18,7 @@ export function initializeRoutes(app: Router) {
     "image/png",
     "image/jpeg",
     "image/webp",
+    "image/svg+xml",
   ];
   const acceptedRessourcesImageMimeType = [
     "image/jpg",

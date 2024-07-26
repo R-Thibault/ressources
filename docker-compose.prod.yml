@@ -1,6 +1,7 @@
 services:
   server:
-    image: wildshare-backend:latest
+    build: ./backend
+    #image: wildshare-backend:latest
     platform: linux/amd64
     volumes:
       - ./upload:/app/upload
@@ -11,13 +12,15 @@ services:
       - .env
 
   front:
-    image: wildshare-frontend:latest
+    build: ./frontend
+    #image: wildshare-frontend:latest
     platform: linux/amd64
+
   db:
     image: postgres
     platform: linux/amd64
     volumes:
-      - /var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     env_file:
       - .env
 
@@ -43,3 +46,6 @@ services:
     restart: always
     env_file:
       - .env
+
+volumes:
+  pgdata:

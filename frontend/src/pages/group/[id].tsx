@@ -41,7 +41,7 @@ export default function GroupDashboard(): React.ReactNode {
   const [, setSkip] = useState<number>(0);
   const [take] = useState<number>(10);
   const [titleSort, setTitleSort] = useState<string>("");
-  const [dateSort, setDateSort] = useState<string>("ASC");
+  const [dateSort, setDateSort] = useState<string>("DESC");
   const [titleSortClass, setTitleSortClass] =
     useState<string>("bi bi-sort-down");
   const [dateSortClass, setDateSortClass] = useState<string>("bi bi-sort-down");

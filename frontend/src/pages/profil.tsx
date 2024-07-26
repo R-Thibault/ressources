@@ -132,7 +132,7 @@ export default function profile() {
                 ) : (
                   <>
                     <div className="rounded-circle mt-3 avatar_default">
-                      <span className="avatar_default_text_size">
+                      <span className="avatar_profil_text_size">
                         {dataUser?.item &&
                           dataUser.item.firstname
                             .substring(0, 1)

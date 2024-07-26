@@ -43,7 +43,7 @@ export default function avatarProfil(props: avatarProfilType) {
       ) : (
         <>
           <div className="rounded-circle mt-5 avatar_default">
-            <span className="avatar_default_text_size">
+            <span className="avatar_profil_text_size">
               {props &&
                 props.firstname.substring(0, 1).toUpperCase() +
                   props.lastname.substring(0, 1).toUpperCase()}

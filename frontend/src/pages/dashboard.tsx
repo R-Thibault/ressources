@@ -68,7 +68,7 @@ export default function Dashboard(): React.ReactNode {
     if (dateSort === "ASC" || dateSort === "DESC") {
       setTitleSort("");
       setDateSortClass(
-        dateSort === "ASC" ? "bi bi-sort-numeric-up" : "bi bi-sort-numeric-down"
+        dateSort === "ASC" ? "bi bi-sort-numeric-down" : "bi bi-sort-numeric-up"
       );
     } else if (dateSort === "") {
       setDateSortClass("bi bi-dash");
@@ -79,7 +79,7 @@ export default function Dashboard(): React.ReactNode {
     if (titleSort === "ASC" || titleSort === "DESC") {
       setDateSort("");
       setTitleSortClass(
-        titleSort === "ASC" ? "bi bi-sort-alpha-up" : "bi bi-sort-alpha-down"
+        titleSort === "ASC" ? "bi bi-sort-alpha-down" : "bi bi-sort-alpha-up"
       );
     } else if (titleSort === "") {
       setTitleSortClass("bi bi-dash");

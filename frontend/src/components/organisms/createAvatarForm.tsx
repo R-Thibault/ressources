@@ -53,7 +53,7 @@ export default function CreateAvatarForm() {
   return (
     <>
       <div className="title">
-        <span>Modifier votre photo de profile</span>
+        <span>Modifier votre photo de profil</span>
       </div>
       <div className="avatar_form_popup">
         <form onSubmit={(e) => handleImageUpload(e)} className="avatar_form">

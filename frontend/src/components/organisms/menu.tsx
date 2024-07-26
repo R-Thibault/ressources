@@ -22,7 +22,6 @@ export default function Menu(props: {
 }): React.ReactNode {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
   const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
-
   const [signOut] = useMutation(SIGN_OUT, {
     refetchQueries: [MY_PROFILE],
   });
@@ -36,6 +35,12 @@ export default function Menu(props: {
   }, [props.opened]);
 
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
+  const avatarImage = dataUser?.item?.avatar?.path.includes("://")
+    ? dataUser?.item?.avatar?.path
+    : `${API_URL}/files${dataUser?.item?.avatar?.path.replace(
+        "/app/upload",
+        ""
+      )}`;
 
   const { data: userGroup } = useQuery<{ items: GroupType[] }>(GET_MY_GROUPS);
 
@@ -114,10 +119,7 @@ export default function Menu(props: {
                   width={40}
                   alt={`${dataUser.item.firstname} ${dataUser.item.lastname} `}
                   priority
-                  src={`${API_URL}/files${dataUser.item.avatar.path.replace(
-                    "/app/upload",
-                    ""
-                  )}`}
+                  src={avatarImage}
                   onClick={() => !menuOpened && setMenuOpened(true)}
                 />
               ) : (

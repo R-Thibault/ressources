@@ -13,7 +13,12 @@ export default function MobileHeader(props: {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
 
   const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
-
+  const avatarImage = dataUser?.item?.avatar?.path.includes("://")
+    ? dataUser?.item?.avatar?.path
+    : `${API_URL}/files${dataUser?.item?.avatar?.path.replace(
+        "/app/upload",
+        ""
+      )}`;
   const handleMenuOpen = (value: boolean) => {
     setMenuOpened(value);
   };
@@ -44,10 +49,7 @@ export default function MobileHeader(props: {
           width={40}
           alt={`${dataUser.item.firstname} ${dataUser.item.lastname} `}
           priority
-          src={`${API_URL}/files${dataUser.item.avatar.path.replace(
-            "/app/upload",
-            ""
-          )}`}
+          src={avatarImage}
         />
       ) : (
         <i className="btn_rounded user_profile_button">
