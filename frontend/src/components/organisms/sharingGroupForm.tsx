@@ -42,7 +42,9 @@ export default function SharingGroupForm(props: {
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation :", error);
-      setErrorMessage("Une erreur est survenue. Veuillez réessayer!");
+      setErrorMessage(
+        "Une erreur est survenue. Il est possible que l'email ne corresponde pas à un compte utilisateur."
+      );
     }
   };
   return (

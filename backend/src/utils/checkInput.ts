@@ -1,6 +1,6 @@
 import * as EmailValidator from "email-validator";
 const regexCheckPassword =
-  /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/gm;
+  /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/;
 
 export function checkPasswords(
   password: string,
@@ -10,7 +10,7 @@ export function checkPasswords(
     return {
       result: false,
       errorMessage:
-        "Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !",
+        "Votre mot de passe doit contenir à minima 8 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !",
     };
   } else {
     if (password === confirmPassword) {

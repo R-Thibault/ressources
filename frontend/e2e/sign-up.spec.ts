@@ -9,7 +9,9 @@ test.describe("test sign-up interactions", () => {
     const firstnameInput = page.getByPlaceholder("Prénom", { exact: true });
     const lastnameInput = page.getByPlaceholder("Nom", { exact: true });
     const emailInput = page.getByPlaceholder("email");
-    const passwordInput = page.getByPlaceholder("mot de passe" , { exact: true });
+    const passwordInput = page.getByPlaceholder("mot de passe", {
+      exact: true,
+    });
     const confirmPasswordInput = page.getByPlaceholder(
       "confirmation mot de passe",
       { exact: true }
@@ -28,7 +30,9 @@ test.describe("test sign-up interactions", () => {
     const firstnameInput = page.getByPlaceholder("Prénom", { exact: true });
     const lastnameInput = page.getByPlaceholder("Nom", { exact: true });
     const emailInput = page.getByPlaceholder("email");
-    const passwordInput = page.getByPlaceholder("mot de passe" , { exact: true });
+    const passwordInput = page.getByPlaceholder("mot de passe", {
+      exact: true,
+    });
     const confirmPasswordInput = page.getByPlaceholder(
       "confirmation mot de passe",
       { exact: true }
@@ -45,7 +49,7 @@ test.describe("test sign-up interactions", () => {
       page
         .getByRole("alert")
         .getByText(
-          "Votre mot de passe doit contenir à minima 9 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !"
+          "Votre mot de passe doit contenir à minima 8 caractères dont un chiffre, une majuscule, une minuscule et un caractère spécial !"
         )
     ).toBeVisible();
   });
@@ -56,7 +60,9 @@ test.describe("test sign-up interactions", () => {
     const firstnameInput = page.getByPlaceholder("Prénom", { exact: true });
     const lastnameInput = page.getByPlaceholder("Nom", { exact: true });
     const emailInput = page.getByPlaceholder("email");
-    const passwordInput = page.getByPlaceholder("mot de passe" , { exact: true });
+    const passwordInput = page.getByPlaceholder("mot de passe", {
+      exact: true,
+    });
     const confirmPasswordInput = page.getByPlaceholder(
       "confirmation mot de passe",
       { exact: true }
@@ -89,7 +95,9 @@ test.describe("test sign-up interactions", () => {
     const firstnameInput = page.getByPlaceholder("Prénom", { exact: true });
     const lastnameInput = page.getByPlaceholder("Nom", { exact: true });
     const emailInput = page.getByPlaceholder("email");
-    const passwordInput = page.getByPlaceholder("mot de passe" , { exact: true });
+    const passwordInput = page.getByPlaceholder("mot de passe", {
+      exact: true,
+    });
     const confirmPasswordInput = page.getByPlaceholder(
       "confirmation mot de passe",
       { exact: true }
@@ -122,7 +130,9 @@ test.describe("test sign-up interactions", () => {
     const firstnameInput = page.getByPlaceholder("Prénom", { exact: true });
     const lastnameInput = page.getByPlaceholder("Nom", { exact: true });
     const emailInput = page.getByPlaceholder("email");
-    const passwordInput = page.getByPlaceholder("mot de passe" , { exact: true });
+    const passwordInput = page.getByPlaceholder("mot de passe", {
+      exact: true,
+    });
     const confirmPasswordInput = page.getByPlaceholder(
       "confirmation mot de passe",
       { exact: true }
