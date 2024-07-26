@@ -1,0 +1,88 @@
+.avatar_default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  width: 125px;
+  height: 125px;
+  color: white;
+}
+
+.avatar_default_text_size {
+  padding: 0;
+  margin: auto;
+  font-size: 1.5em;
+}
+.avatar_profil_text_size {
+  padding: 0;
+  margin: auto;
+  font-size: 4em;
+}
+
+.image_error {
+  color: red;
+  font-style: italic;
+  font-size: 0.7em;
+}
+
+.avatar_form_popup {
+  display: flex;
+  gap: 10px;
+  .avatar_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+  }
+  .avatar_delete {
+    margin: auto;
+  }
+}
+
+.btn_avatar_delete {
+  font-size: 0.7rem;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.btn_avatar_delete:hover {
+  color: blue;
+}
+
+.avatar_username {
+  font-size: 1em;
+}
+
+.avatar_date_ressource {
+  font-size: 0.75em;
+  color: $primary-color11;
+}
+
+.avatar_message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  width: 3rem;
+  height: 2.75rem;
+  color: white;
+}
+
+.avatar_message_display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: white;
+}
+
+.avatar_message_text_size {
+  padding: 0;
+  margin: auto;
+  font-size: 1.35em;
+}

@@ -1,0 +1,17 @@
+events {}
+
+http {
+  include mime.types;
+
+  server {
+    listen XX;
+
+    location /api {
+      proxy_pass http://server:XXXX;
+    }
+
+    location / {
+      proxy_pass http://front:XXXX;
+    }
+  }
+}

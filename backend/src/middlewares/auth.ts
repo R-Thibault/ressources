@@ -3,17 +3,17 @@ import { AuthChecker } from "type-graphql";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { User } from "../entities/User";
+import { NextFunction, Response, Request } from "express";
 
 export type ContextType = {
-  req: any;
-  res: any;
+  req: Request;
+  res: Response;
   user?: User;
 };
 
-export async function getUser(req: any, res: any): Promise<User | null> {
+export async function getUser(req: Request, res: Response): Promise<User | null> {
   const cookies = new Cookies(req, res);
   const token = cookies.get("token");
-
   if (!token) {
     return null;
   } else {
@@ -49,5 +49,18 @@ export const customAuthChecker: AuthChecker<ContextType> = async (
     return true;
   } else {
     return false;
+  }
+};
+
+export const customRESTAuthChecker = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const connectedUser = await getUser(req, res);
+  if (connectedUser) {
+    next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
   }
 };

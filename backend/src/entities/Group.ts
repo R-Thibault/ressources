@@ -5,11 +5,8 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
@@ -25,7 +22,7 @@ export class Group extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   name!: string;
 
@@ -33,7 +30,7 @@ export class Group extends BaseEntity {
   @Field()
   description!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   token!: string;
 
@@ -42,7 +39,7 @@ export class Group extends BaseEntity {
     this.token! = uuidv4();
   }
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 
@@ -103,7 +100,7 @@ export class GroupsMembers {
   @Field()
   created_at!: Date;
 
-  @Field(() => User, { nullable: true })
+  @Field(() => User)
   created_by_user?: User;
 
   @Field({ nullable: true })
@@ -111,4 +108,10 @@ export class GroupsMembers {
 
   @Field(() => User)
   updated_by_user!: User;
+}
+
+@InputType()
+export class DeleteGroupInput {
+  @Field(() => ID)
+  group_id!: number;
 }

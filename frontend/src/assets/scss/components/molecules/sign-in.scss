@@ -33,8 +33,13 @@
   background-color: white;
   padding: 3%;
   border-radius: 30px;
-  max-width: 400px;
+  max-width: 500px;
   box-shadow: 10px 5px 5px rgba($color: #000000, $alpha: 0.3);
+
+  h1 {
+    text-align: center;
+    font-size: 2em;
+  }
 
   span {
     font-size: 1.75em;

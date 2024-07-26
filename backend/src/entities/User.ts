@@ -10,7 +10,6 @@ import {
 } from "typeorm";
 import { IsEmail, Matches } from "class-validator";
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
-import { Tag } from "./Tag";
 import { Member } from "./Member";
 import { Message } from "./Message";
 import { Ressource } from "./Ressource";
@@ -26,22 +25,22 @@ export class User extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: false, unique: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false, unique: true })
   @Field()
   email!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   hashed_password!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   lastname!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   firstname!: string;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: "SET NULL", nullable: true })
   @JoinColumn()
   @Field(() => Image, { nullable: true })
   avatar!: Image;
@@ -66,7 +65,7 @@ export class User extends BaseEntity {
   @Field(() => Int)
   reset_password_token_expires!: Date | null;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp" })
   @Field()
   created_at!: Date;
 
@@ -78,14 +77,6 @@ export class User extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   @Field()
   updated_at!: Date;
-
-  @OneToMany(() => Tag, (tag) => tag.created_by_user)
-  @Field(() => [Tag])
-  tags_creation!: Tag[];
-
-  @OneToMany(() => Tag, (tag) => tag.updated_by_user)
-  @Field(() => [Tag])
-  tags_update!: Tag[];
 
   @OneToMany(() => Member, (member) => member.user)
   @Field(() => [Member])

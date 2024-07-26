@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { MenuItemType } from "@/types/menu.types";
+import Image from "next/image";
+import Crown from "@/assets/images/crown.svg";
 
 export default function MenuItem(props: MenuItemType): React.ReactNode {
   const [subMenuExpanded, setSubMenuExpanded] = useState<boolean>(false);
@@ -15,7 +17,6 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
   const chevronClassName = subMenuExpanded
     ? "bi bi-chevron-up sub_menu_chevron"
     : "bi bi-chevron-down sub_menu_chevron";
-  console.log(props.link);
 
   return (
     <div className="menu_item_container">
@@ -24,10 +25,11 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
           props.children
         ) : (
           <i
+            onClick={() => props.openMenu && props.openMenu(true)}
             className={props.focused ? props.focusedClassName : props.className}
           />
         )}
-        {props.menuOpened && <a href={props.link}>{props.title}</a>}
+        {props.menuOpened && <span>{props.title}</span>}
         {props.menuOpened && props.hasSubItems && (
           <i
             className={chevronClassName}
@@ -43,7 +45,23 @@ export default function MenuItem(props: MenuItemType): React.ReactNode {
                 href={"name" in item ? `/group/${item.id}` : item.link}
                 key={"name" in item ? item.name : item.title}
               >
-                <li>{"name" in item ? item.name : item.title}</li>
+                <li>
+                  {"name" in item &&
+                    "created_by_user" in item &&
+                    (item.created_by_user?.id === props.userId ? (
+                      <Image
+                        unoptimized
+                        src={Crown}
+                        alt="creator"
+                        width={30}
+                        height={30}
+                        className="group_icon"
+                      ></Image>
+                    ) : (
+                      <i className="bi bi-person-fill" />
+                    ))}
+                  {"name" in item ? item.name : item.title}
+                </li>
               </a>
             ))}
           </ul>

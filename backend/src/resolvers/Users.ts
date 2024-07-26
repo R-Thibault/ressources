@@ -1,5 +1,14 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
-import { Resolver, Query, Arg, Mutation, Ctx, ID } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  Ctx,
+  ID,
+  Authorized,
+} from "type-graphql";
 import {
   User,
   UserCreateInput,
@@ -11,7 +20,6 @@ import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import { ContextType, getUser } from "../middlewares/auth";
-import { DummyUsers } from "../dummyDatas";
 import { validate } from "class-validator";
 import { randomBytes } from "crypto";
 import {
@@ -22,11 +30,13 @@ import { checkEmail, checkPasswords } from "../utils/checkInput";
 
 @Resolver(User)
 export class UserResolver {
+  @Authorized()
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     return await User.find({});
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
   async getOneUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     try {
@@ -40,6 +50,7 @@ export class UserResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
@@ -58,6 +69,7 @@ export class UserResolver {
     return user;
   }
 
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async deleteUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     try {
@@ -210,7 +222,7 @@ export class UserResolver {
       if (await argon2.verify(existingUser.hashed_password, data.password)) {
         const token = jwt.sign(
           {
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
             id: existingUser.id,
           },
           `${process.env.JWT_SECRET_KEY}`
@@ -235,45 +247,23 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => User, { nullable: true })
-  async signOut(@Ctx() context: ContextType): Promise<User | null> {
+  @Authorized()
+  @Mutation(() => Boolean)
+  async signOut(@Ctx() context: ContextType): Promise<boolean> {
     const cookies = new Cookies(context.req, context.res);
     cookies.set("token", "", {
       httpOnly: true,
+      secure: false,
       maxAge: 0,
     });
 
-    return null;
+    return true;
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
   async myProfile(@Ctx() context: ContextType): Promise<User | null> {
     const user = await getUser(context.req, context.res);
     return user;
-  }
-
-  @Mutation(() => [User])
-  async populateUserTable(): Promise<User[] | null> {
-    for (let i = 0; i < DummyUsers.length; i++) {
-      try {
-        const newUser = new User();
-        newUser.email = DummyUsers[i].email;
-        newUser.hashed_password = await argon2.hash(DummyUsers[i].password);
-        newUser.lastname = DummyUsers[i].lastname;
-        newUser.firstname = DummyUsers[i].firstname;
-        newUser.created_at = DummyUsers[i].created_at;
-
-        const error = await validateDatas(newUser);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newUser.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllUsers();
   }
 }

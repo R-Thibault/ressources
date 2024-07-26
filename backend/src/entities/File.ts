@@ -5,9 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
@@ -19,19 +17,19 @@ export class File extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) //to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   name!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   type!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   path!: string;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 
@@ -40,9 +38,7 @@ export class File extends BaseEntity {
     this.created_at = new Date();
   }
 
-
   @ManyToOne(() => User, (user) => user.files_creation)
-
   @JoinColumn({ name: "created_by" })
   @Field(() => User)
   created_by_user!: User;
@@ -53,7 +49,6 @@ export class File extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.files_update)
   @JoinColumn({ name: "updated_by" })
-
   @Field(() => User)
   updated_by_user!: User;
 }

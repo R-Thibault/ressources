@@ -9,6 +9,27 @@ export const CREATE_GROUP = gql`
     }
   }
 `;
+export const DELETE_GROUP = gql`
+  mutation DeleteGroup($data: DeleteGroupInput!) {
+    item: deleteGroup(data: $data) {
+      id
+    }
+  }
+`;
+
+export const DELETE_MEMBER = gql`
+  mutation DeleteMember($data: MemberLeavingGroupInput!) {
+    item: deleteMember(data: $data) {
+      id
+    }
+  }
+`;
+
+export const SEND_GROUP_INVITATION = gql`
+  mutation InviteGroupMembers($email: String!, $groupId: ID!) {
+    inviteGroupMembers(email: $email, groupId: $groupId)
+  }
+`;
 
 export const GET_MY_GROUPS = gql`
   query getMyGroups {
@@ -33,6 +54,11 @@ export const GET_ONE_GROUP = gql`
       name
       description
       created_at
+      created_by_user {
+        id
+        firstname
+        lastname
+      }
     }
   }
 `;

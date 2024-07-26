@@ -1,19 +1,69 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+  Authorized,
+  Subscription,
+  Root,
+  Ctx,
+} from "type-graphql";
 import {
   MessageCreateInput,
   Message,
   MessageUpdateInput,
 } from "../entities/Message";
 import { validate } from "class-validator";
-import { DummyMessages } from "../dummyDatas";
+import { pubSub } from "../pubsub";
+import { ContextType } from "../middlewares/auth";
+import { Group } from "../entities/Group";
 
 @Resolver(Message)
 export class MessageResolver {
-  @Query(() => [Message])
-  async getAllMessages(): Promise<Message[]> {
-    return await Message.find();
+  @Subscription(() => Message, {
+    topics: "MESSAGES",
+    filter: async ({ payload, args, context }) => {
+      return payload.group.id === +args.groupId;
+    },
+  })
+  onMessage(
+    @Root() payload: Message,
+    @Arg("groupId", () => ID) groupId: number
+  ): Message {
+    return payload;
   }
 
+  @Authorized()
+  @Query(() => [Message])
+  async getAllMessages(
+    @Ctx() context: ContextType,
+    @Arg("groupId", () => ID) groupId: number
+  ): Promise<Message[]> {
+    if (!context.user) {
+      throw new Error(`error`);
+    }
+    const group = await Group.findOne({
+      where: { id: groupId, members: { user: { id: context.user?.id } } },
+      relations: {
+        created_by_user: true,
+        members: { user: true },
+      },
+    });
+    if (!group) {
+      throw new Error("group not found");
+    }
+    return await Message.find({
+      where: { group: { id: groupId } },
+      relations: {
+        group: true,
+        created_by_user: { avatar: true },
+      },
+      order: { created_at: "ASC" },
+    });
+  }
+
+  @Authorized()
   @Query(() => Message)
   async getOneMessage(
     @Arg("id", () => ID) id: number
@@ -26,18 +76,39 @@ export class MessageResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Message)
   async createMessage(
+    @Ctx() context: ContextType,
     @Arg("data", () => MessageCreateInput) data: MessageCreateInput
   ): Promise<Message> {
     try {
+      if (!context.user) {
+        throw new Error(`error`);
+      }
       const newMessage = new Message();
+      const group = await Group.findOne({
+        where: { id: data.group, members: { user: { id: context.user?.id } } },
+        relations: {
+          created_by_user: { avatar: true },
+          members: { user: true },
+        },
+      });
+
+      if (group) {
+        newMessage.group = group;
+        newMessage.created_by_user = context.user;
+        newMessage.message = data.message;
+      } else {
+        throw new Error("user not in group");
+      }
       const error = await validate(newMessage);
 
       if (error.length > 0) {
         throw new Error(`error occured ${JSON.stringify(error)}`);
       } else {
         const datas = await newMessage.save();
+        pubSub.publish("MESSAGES", datas);
         return datas;
       }
     } catch (error) {
@@ -45,6 +116,7 @@ export class MessageResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Message, { nullable: true })
   async updateMessage(
     @Arg("id", () => ID) id: number,
@@ -63,6 +135,7 @@ export class MessageResolver {
     return message;
   }
 
+  @Authorized()
   @Mutation(() => Message, { nullable: true })
   async deleteMessage(
     @Arg("id", () => ID) id: number
@@ -77,29 +150,5 @@ export class MessageResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Message])
-  async populateMessageTable(): Promise<Message[] | null> {
-    for (let i = 0; i < DummyMessages.length; i++) {
-      try {
-        const newMessage = new Message();
-        newMessage.message = DummyMessages[i].message;
-        newMessage.group = DummyMessages[i].group_id;
-        newMessage.created_by_user = DummyMessages[i].created_by_user;
-        newMessage.created_at = DummyMessages[i].created_at;
-
-        const error = await validate(newMessage);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          const datas = await newMessage.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllMessages();
   }
 }

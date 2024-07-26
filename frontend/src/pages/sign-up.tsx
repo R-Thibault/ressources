@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
 import { checkPasswords, checkEmail } from "@/utils/checkInput";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function SignUp(): React.ReactNode {
   const [email, setEmail] = useState("");
@@ -34,7 +36,6 @@ export default function SignUp(): React.ReactNode {
     e.preventDefault();
     try {
       setErrorMessage("");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
       const validPassword = checkPasswords(password, confirmPassword);
       const validEmail = checkEmail(email);
@@ -61,7 +62,13 @@ export default function SignUp(): React.ReactNode {
         {!data ? (
           <>
             <span>Inscription</span>
-            <p className="title">
+            <Image
+              src="/assets/sharing.svg"
+              alt="sharing"
+              width={130}
+              height={130}
+            ></Image>
+            <p className="title mt-3">
               Inscrivez-vous dès maintenant en remplissant le formulaire
               ci-dessous
             </p>
@@ -119,22 +126,28 @@ export default function SignUp(): React.ReactNode {
               </button>
               <p className="signup_link">
                 Vous avez déjà un compte ?{" "}
-                <a href="/sign-in" className="forgot_Password">
+                <Link href="/sign-in" className="forgot_Password">
                   Connectez-vous dès maintenant !
-                </a>
+                </Link>
               </p>
             </form>
           </>
         ) : (
           <>
-            <span>Vérifiez votre boite mail !</span>
+            <Image
+              src="/assets/mail_sent.svg"
+              alt="mail-sent"
+              width={130}
+              height={130}
+            ></Image>
+            <span className="mt-3">Vérifiez votre boite mail !</span>
             <p className="title">
               Un mail de validation de compte a été envoyé sur votre adresse
               mail. Verifiez vos courriers indésirables.
             </p>
-            <a href="/sign-in" className="forgot_Password">
+            <Link href="/sign-in" className="forgot_Password">
               Retour à la page d'accueil
-            </a>
+            </Link>
           </>
         )}
       </div>

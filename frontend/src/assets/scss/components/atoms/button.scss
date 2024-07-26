@@ -13,6 +13,7 @@
   box-shadow: 0px 8px 15px $black-shadow;
   cursor: pointer;
   transition: all 0.3s ease 0s;
+  padding: 0 10px;
   span {
     display: block;
     font-family: poppinsRegular;
@@ -48,15 +49,54 @@
   }
 }
 
-.btn_add_ressources {
-  height: 60px;
-  width: 60px;
+.btn_rounded_add_ressource {
+  height: 40px;
+  width: 40px;
   transition: all 0.3s ease 0s;
   background: $primary-color1;
   border-radius: 30px;
 }
 
-.btn_add_ressources:hover {
+.btn_rounded_actions {
+  @media (max-width: 575px) {
+    height: 40px;
+    width: 40px;
+    border-radius: 30px;
+    margin-left: 5px;
+  }
+  height: 50px;
+  width: 50px;
+  transition: all 0.3s ease 0s;
+  background: $primary-color1;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+.btn_quit_group {
+  background-color: $primary-color16;
+}
+
+.btn_rounded_actions:hover {
+  background: $primary-color2;
+}
+
+.btn_rounded_add_ressource:hover {
+  background: $primary-color2;
+}
+
+.btn_quit_group:hover {
+  background-color: #d63031;
+}
+
+.btn_add_message {
+  height: 50px;
+  width: 60px;
+  transition: all 0.3s ease 0s;
+  background: $primary-color1;
+  border-radius: 50%;
+}
+
+.btn_add_message:hover {
   background: $primary-color2;
 }
 
@@ -78,7 +118,7 @@
   }
   span {
     margin-left: 15px;
-    font-size: 1.35em;
+    font-size: 1.125em;
     color: white;
     font-family: poppinsLight;
     width: 70%;
@@ -93,8 +133,9 @@
   }
 }
 
-.like_content {
+.card_bottom_buttons_container {
   position: absolute;
+  bottom: -15px;
   right: 10%;
   .btn_like {
     border-radius: 50%;
@@ -107,11 +148,79 @@
       color: $primary-color2;
     }
   }
+  .btn_favorite {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    i {
+      border-radius: 50%;
+      color: $primary-color5;
+    }
+  }
+
+  .btn_delete {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    background-color: $primary-color10;
+    i {
+      border-radius: 50%;
+      color: white;
+    }
+  }
+  .btn_edit {
+    border-radius: 50%;
+    border: none;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    padding: 0;
+    background-color: $primary-color17;
+    i {
+      border-radius: 50%;
+      color: white;
+    }
+  }
 }
 
-.profile_btn {
+.btn_message {
+  background-color: $primary-color17;
+}
+
+.btn_message:hover {
+  background-color: #0984e3;
+}
+
+.btn_message {
+  background-color: $primary-color17;
+}
+
+.btn_message:hover {
+  background-color: #0984e3;
+}
+
+.btn_sort {
+  background-color: transparent;
+  outline: none;
   border: none;
+  font-size: 1em;
+  color: black;
+}
+.btn_sort:hover {
+  color: $primary-color2;
+}
+.profile_btn {
+  border: none !important;
   position: absolute;
-  top: 25%;
+  top: 10%;
   right: 0;
+  background-color: $primary-color1 !important;
+}
+
+.message_btn {
+  position: sticky;
+  top: 0px;
 }

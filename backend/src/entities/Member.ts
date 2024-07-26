@@ -5,14 +5,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Group } from "./Group";
-import { Right } from "./Right";
 
 @Entity()
 @ObjectType()
@@ -21,20 +18,11 @@ export class Member extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @ManyToOne(() => Group, (group) => group.members)
-  @JoinColumn({ name: "group_id" })
-  @Field(() => Group)
-  group!: Group;
-
   @Column({ type: "timestamp" })
   @Field()
   last_visit!: Date;
 
-  @ManyToMany(() => Right, (rights) => rights.members)
-  @Field(() => [Right])
-  rights!: Right[];
-
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamp" })
   @Field()
   created_at!: Date;
 
@@ -43,8 +31,15 @@ export class Member extends BaseEntity {
     this.created_at = new Date();
   }
 
+  @ManyToOne(() => Group, (group) => group.members, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn()
+  @Field(() => Group)
+  group!: Group;
+
   @ManyToOne(() => User, (user) => user.members)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn()
   @Field(() => User)
   user!: User;
 
@@ -63,4 +58,10 @@ export class MemberCreateInput {
 export class MemberUpdateInput {
   @Field({ nullable: true })
   last_visit!: Date;
+}
+
+@InputType()
+export class MemberLeavingGroupInput {
+  @Field(() => ID)
+  group_id!: number;
 }

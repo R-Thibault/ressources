@@ -3,28 +3,35 @@ import {
   Authorized,
   Ctx,
   ID,
+  Int,
   Mutation,
   Query,
   Resolver,
 } from "type-graphql";
 import { validate } from "class-validator";
-import { DummyRessources } from "../dummyDatas";
 import {
   Ressource,
   RessourceCreateInput,
+  RessourcesOrderByInput,
+  RessourcesWhereGroupInput,
+  RessourcesWhereInput,
   RessourceUpdateInput,
 } from "../entities/Ressource";
-import { ContextType, getUser } from "../middlewares/auth";
+import { ContextType } from "../middlewares/auth";
 import { File } from "../entities/File";
 import { Link } from "../entities/Link";
-
+import { Like } from "typeorm";
+import { Group } from "../entities/Group";
+import { Image } from "../entities/Image";
 @Resolver(Ressource)
 export class RessourceResolver {
+  @Authorized()
   @Query(() => [Ressource])
   async getAllRessources(): Promise<Ressource[]> {
     return await Ressource.find();
   }
 
+  @Authorized()
   @Query(() => Ressource)
   async getOneRessource(
     @Arg("id", () => ID) id: number
@@ -42,38 +49,92 @@ export class RessourceResolver {
     }
   }
 
+  @Authorized()
   @Query(() => [Ressource])
-  async getAllRessourceFromOneUser(
-    @Ctx() context: ContextType
+  async getRessourcesByUser(
+    @Ctx() context: ContextType,
+    @Arg("orderBy", () => RessourcesOrderByInput, { nullable: true })
+    orderBy?: RessourcesOrderByInput,
+    @Arg("where", () => RessourcesWhereInput, { nullable: true })
+    where?: RessourcesWhereInput,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
-      const user = await getUser(context.req, context.res);
-      if (!user) {
+      if (!context.user) {
         throw new Error(`error`);
       } else {
-        const ressource = await Ressource.find({
-          where: { created_by_user: { id: user.id } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const queryOrderBy: any = {};
+        if (
+          orderBy?.created_at &&
+          ["ASC", "DESC"].includes(orderBy?.created_at)
+        ) {
+          queryOrderBy.created_at = orderBy?.created_at;
+        }
+        if (orderBy?.title && ["ASC", "DESC"].includes(orderBy?.title)) {
+          queryOrderBy.title = orderBy?.title;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const queryWhere: any = [];
+        queryWhere.created_by_user = context.user;
+        if (where?.title && where?.title.length > 0) {
+          queryWhere.title = Like(`%${where.title}%`);
+        }
+        const ressources = await Ressource.find({
+          where: queryWhere,
           relations: {
             image_id: true,
             created_by_user: { avatar: true },
             file_id: true,
             link_id: true,
           },
+          order: queryOrderBy,
+          skip: skip,
+          take: take,
         });
-        return ressource;
+        return ressources;
       }
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
+  @Authorized()
   @Query(() => [Ressource])
   async getRessourcesByGroupId(
-    @Arg("groupId", () => ID) groupId: number
+    @Arg("whereGroup", () => RessourcesWhereGroupInput, { nullable: true })
+    whereGroup?: RessourcesWhereGroupInput,
+    @Arg("orderBy", () => RessourcesOrderByInput, { nullable: true })
+    orderBy?: RessourcesOrderByInput,
+    @Arg("skip", () => Int, { nullable: true }) skip?: number,
+    @Arg("take", () => Int, { nullable: true }) take?: number
   ): Promise<Ressource[]> {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryOrderBy: any = {};
+      if (
+        orderBy?.created_at &&
+        ["ASC", "DESC"].includes(orderBy?.created_at)
+      ) {
+        queryOrderBy.created_at = orderBy?.created_at;
+      }
+      if (orderBy?.title && ["ASC", "DESC"].includes(orderBy?.title)) {
+        queryOrderBy.title = orderBy?.title;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryWhereGroup: any = [];
+      if (whereGroup?.group_id) {
+        queryWhereGroup.group_id = { id: whereGroup.group_id };
+      }
+      if (whereGroup?.title && whereGroup?.title.length > 0) {
+        queryWhereGroup.title = Like(`%${whereGroup.title}%`);
+      }
+
       const ressources = await Ressource.find({
-        where: { group_id: { id: groupId } },
+        where: queryWhereGroup,
         relations: {
           image_id: true,
           created_by_user: { avatar: true },
@@ -81,6 +142,9 @@ export class RessourceResolver {
           link_id: true,
           group_id: true,
         },
+        order: queryOrderBy,
+        skip: skip,
+        take: take,
       });
       if (!ressources) {
         throw new Error("ressource not found");
@@ -101,6 +165,15 @@ export class RessourceResolver {
       const newRessource = new Ressource();
       newRessource.title = data.title;
       newRessource.description = data.description;
+
+      if (data.imageId) {
+        const image = await Image.findOne({ where: { id: data.imageId } });
+
+        if (image) {
+          newRessource.image_id = image;
+        }
+      }
+
       if (data.type === "link" && data.entityId) {
         const link = await Link.findOneBy({
           id: data.entityId,
@@ -119,6 +192,14 @@ export class RessourceResolver {
 
       if (context.user) {
         newRessource.created_by_user = context.user;
+        if (data.groupId !== null) {
+          const group = await Group.findOneBy({
+            id: data.groupId,
+          });
+          if (group) {
+            newRessource.group_id = group;
+          }
+        }
       }
 
       const error = await validate(newRessource);
@@ -129,70 +210,72 @@ export class RessourceResolver {
         return datas;
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
+  @Authorized()
   @Mutation(() => Ressource, { nullable: true })
   async updateRessource(
     @Arg("id", () => ID) id: number,
-    @Arg("data", () => RessourceUpdateInput) data: RessourceUpdateInput
+    @Arg("data", () => RessourceUpdateInput) data: RessourceUpdateInput,
+    @Ctx() context: ContextType
   ): Promise<Ressource | null> {
-    const ressource = await Ressource.findOne({ where: { id: id } });
-    if (ressource) {
-      Object.assign(ressource, data);
-      const errors = await validate(ressource);
-      if (errors.length > 0) {
-        throw new Error(`error occured ${JSON.stringify(errors)}`);
-      } else {
-        await ressource.save();
+    if (!context.user) {
+      throw new Error(`error`);
+    }
+
+    const ressource = await Ressource.findOne({
+      where: { id: id },
+      relations: { created_by_user: true, image_id: true },
+    });
+    if (!ressource) {
+      throw new Error("Resource not found");
+    }
+    if (ressource.created_by_user.id !== context.user.id) {
+      throw new Error("error occured");
+    }
+    Object.assign(ressource, data);
+    if (data.imageId) {
+      const image = await Image.findOne({ where: { id: data.imageId } });
+
+      if (image) {
+        ressource.image_id = image;
       }
     }
-    return ressource;
-  }
+    ressource.updated_at = new Date();
+    ressource.updated_by_user = context.user;
 
-  @Mutation(() => Ressource, { nullable: true })
-  async deleteRessource(
-    @Arg("id", () => ID) id: number
-  ): Promise<Ressource | null> {
-    try {
-      const ressource = await Ressource.findOne({ where: { id: id } });
-      if (ressource) {
-        await ressource.remove();
-        ressource.id = id;
-      }
+    const errors = await validate(ressource);
+    if (errors.length > 0) {
+      throw new Error(`error occured`);
+    } else {
+      await ressource.save();
       return ressource;
-    } catch (error) {
-      throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
 
-  @Mutation(() => [Ressource])
-  async populateRessourceTable(): Promise<Ressource[] | null> {
-    for (let i = 0; i < DummyRessources.length; i++) {
-      try {
-        const newRessource = new Ressource();
-        newRessource.title = DummyRessources[i].title;
-        newRessource.description = DummyRessources[i].description;
-        newRessource.is_favorite = DummyRessources[i].is_favorite;
-        newRessource.image_id = DummyRessources[i].image_id;
-        newRessource.file_id = DummyRessources[i].file_id;
-        newRessource.link_id = DummyRessources[i].link_id;
-        newRessource.created_by_user = DummyRessources[i].created_by_user;
-        newRessource.created_at = DummyRessources[i].created_at;
-
-        const error = await validate(newRessource);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          await newRessource.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
+  @Authorized()
+  @Mutation(() => Boolean)
+  async deleteRessource(
+    @Arg("id", () => ID) id: number,
+    @Ctx() context: ContextType
+  ): Promise<boolean> {
+    if (!context.user) {
+      throw new Error(`error`);
     }
-    return await this.getAllRessources();
+    const ressource = await Ressource.findOne({
+      where: { id },
+      relations: ["created_by_user"],
+    });
+    if (!ressource) {
+      throw new Error("Resource not found");
+    }
+    if (ressource.created_by_user.id !== context.user.id) {
+      throw new Error("error occured");
+    }
+
+    await ressource.remove();
+    return true;
   }
 }

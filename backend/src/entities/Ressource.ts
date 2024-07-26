@@ -6,12 +6,8 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  ManyToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  JoinTable,
   ManyToOne,
-  OneToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Link } from "./Link";
@@ -25,11 +21,11 @@ export class Ressource extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   title!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   description!: string;
 
@@ -37,18 +33,20 @@ export class Ressource extends BaseEntity {
   @Field()
   is_favorite!: boolean;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: "CASCADE" })
   @JoinColumn()
   @Field(() => Image, { nullable: true })
-  image_id!: Image;
+  image_id!: Image | null;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 
   @BeforeInsert()
   updateDate() {
-    this.created_at = new Date();
+    if (!this.created_at) {
+      this.created_at = new Date();
+    }
   }
 
   @ManyToOne(() => User, (user) => user.ressources_creation)
@@ -63,19 +61,21 @@ export class Ressource extends BaseEntity {
   @ManyToOne(() => User, (user) => user.ressources_update)
   @JoinColumn({ name: "updated_by" })
   @Field(() => User)
-  updated_by_user!: User;
+  updated_by_user!: User | undefined;
 
-  @OneToOne(() => File)
+  @OneToOne(() => File, { onDelete: "CASCADE" })
   @JoinColumn()
-  @Field(() => File)
+  @Field(() => File, { nullable: true })
   file_id!: File;
 
-  @OneToOne(() => Link)
+  @OneToOne(() => Link, { onDelete: "CASCADE" })
   @JoinColumn()
-  @Field(() => Link)
+  @Field(() => Link, { nullable: true })
   link_id!: Link;
 
-  @ManyToOne(() => Group, (group) => group.ressources)
+  @ManyToOne(() => Group, (group) => group.ressources, {
+    onDelete: "SET NULL",
+  })
   @Field(() => Group, { nullable: true })
   group_id!: Group;
 }
@@ -90,10 +90,41 @@ export class RessourceCreateInput {
   entityId!: number;
   @Field({ nullable: true }) // enlever nullable:true
   type!: string;
+  @Field({ nullable: true })
+  groupId!: number;
+  @Field({ nullable: true })
+  imageId!: number;
 }
 
 @InputType()
 export class RessourceUpdateInput {
   @Field()
   title!: string;
+  @Field()
+  description!: string;
+  @Field({ nullable: true })
+  imageId!: number;
+}
+
+@InputType()
+export class RessourcesWhereInput {
+  @Field(() => ID, { nullable: true })
+  created_by_user!: number;
+  @Field({ nullable: true })
+  title!: string;
+}
+
+@InputType()
+export class RessourcesWhereGroupInput {
+  @Field(() => ID)
+  group_id!: number;
+  @Field({ nullable: true })
+  title?: string;
+}
+@InputType()
+export class RessourcesOrderByInput {
+  @Field({ nullable: true })
+  created_at?: "ASC" | "DESC";
+  @Field({ nullable: true })
+  title?: "ASC" | "DESC";
 }

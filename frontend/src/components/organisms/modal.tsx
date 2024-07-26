@@ -11,7 +11,7 @@ export default function ModalComponent(
   props: ModalComponentProps
 ): React.ReactNode {
   return (
-    <Modal show={props.opened} centered>
+    <Modal show={props.opened} centered style={{ maxWidth: "100vw" }}>
       <div className="modal_container">
         <div className="header">
           <i

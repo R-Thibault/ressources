@@ -1,16 +1,26 @@
-import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { LinkCreateInput, Link } from "../entities/Link";
 import { validate } from "class-validator";
-import { DummyLinks } from "../dummyDatas";
 import { ContextType } from "../middlewares/auth";
 
 @Resolver(Link)
 export class LinkResolver {
+
+  @Authorized()
   @Query(() => [Link])
   async getAllLinks(): Promise<Link[]> {
     return await Link.find();
   }
 
+  @Authorized()
   @Query(() => Link)
   async getOneLink(@Arg("id", () => ID) id: number): Promise<Link | null> {
     try {
@@ -20,11 +30,12 @@ export class LinkResolver {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
   }
-  
+
   @Authorized()
   @Mutation(() => Link)
   async createLink(
-  @Arg("data", () => LinkCreateInput) data: LinkCreateInput, @Ctx() context: ContextType
+    @Arg("data", () => LinkCreateInput) data: LinkCreateInput,
+    @Ctx() context: ContextType
   ): Promise<Link> {
     try {
       const newLink = new Link();
@@ -64,6 +75,7 @@ export class LinkResolver {
   //   return link;
   // }
 
+  @Authorized()
   @Mutation(() => Link, { nullable: true })
   async deleteLink(@Arg("id", () => ID) id: number): Promise<Link | null> {
     try {
@@ -76,28 +88,5 @@ export class LinkResolver {
     } catch (error) {
       throw new Error(`error occured ${JSON.stringify(error)}`);
     }
-  }
-
-  @Mutation(() => [Link])
-  async populateLinkTable(): Promise<Link[] | null> {
-    for (let i = 0; i < DummyLinks.length; i++) {
-      try {
-        const newLink = new Link();
-        newLink.url = DummyLinks[i].url;
-        newLink.created_by_user = DummyLinks[i].created_by_user;
-        newLink.created_at = DummyLinks[i].created_at;
-
-        const error = await validate(newLink);
-
-        if (error.length > 0) {
-          throw new Error(`error occured ${JSON.stringify(error)}`);
-        } else {
-          const datas = await newLink.save();
-        }
-      } catch (error) {
-        throw new Error(`error occured ${JSON.stringify(error)}`);
-      }
-    }
-    return await this.getAllLinks();
   }
 }

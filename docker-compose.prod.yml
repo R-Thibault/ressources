@@ -1,22 +1,33 @@
 services:
   server:
-    image: thibaultr0/wildshare-backend:latest
+    build: ./backend
+    #image: wildshare-backend:latest
     platform: linux/amd64
+    volumes:
+      - ./upload:/app/upload
+      - ./upload/avatar:/app/upload/avatar
+      - ./upload/ressources:/app/upload/ressources
+      - ./upload/ressourcesImages:/app/upload/ressourcesImages
     env_file:
-      - ./.env
+      - .env
+
   front:
-    image: thibaultr0/wildshare-frontend:latest
+    build: ./frontend
+    #image: wildshare-frontend:latest
     platform: linux/amd64
+
   db:
     image: postgres
     platform: linux/amd64
     volumes:
-      - /var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     env_file:
-      - ./.env
+      - .env
+
   adminer:
     image: adminer
     platform: linux/amd64
+
   nginx:
     image: nginx:1.21.3
     platform: linux/amd64
@@ -29,3 +40,12 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx
+
+  mongo:
+    image: mongo
+    restart: always
+    env_file:
+      - .env
+
+volumes:
+  pgdata:

@@ -17,11 +17,11 @@ export class Link extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true }) // to false for prod
+  @Column({ type: "varchar", length: 255, nullable: false })
   @Field()
   url!: string;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 

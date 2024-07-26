@@ -6,7 +6,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User";
@@ -19,15 +18,17 @@ export class Message extends BaseEntity {
   @Field(() => ID)
   id!: number;
 
-  @Column({ type: "text", nullable: true }) // to false for prod
+  @Column({ type: "text", nullable: false })
   @Field()
   message!: string;
 
-  @ManyToOne(() => Group, (group) => group.messages)
+  @ManyToOne(() => Group, (group) => group.messages, {
+    onDelete: "CASCADE",
+  })
   @Field(() => Group)
   group!: Group;
 
-  @Column({ type: "timestamp", nullable: true }) // to false for prod
+  @Column({ type: "timestamp", nullable: false })
   @Field()
   created_at!: Date;
 
@@ -54,6 +55,8 @@ export class Message extends BaseEntity {
 export class MessageCreateInput {
   @Field()
   message!: string;
+  @Field()
+  group!: number;
 }
 
 @InputType()

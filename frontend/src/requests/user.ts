@@ -20,10 +20,7 @@ export const SIGN_IN = gql`
 
 export const SIGN_OUT = gql`
   mutation SignOut {
-    item: signOut {
-      id
-      email
-    }
+    signOut
   }
 `;
 
@@ -34,11 +31,11 @@ export const MY_PROFILE = gql`
       email
       lastname
       firstname
-      ## avatar {
-      ## id
-      ## name
-      ##path
-      ## }
+      avatar {
+        id
+        name
+        path
+      }
     }
   }
 `;
@@ -62,7 +59,11 @@ export const REQUEST_PASSWORD_RESET = gql`
 `;
 
 export const RESET_PASSWORD = gql`
-  mutation ResetPassword($token: String!, $newPassword: String!) {
+  mutation ResetPassword(
+    $token: String!
+    $newPassword: String!
+    $confirmNewPassword: String!
+  ) {
     resetPassword(
       token: $token
       newPassword: $newPassword

@@ -1,9 +1,20 @@
-import React from "react";
-import Tag from "../atoms/tag";
-import LikeBtn from "../atoms/likeBtn";
+import React, { useEffect, useState } from "react";
 import Avatar from "../atoms/avatar";
 import { RessourceType } from "@/types/ressources.types";
 import { UserType } from "@/types/user.types";
+import EditBtn from "../atoms/editBtn";
+import DeleteBtn from "../atoms/deleteBtn";
+import {
+  DELETE_RESSOURCE,
+  GET_ALL_RESSOURCES_FROM_ONE_USER,
+  GET_RESSOURCES_BY_GROUP_ID,
+} from "@/requests/ressources";
+import { useMutation, useQuery } from "@apollo/client";
+import ModalComponent from "@/components/organisms/modal";
+import EditRessourceForm from "@/components/organisms/EditRessourceForm";
+import { MY_PROFILE } from "@/requests/user";
+import ButtonWithToolTip from "../atoms/buttonWithToolTips";
+import { API_URL } from "@/config/config";
 
 export type RessourceCardProps = {
   ressource: RessourceType;
@@ -17,32 +28,114 @@ export default function RessourceCard(
   props: RessourceCardProps
 ): React.ReactNode {
   const { ressource } = props;
+  const [deleteRessource] = useMutation(DELETE_RESSOURCE, {
+    variables: { id: ressource.id },
+    refetchQueries: [
+      GET_ALL_RESSOURCES_FROM_ONE_USER,
+      GET_RESSOURCES_BY_GROUP_ID,
+    ],
+  });
+  const [updateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
+  const [ressourceImageSrc, setRessourceImageSrc] = useState<string>(
+    ressource?.image_id?.path.includes("://")
+      ? ressource.image_id.path
+      : `${API_URL}/files${ressource?.image_id?.path.replace(
+          "/app/upload",
+          ""
+        )}`
+  );
+  const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
+
+  function handleModalVisible(value: boolean) {
+    setUpdateModalOpen(value);
+  }
+
+  const handleDelete = async () => {
+    try {
+      if (confirm("Etes-vous sur de vouloir supprimer cette ressource ?")) {
+        await deleteRessource();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression", error);
+    }
+  };
+  useEffect(() => {
+    if (ressource.image_id?.path) {
+      setRessourceImageSrc(
+        ressource?.image_id?.path.includes("://")
+          ? ressource.image_id.path
+          : `${API_URL}/files${ressource?.image_id?.path.replace(
+              "/app/upload",
+              ""
+            )}`
+      );
+    } else {
+      setRessourceImageSrc("/assets/avatars/no-image.png");
+    }
+  }, [ressource]);
 
   return (
     <>
-      <div className="card card-width">
-        <Avatar user={ressource.created_by_user} />
-        <div>
-          <img
-            src="https://images.unsplash.com/photo-1469594292607-7bd90f8d3ba4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-            alt=""
-            className="img-fluid shadow-sm "
+      <div className="card card-custom mb-3" style={{ borderRadius: 30 }}>
+        <div className="d-flex flex-row justify-content-between align-items-center px-4">
+          <Avatar
+            user={ressource.created_by_user as UserType}
+            date={ressource.created_at as Date}
           />
+          {ressource.link_id && (
+            <ButtonWithToolTip id={"link"} title={ressource.link_id.url}>
+              <a
+                href={ressource.link_id.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-link link_icon"></i>
+              </a>
+            </ButtonWithToolTip>
+          )}
+          {ressource.file_id && (
+            <ButtonWithToolTip id={"link"} title={ressource.file_id.name}>
+              <a
+                href={`${API_URL}/download/${ressource.file_id.path.replace(
+                  "/app/upload/ressources/",
+                  ""
+                )}`}
+                download={ressource.file_id.name}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="bi bi-file-earmark-arrow-down link_icon"></i>
+              </a>
+            </ButtonWithToolTip>
+          )}
         </div>
-        <div className="card-body">
-          <div className="d-flex gap-1">
-            <Tag name={"randonée"} />
-            <Tag name={"montagne"} />
-            <Tag name={"paysage"} />
-            ...
-          </div>
-          <h5 className="card-title pt-2">{ressource.title}</h5>
-          <p className="card-text">{ressource.description}</p>
-          <div className="d-flex gap-2 like_content">
-            <LikeBtn className={"bi bi-hand-thumbs-up-fill"} />
-            <LikeBtn className={"bi bi-star-fill"} />
-          </div>
+        <div className="image_container">
+          <img
+            src={ressourceImageSrc}
+            alt={
+              ressource.image_id?.name
+                ? ressource.image_id?.name
+                : ressource.title
+            }
+          ></img>
         </div>
+        <div className="card-body pb-5">
+          <div className="d-flex gap-1"></div>
+          <h5 className="card-title pt-2 title">{ressource.title}</h5>
+          <p className="card-text description">{ressource.description}</p>
+        </div>
+        {dataUser?.item?.id === ressource?.created_by_user?.id && (
+          <div className="d-flex gap-2 card_bottom_buttons_container">
+            <EditBtn onClick={() => handleModalVisible(true)} />
+            <DeleteBtn onClick={handleDelete} />
+          </div>
+        )}
+        <ModalComponent opened={updateModalOpen} openModal={handleModalVisible}>
+          <EditRessourceForm
+            ressource={ressource}
+            onClose={() => handleModalVisible(false)}
+          />
+        </ModalComponent>
       </div>
     </>
   );

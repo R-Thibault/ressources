@@ -1,20 +1,22 @@
-import React, { FormEvent, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { SIGN_IN, MY_PROFILE } from "@/requests/user";
+import React, { FormEvent, useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { MY_PROFILE, SIGN_IN } from "@/requests/user";
 import { useRouter } from "next/router";
 import Logo from "@/components/atoms/logo";
 import { Alert } from "react-bootstrap";
+import Image from "next/image";
+import Link from "next/link";
+import { UserType } from "@/types/user.types";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-
+  const { data: dataUser } = useQuery<{ item: UserType | null }>(MY_PROFILE);
   const [signIn, { loading }] = useMutation(SIGN_IN, {
     variables: { data: { email, password, isTest: false } },
     refetchQueries: [MY_PROFILE],
-    onCompleted: () => router.replace("/"),
     onError: (error) => {
       if (error.message.includes("user not found")) {
         setErrorMessage("Utilisateur introuvable.");
@@ -33,20 +35,24 @@ export default function SignIn() {
     setErrorMessage(""); // Réinitialiser le message d'erreur
     signIn();
   };
-
-  const handleForgotPasswordClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
-    router.push("/request-reset-password");
-  };
+  useEffect(() => {
+    if (dataUser) {
+      router.replace("/dashboard");
+    }
+  }, [dataUser]);
 
   return (
     <div className="container_signin">
       <Logo className={"menu_white_logo"} link="/sign-in" />
       <div className="signin_wrapper">
         <span>Connexion</span>
-        <p className="title">Content de vous revoir</p>
+        <p className="title">Content de vous revoir !</p>
+        <Image
+          src="/assets/sharing.svg"
+          alt="sharing"
+          width={130}
+          height={130}
+        ></Image>
         <form className="form" onSubmit={submitForm}>
           <input
             className="input"
@@ -65,21 +71,21 @@ export default function SignIn() {
             required
           />
           {errorMessage && (
-            <Alert className="full_width" variant={"danger"}>
+            <Alert id="alert" className="full_width" variant={"danger"}>
               {errorMessage}
             </Alert>
           )}
           <button className="btn_primary" type="submit" disabled={loading}>
             Se connecter
           </button>
-          <a onClick={handleForgotPasswordClick} className="forgot_Password">
+          <Link href="/request-reset-password" className="forgot_Password">
             Mot de passe oublié
-          </a>
+          </Link>
           <p className="signup_link">
             Vous n'avez pas encore de compte ?{" "}
-            <a href="/sign-up" className="forgot_Password">
+            <Link href="/sign-up" className="forgot_Password">
               Créez en un dès maintenant !
-            </a>
+            </Link>
           </p>
         </form>
       </div>

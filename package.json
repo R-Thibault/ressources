@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@types/mime-types": "^2.1.4",
     "husky": "^9.0.11"
   },
   "scripts": {

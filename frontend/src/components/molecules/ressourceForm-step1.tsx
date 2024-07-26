@@ -3,8 +3,8 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FormEvent, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
-import axios, { AxiosProgressEvent } from "axios";
-import { API_URL } from "@/config/config";
+import { AxiosProgressEvent } from "axios";
+import axiosInstance from "@/lib/axiosInstance";
 import { FileType } from "@/types/file.types";
 import { useMutation } from "@apollo/client";
 import { CREATE_LINK_MUTATION } from "@/requests/link";
@@ -63,14 +63,16 @@ export default function RessourcesFormStep1(props: {
         formData.append("userId", `${props.userId}`);
       }
 
-      const result = await axios.post(`${API_URL}api/upload/file`, formData, {
+      const result = await axiosInstance.post("/upload/file", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         onUploadProgress(progressEvent: AxiosProgressEvent) {
-          setProgress(
-            Math.round((100 * progressEvent.loaded) / progressEvent.total)
-          );
+          if (progressEvent.total) {
+            setProgress(
+              Math.round((100 * progressEvent.loaded) / progressEvent.total)
+            );
+          }
         },
       });
       if (result.status === 200) {
@@ -140,7 +142,10 @@ export default function RessourcesFormStep1(props: {
           />
         </div>
       ) : (
-        <Form.Control type="file" size="sm" onChange={selectFile} />
+        <div className="w-100 d-flex flex-column justify-content-center align-items-center">
+          <Form.Control type="file" size="sm" onChange={selectFile} />
+          <span className="info_upload mt-2">Taille maximale de l'image 5 Mo</span>
+        </div>
       )}
       {!isUploading && (
         <div className="button_container">
